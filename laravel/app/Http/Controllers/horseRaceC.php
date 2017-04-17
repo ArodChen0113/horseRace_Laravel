@@ -1,6 +1,12 @@
 <?php
+namespace App\Http\Controllers;
 
-class horseRaceC
+use DB;
+use App\Http\Controllers\Controller;
+use Input;
+use Illuminate\Http\UploadedFile;
+
+class horseRaceC extends Controller
 {
     public function __construct()
     {

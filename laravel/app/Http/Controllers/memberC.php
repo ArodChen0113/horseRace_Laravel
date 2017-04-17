@@ -1,5 +1,12 @@
 <?php
-class memberC
+namespace App\Http\Controllers;
+
+use DB;
+use App\Http\Controllers\Controller;
+use Input;
+use Illuminate\Http\UploadedFile;
+
+class memberC extends Controller
 {
     public function __construct()
     {

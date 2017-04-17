@@ -1,7 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: arodchen
- * Date: 2017/4/17
- * Time: 上午 10:22
- */
+
+if($result!=NULL) {
+    foreach ($result as $key => $value) {
+        echo "第" . ($key + 1) . "個號碼為" . $value . "<br />";
+    }
+}

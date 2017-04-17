@@ -1,6 +1,12 @@
 <?php
+namespace App\Http\Controllers;
 
-class positionGameC
+use DB;
+use App\Http\Controllers\Controller;
+use Input;
+use Illuminate\Http\UploadedFile;
+
+class positionGameC extends Controller
 {
     public function __construct()
     {

@@ -1,6 +1,12 @@
 <?php
+namespace App\Http\Controllers;
 
-class bigOrSmallGameC
+use DB;
+use App\Http\Controllers\Controller;
+use Input;
+use Illuminate\Http\UploadedFile;
+
+class bigOrSmallGameC extends Controller
 {
     public function __construct()
     {

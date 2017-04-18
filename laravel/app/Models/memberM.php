@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Models;
+namespace App\Models;
 
 use DB;
 use Input;

@@ -20,19 +20,18 @@ class horseC extends Controller
     //賽馬新增頁面顯示
     public function horseInsertShow()
     {
-        $result=array();
+        $rank=array();
         $horseCount=10;
         $count=0;
         while ($count<$horseCount) {           //計算賽馬名次
             $number = rand(1, $horseCount);
-            if (!in_array($number, $result)) { //去陣列重複值
-                $j=$count+1;
+            if (!in_array($number, $rank)) { //去陣列重複值
+                $rank[$count] = $number;
                 $rowHId=DB::table('horseGame_horse')
                     ->select('h_id')
-                    ->where('g_id',$j)
+                    ->where('g_id', $number)
                     ->get();
-                $hId=$rowHId[0]->h_id;
-                $result[$number] = $hId;
+                $result[$count] = $rowHId[0]->h_id;
                 $count++;
             }
         }

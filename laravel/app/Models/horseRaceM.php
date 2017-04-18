@@ -2,7 +2,6 @@
 namespace App\Models;
 
 use DB;
-use Input;
 use Illuminate\Http\UploadedFile;
 
 class horseRaceM
@@ -12,8 +11,7 @@ class horseRaceM
 
     }
     //計算賽馬名次
-    public function horseRaceResult(){
-        $input = Input::all();
+    public function horseRaceResult($action){
         $rank=array();
         $horseCount=10;
         $count=0;
@@ -32,7 +30,7 @@ class horseRaceM
 
         date_default_timezone_set("Asia/Taipei"); //目前時間
         $endTime = date("Y-m-d H:i:s");
-        if ($input['action'] != NULL && $input['action'] == 'insert')           //判斷值是否由欄位輸入
+        if ($action->action != NULL && $action->action == 'insert')           //判斷值是否由欄位輸入
         {
             DB::table('bs_sdBetting')->insert(array(                            //新增會員資料
                 array('firth' => $result[0], 'second' => $result[1], 'third' => $result[2], 'fourth' => $result[3], 'fifth' => $result[4], 'sixth' => $result[5], 'seventh' => $result[6], 'eighth' => $result[7], 'ninth' => $result[8], 'tenth' => $result[9], 'end_time' => $endTime )
@@ -99,35 +97,33 @@ class horseRaceM
         return $rankHId;
     }
     //賠率修改
-    public function raceOddsUpdate()
+    public function raceOddsUpdate($oddsData)
     {
-        $input = Input::all();
-        if ($input['action'] != NULL && $input['action'] == 'update')      //判斷值是否由欄位輸入
+        if ($oddsData->action != NULL && $oddsData->action == 'update')      //判斷值是否由欄位輸入
         {
             DB::table('horseGame_data')
-                ->where('game_name', $input['gameName'])
-                ->update(['odds' => $input['odds']]);
-            return $input['gameName'];
+                ->where('game_name', $oddsData->gameName)
+                ->update(['odds' => $oddsData->odds]);
+            return $oddsData->gameName;
         } else {
             return false;
         }
     }
     //賽馬遊戲開關
-    public function horseRaceControl(){
-        $input = Input::all();
-        if ($input['action'] != NULL && $input['action'] == 'update')      //判斷值是否由欄位輸入
+    public function horseRaceControl($horseRaceData){
+        if ($horseRaceData->action != NULL && $horseRaceData->action == 'update')      //判斷值是否由欄位輸入
         {
-            if($input['gameName']==0) {
+            if($horseRaceData->gameName==0) {
                 DB::table('horseGame_data')
-                    ->where('game_name', $input['gameName'])
+                    ->where('game_name', $horseRaceData->gameName)
                     ->update(['open' => 1]);
             }
-            if($input['gameName']==1) {
+            if($horseRaceData->gameName==1) {
                 DB::table('horseGame_data')
-                    ->where('game_name', $input['gameName'])
+                    ->where('game_name', $horseRaceData->gameName)
                     ->update(['open' => 0]);
             }
-            return $input['gameName'];
+            return $horseRaceData->gameName;
         }else{
             return false;
         }

@@ -2,18 +2,17 @@
 namespace App\Models;
 
 use DB;
-use Input;
 use Illuminate\Http\UploadedFile;
-use App\Models\horseRaceM;
+use App\Models\horseRaceM as horseRace;
 
-class bigOrSmallGameM
+class bigOrSmallGameM extends horseRace
 {
     public function __construct()
     {
 
     }
     //大小單雙遊戲下注新增
-    public function bsBettingInsert()
+    public function bsBettingInsert($bettingData)
     {
         $user = Auth::user();
         $userName = $user->name;
@@ -22,11 +21,9 @@ class bigOrSmallGameM
             ->where('user_name', $userName)
             ->get();
         $userId=$rowId[0]->id;
-        $input = Input::all();
         date_default_timezone_set("Asia/Taipei"); //目前時間
         $bettingTime = date("Y-m-d H:i:s");
-        $control = $input['control'];
-        $money = $input['money'];                 //下注金額
+        $money = $bettingData->money;             //下注金額
         $rowUserMoney=DB::table('member')
             ->select('money')
             ->where('id',$userId)
@@ -37,10 +34,10 @@ class bigOrSmallGameM
             ->where('id', $userId)
             ->update(['money' => $updateMoney]);  //修改玩家剩餘金額
 
-        if ($input['action'] != NULL && $input['action'] == 'insert')         //判斷值是否由欄位輸入
+        if ($bettingData->action != NULL && $bettingData->action == 'insert')         //判斷值是否由欄位輸入
         {
             DB::table('bs_sdBetting')->insert(array(                          //新增下注資料
-                array('user_id' => $userId, 'user_name' => $userName, 'money' => $money, 'betting_time' => $bettingTime, 'control' => $control)
+                array('user_id' => $userId, 'user_name' => $userName, 'money' => $money, 'betting_time' => $bettingTime, 'control' => $bettingData->control)
             ));
             return $userName;
         }else{
@@ -50,7 +47,7 @@ class bigOrSmallGameM
     //賽馬比單數遊戲投注結果(計算輸贏)
     public function singleBettingResult()
     {
-        $rankHId=horsrRace::RankDistinguish();
+        $rankHId=$this->RankDistinguish();
         for($i=0;$i<10;$i++) {
             if($i % 2 == 0) {
                 $singleHId[$i] = $rankHId[$i];  //賽馬比單數hid
@@ -68,7 +65,7 @@ class bigOrSmallGameM
     //賽馬比雙數遊戲投注結果(計算輸贏)
     public function doubleBettingResult()
     {
-        $rankHId=horsrRace::RankDistinguish();
+        $rankHId=$this->RankDistinguish();
         for($i=0;$i<10;$i++) {
             if($i % 2 == 1) {
                 $doubleHId[$i] = $rankHId[$i];  //賽馬比雙數hid
@@ -86,7 +83,7 @@ class bigOrSmallGameM
     //賽馬比小遊戲投注結果(計算輸贏)
     public function smallerBettingResult()
     {
-        $rankHId=horsrRace::RankDistinguish();
+        $rankHId=$this->RankDistinguish();
         for($i=0;$i<5;$i++) {
             $smallerHId[$i] = $rankHId[$i];  //賽馬比小hid
         }
@@ -102,7 +99,7 @@ class bigOrSmallGameM
     //賽馬比大遊戲投注結果(計算輸贏)
     public function biggerBettingResult()
     {
-        $rankHId=horsrRace::RankDistinguish();
+        $rankHId=$this->RankDistinguish();
         for($i=0;$i<5;$i++) {
             $j=$i+5;
             $biggerHId[$i] = $rankHId[$j];  //賽馬比大hid

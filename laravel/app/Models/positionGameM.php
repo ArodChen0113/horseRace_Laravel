@@ -2,18 +2,17 @@
 namespace App\Models;
 
 use DB;
-use Input;
 use Illuminate\Http\UploadedFile;
-use App\Models\horseRaceM;
+use App\Models\horseRaceM as horseRace;
 
-class positionGameM
+class positionGameM extends horseRace
 {
     public function __construct()
     {
 
     }
     //大小單雙遊戲下注新增
-    public function positionBettingInsert()
+    public function positionBettingInsert($bettingData)
     {
         $user = Auth::user();
         $userName = $user->name;
@@ -22,12 +21,9 @@ class positionGameM
             ->where('user_name', $userName)
             ->get();
         $userId=$rowId[0]->id;
-        $input = Input::all();
         date_default_timezone_set("Asia/Taipei"); //目前時間
         $bettingTime = date("Y-m-d H:i:s");
-        $control = $input['control'];
-        $rank = $input['rank'];
-        $money = $input['money'];                 //下注金額
+        $money = $bettingData->money;             //下注金額
         $rowUserMoney=DB::table('member')
             ->select('money')
             ->where('id',$userId)
@@ -38,10 +34,10 @@ class positionGameM
             ->where('id', $userId)
             ->update(['money' => $updateMoney]);  //修改玩家剩餘金額
 
-        if ($input['action'] != NULL && $input['action'] == 'insert')         //判斷值是否由欄位輸入
+        if ($bettingData->action != NULL && $bettingData->action == 'insert')         //判斷值是否由欄位輸入
         {
             DB::table('bs_sdBetting')->insert(array(                          //新增下注資料
-                array('user_id' => $userId, 'user_name' => $userName, 'money' => $money, 'rank' => $rank, 'betting_time' => $bettingTime, 'control' => $control)
+                array('user_id' => $userId, 'user_name' => $userName, 'money' => $money, 'rank' => $bettingData->rank, 'betting_time' => $bettingTime, 'control' => $bettingData->control)
             ));
             return $userName;
         }else{
@@ -51,7 +47,7 @@ class positionGameM
     //賽馬定位遊戲投注結果(計算輸贏)
     public function positionBettingResult()
     {
-        $rankHId=horsrRace::RankDistinguish();         //賽馬名次hid
+        $rankHId=$this->RankDistinguish();             //賽馬名次hid
         $rowBettingData=DB::table('bs_sdBetting')      //玩家下注資料
             ->select('h_id','h_rank','user_id')
             ->where('control',5)

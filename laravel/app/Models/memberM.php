@@ -2,7 +2,6 @@
 namespace App\Models;
 
 use DB;
-use Input;
 use Illuminate\Http\UploadedFile;
 
 class memberM
@@ -12,72 +11,64 @@ class memberM
 
     }
     //會員資料新增
-    public function memberInt()
+    public function memberInt($memberData)
     {
-        $input = Input::all();
-        $userName = $input['user_Name'];
-        $email = $input['email'];
-        $password = $input['password'];
-        $money = $input['money'];
         date_default_timezone_set("Asia/Taipei"); //目前時間
         $created_at = date("Y-m-d H:i:s");
 
-        if ($input['action'] != NULL && $input['action'] == 'insert')         //判斷值是否由欄位輸入
+        if ($memberData->action != NULL && $memberData->action == 'insert')   //判斷值是否由欄位輸入
         {
                 DB::table('member')->insert(array(                            //新增會員資料
-                    array('user_name' => $userName, 'email' => $email, 'password' => $password, 'money' => $money, 'created_at' => $created_at)
+                    array('user_name' => $memberData->userName, 'email' => $memberData->email, 'password' => $memberData->password, 'money' => $memberData->money, 'created_at' => $created_at)
                 ));
-            return $userName;
+            return $memberData->userName;
         }else{
             return false;
         }
     }
     //會員資料修改
-    public function memberUp()
+    public function memberUp($memberData)
     {
-        $input = Input::all();
-        if ($input['action'] != NULL && $input['action'] == 'update')      //判斷值是否由欄位輸入
+        if ($memberData->action != NULL && $memberData->action == 'update')      //判斷值是否由欄位輸入
         {
             DB::table('member')
-                ->where('id', $input['id'])
-                ->update(['user_name' => $input['userName'],'email' => $input['email'],'password' => $input['password']]);
-            $userName=$input['userName'];
+                ->where('id', $memberData->id)
+                ->update(['user_name' => $memberData->userName,'email' => $memberData->email,'password' => $memberData->password]);
+            $userName=$memberData->userName;
             return $userName;
         }else{
             return false;
         }
     }
     //會員資料刪除
-    public function memberDel()
+    public function memberDel($memberData)
     {
-        $input = Input::all();
-        if ($input['action'] != NULL && $input['action'] == 'delete')      //判斷值是否由欄位輸入
+        if ($memberData->action != NULL && $memberData->action == 'delete')      //判斷值是否由欄位輸入
         {
             $rowName=DB::table('member')
                 ->select('user_name')
-                ->where('id', $input['id'])
+                ->where('id', $memberData->id)
                 ->get();
             $userName=$rowName[0]->user_name;
-            DB::table('member')->where('id', '=', $input['id'])->delete();
+            DB::table('member')->where('id', '=', $memberData->id)->delete();
             return $userName;
         }else{
             return false;
         }
     }
     //會員儲值修改
-    public function accountStoredValueUp()
+    public function accountStoredValueUp($memberData)
     {
-        $input = Input::all();
-        if ($input['action'] != NULL && $input['action'] == 'update')      //判斷值是否由欄位輸入
+        if ($memberData->action != NULL && $memberData->action == 'update')      //判斷值是否由欄位輸入
         {
             $rowName=DB::table('member')
                 ->select('user_name')
-                ->where('id', $input['id'])
+                ->where('id', $memberData->id)
                 ->get();
             $userName=$rowName[0]->user_name;
             DB::table('member')
-                ->where('id', $input['id'])
-                ->update(['money' => $input['money']]);
+                ->where('id', $memberData->id)
+                ->update(['money' => $memberData->money]);
             return $userName;
         }else{
             return false;

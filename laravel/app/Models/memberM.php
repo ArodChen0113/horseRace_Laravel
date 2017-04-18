@@ -1,14 +1,27 @@
 <?php
 namespace App\Models;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
 
 class memberM
 {
-    public function __construct()
+    //會員資料搜尋
+    public function memberSel()
     {
-
+        $memberData=DB::table('member')
+            ->select('email','user_name','money','id')
+            ->get();
+        return $memberData;
+    }
+    //會員單筆資料搜尋
+    public function memberSelOne($id)
+    {
+        $memberData=DB::table('member')
+            ->select('email','user_name','money')
+            ->where('id', $id)
+            ->get();
+        return $memberData;
     }
     //會員資料新增
     public function memberInt($memberData)
@@ -19,7 +32,7 @@ class memberM
         if ($memberData->action != NULL && $memberData->action == 'insert')   //判斷值是否由欄位輸入
         {
                 DB::table('member')->insert(array(                            //新增會員資料
-                    array('user_name' => $memberData->userName, 'email' => $memberData->email, 'password' => $memberData->password, 'money' => $memberData->money, 'created_at' => $created_at)
+                    array('user_name' => $memberData->userName, 'email' => $memberData->email, 'password' => $memberData->password, 'created_at' => $created_at)
                 ));
             return $memberData->userName;
         }else{
@@ -33,7 +46,7 @@ class memberM
         {
             DB::table('member')
                 ->where('id', $memberData->id)
-                ->update(['user_name' => $memberData->userName,'email' => $memberData->email,'password' => $memberData->password]);
+                ->update(['user_name' => $memberData->userName]);
             $userName=$memberData->userName;
             return $userName;
         }else{
@@ -59,7 +72,7 @@ class memberM
     //會員儲值修改
     public function accountStoredValueUp($memberData)
     {
-        if ($memberData->action != NULL && $memberData->action == 'update')      //判斷值是否由欄位輸入
+        if ($memberData->action != NULL && $memberData->action == 'pay')      //判斷值是否由欄位輸入
         {
             $rowName=DB::table('member')
                 ->select('user_name')

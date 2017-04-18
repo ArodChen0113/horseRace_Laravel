@@ -1,14 +1,36 @@
 <?php
 namespace App\Models;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
 
 class horseRaceM
 {
-    public function __construct()
-    {
-
+    //賽馬資料搜尋
+    public function horseData(){
+        $horseData=DB::table('horse_data')
+            ->select('h_id','horse_name','horse_age','horse_introduce','horse_picture')
+            ->get();
+        return $horseData;
+    }
+    //賽馬單筆資料搜尋
+    public function horseName($HId){
+        $horseData=DB::table('horse_data')
+            ->select('h_id','horse_name','horse_age','horse_introduce','horse_picture')
+            ->where('h_id',$HId)
+            ->get();
+        return $horseData;
+    }
+    //user下注資料搜尋
+    public function bettingData(){
+        $user = Auth::user();
+        $userId=$user->id;
+        $bettingData=DB::table('bs_sdBetting')
+            ->select('user_id','user_name','h_id')
+            ->where('h_id',$userId)
+            ->where('control',0)
+            ->get();
+        return $bettingData;
     }
     //計算賽馬名次
     public function horseRaceResult($action){
@@ -127,5 +149,12 @@ class horseRaceM
         }else{
             return false;
         }
+    }
+    //目前時間
+    public function nowDateTime()
+    {
+        date_default_timezone_set("Asia/Taipei"); //目前時間
+        $dateTime = date("Y-m-d H:i:s");
+        return $dateTime;
     }
 }

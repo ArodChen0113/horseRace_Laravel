@@ -1,14 +1,27 @@
 <?php
 namespace App\Models;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
 
 class horseM
 {
-    public function __construct()
+    //賽馬資料搜尋
+    public function horseSel()
     {
-
+        $rowHorseData=DB::table('horse_data')
+            ->select('h_id','horse_name','horse_age','horse_introduce')
+            ->get();
+        return $rowHorseData;
+    }
+    //賽馬資料單筆搜尋
+    public function horseSelOne($HId)
+    {
+        $rowHorseData=DB::table('horse_data')
+            ->select('h_id','horse_name','horse_age','horse_introduce')
+            ->where('h_id',$HId)
+            ->get();
+        return $rowHorseData;
     }
     //賽馬資料新增
     public function horseInt($horseData)
@@ -29,7 +42,7 @@ class horseM
         if ($horseData->action != NULL && $horseData->action == 'update')      //判斷值是否由欄位輸入
         {
             DB::table('house_data')
-                ->where('h_id', $horseData->num)
+                ->where('h_id', $horseData->HId)
                 ->update(['horse_name' => $horseData->horseName,'horse_age' => $horseData->horseAge,'horse_introduce' => $horseData->horseIntroduce]);
             return $horseData->horseName;
         }else{

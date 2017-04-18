@@ -1,44 +1,66 @@
 <?php
 namespace App\Models;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
 use App\Models\horseRaceM as horseRace;
 
 class positionGameM extends horseRace
 {
-    public function __construct()
-    {
-
-    }
-    //大小單雙遊戲下注新增
-    public function positionBettingInsert($bettingData)
+    //定位遊戲下注新增
+    public function poBettingInsert($bettingData)
     {
         $user = Auth::user();
         $userName = $user->name;
-        $rowId=DB::table('member')
-            ->select('id')
-            ->where('user_name', $userName)
-            ->get();
-        $userId=$rowId[0]->id;
-        date_default_timezone_set("Asia/Taipei"); //目前時間
-        $bettingTime = date("Y-m-d H:i:s");
-        $money = $bettingData->money;             //下注金額
-        $rowUserMoney=DB::table('member')
-            ->select('money')
-            ->where('id',$userId)
-            ->get();
-        $userMoney=$rowUserMoney[0]->money;       //查詢玩家現餘金額
-        $updateMoney=$userMoney-$money;           //下注後剩餘金額
-        DB::table('member')
-            ->where('id', $userId)
-            ->update(['money' => $updateMoney]);  //修改玩家剩餘金額
+        $userId=$user->id;
+        $bettingTime = $this->nowDateTime();  //現在時間
+        $horseData = $this->horseName($bettingData->HId);  //賽馬資料
 
-        if ($bettingData->action != NULL && $bettingData->action == 'insert')         //判斷值是否由欄位輸入
+        if ($bettingData->action != NULL && $bettingData->action == 'insert')  //判斷值是否由欄位輸入
         {
             DB::table('bs_sdBetting')->insert(array(                          //新增下注資料
-                array('user_id' => $userId, 'user_name' => $userName, 'money' => $money, 'rank' => $bettingData->rank, 'betting_time' => $bettingTime, 'control' => $bettingData->control)
+                array('user_id' => $userId, 'user_name' => $userName, 'h_id' => $bettingData->HId, 'betting_time' => $bettingTime, 'control' => $bettingData->control)
             ));
+            return $horseData[0]->horse_name;
+        }else{
+            return false;
+        }
+    }
+    //定位遊戲下注刪除
+    public function poBettingDel($delData)
+    {
+        if ($delData->action != NULL && $delData->action == 'delete')      //判斷值是否由欄位輸入
+        {
+            $horseData=$this->horseName($delData->HId);
+            DB::table('bs_sdBetting')->where('num', '=', $delData->num)->delete();
+            return $horseData[0]->horse_name;
+        }else{
+            return false;
+        }
+    }
+    //定位遊戲金額新增
+    public function poBettingMoneyInsert($bettingData)
+    {
+        $user = Auth::user();
+        $userName = $user->name;
+        $userId = $user->id;
+
+        if ($bettingData->action != NULL && $bettingData->action == 'betting')         //判斷值是否由欄位輸入
+        {
+            $money = $bettingData->money;             //下注金額
+            $rowUserMoney=DB::table('member')
+                ->select('money')
+                ->where('id',$userId)
+                ->get();
+            $userMoney=$rowUserMoney[0]->money;       //查詢玩家現餘金額
+            $updateMoney=$userMoney-$money;           //下注後剩餘金額
+            DB::table('member')
+                ->where('id', $userId)
+                ->update(['money' => $updateMoney]);  //修改玩家剩餘金額
+            DB::table('bs_sdBetting')
+                ->where('num', $bettingData->num)
+                ->update(['money' => $bettingData->money]);  //修改玩家剩餘金額
+
             return $userName;
         }else{
             return false;

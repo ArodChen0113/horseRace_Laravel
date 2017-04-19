@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Input;
 use Illuminate\Http\UploadedFile;
 use App\Models\bigOrSmallGameM;
+use App\Models\positionGameM;
 use App\Models\horseRaceM;
 
 class horseRaceC extends Controller
@@ -16,14 +17,20 @@ class horseRaceC extends Controller
     //賽馬&遊戲介紹頁面顯示(首頁)
     public function horseRaceShow(){
         $input = Input::all();
-        $alert = Input::get('action', '');
+        $action = Input::get('action', '');
+        $alert='';
         //賽馬下注後提示顯示
-        if($alert== 'betting'){
-            $bettingData=['num'=>$input->num,'money'=>$input->money,'action'=>$input->action];
+        if($action== 'bsBetting'){
+            $bettingData=['num'=>$input['num'],'money'=>$input['money'],'horseName'=>$input['horseName'],'action'=>$input['action'],'control'=>$input['control']];
             $alert = new bigOrSmallGameM();
             $alert = $alert->bsBettingMoneyInsert($bettingData);
         }
-        return view('horseRaceShowV',['alert' => $alert]);
+        if($action== 'poBetting'){
+            $bettingData=['num'=>$input['num'],'money'=>$input['money'],'horseName'=>$input['horseName'],'action'=>$input['action'],'control'=>$input['control'],'rank'=>$input['rank']];
+            $alert = new positionGameM();
+            $alert = $alert->poBettingMoneyInsert($bettingData);
+        }
+        return view('horseRaceShowV',['alert' => $alert,'action' => $action]);
     }
     //賽果總覽(前台)頁面顯示
     public function raceOverviewShow(){

@@ -5,6 +5,9 @@ use App\Http\Controllers\Controller;
 use Input;
 use Illuminate\Http\UploadedFile;
 use App\Models\bigOrSmallGameM;
+use App\Models\memberM;
+use App\Models\horseRaceM;
+use Illuminate\Support\Facades\Auth;
 
 class bigOrSmallGameC extends Controller
 {
@@ -15,27 +18,38 @@ class bigOrSmallGameC extends Controller
     //大小單雙遊戲介紹頁面顯示(首頁)
     public function bsIntroduceShow()
     {
+        $input = Input::all();
         $bsGameM = new bigOrSmallGameM();
         $horseData = $bsGameM->horseData();
-        return view('bsIntroduceV',['horseData' => $horseData]);
+        $action = Input::get('action', '');
+        $horseName = '';
+        //下注資料刪除
+        if($action == 'delete'){
+            $delData=['num'=>$input['num'],'hId'=>$input['hId'],'action'=>$input['action']];
+            $horseName=$bsGameM->bsBettingDel($delData);
+        }
+        return view('bsIntroduceV',['horseData' => $horseData,'horseName' => $horseName,'action' => $action]);
     }
     //大小單雙遊戲下注頁面顯示(首頁)
     public function bsBettingShow()
     {
         $input = Input::all();
+        $user = Auth::user();
+        $userId=$user->id;
         $bsGameM = new bigOrSmallGameM();
-        $alert = Input::get('action', '');
+        $horseRaceM = new horseRaceM();
+        $action = Input::get('action', '');
+        $alert = '';
         //下注資料新增
-        if($alert == 'insert'){
-            $horseData=['h_id'=>$input->HId,'control'=>$input->control,'action'=>$input->action];
+        if($action == 'insert'){
+            $rowHorseData=$horseRaceM->horseDataOne($input['hId']);
+            $horseData=['h_id'=>$input['hId'],'horseName'=>$rowHorseData[0]->horse_name,'horsePic'=>$rowHorseData[0]->horse_picture,'action'=>$input['action']];
             $alert = $bsGameM->bsBettingInsert($horseData);
         }
-        //下注資料刪除
-        if($alert == 'delete'){
-            $delData=['num'=>$input->num,'HId'=>$input->HId,'action'=>$input->action];
-            $alert = $bsGameM->bsBettingDel($delData);
-        }
-        $bettingData=$bsGameM->bettingData();
-        return view('bsBettingV',['bettingData' => $bettingData,'alert' => $alert]);
+        $bettingData=$horseRaceM->bettingData();
+        $member = new memberM();
+        $memberData = $member->memberSelOne($userId);
+
+        return view('bsBettingV',['bettingData' => $bettingData,'alert' => $alert,'action' => $action,'memberData' => $memberData]);
     }
 }

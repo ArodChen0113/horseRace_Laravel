@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
 use App\Models\horseRaceM as horseRace;
+use Illuminate\Support\Facades\Auth;
 
 class bigOrSmallGameM extends horseRace
 {
@@ -14,12 +15,13 @@ class bigOrSmallGameM extends horseRace
         $userName = $user->name;
         $userId=$user->id;
         $bettingTime = $this->nowDateTime();  //現在時間
-        $horseData = $this->horseName($bettingData->HId);  //賽馬資料
+        $horseData = $this->horseDataOne($bettingData['h_id']);  //賽馬資料
 
-        if ($bettingData->action != NULL && $bettingData->action == 'insert')  //判斷值是否由欄位輸入
+        if ($bettingData['action'] != NULL && $bettingData['action'] == 'insert')  //判斷值是否由欄位輸入
         {
+            DB::table('bs_sdBetting')->where('user_id', '=', $userId)->where('count', '=', 9)->delete(); //清空之前下注紀錄
             DB::table('bs_sdBetting')->insert(array(                          //新增下注資料
-                array('user_id' => $userId, 'user_name' => $userName, 'h_id' => $bettingData->HId, 'betting_time' => $bettingTime, 'control' => $bettingData->control)
+                array('user_id' => $userId, 'user_name' => $userName, 'h_id' => $bettingData['h_id'],'horse_name' => $bettingData['horseName'], 'horse_picture' => $bettingData['horsePic'], 'betting_time' => $bettingTime)
             ));
             return $horseData[0]->horse_name;
         }else{
@@ -29,10 +31,10 @@ class bigOrSmallGameM extends horseRace
     //大小單雙遊戲下注刪除
     public function bsBettingDel($delData)
     {
-        if ($delData->action != NULL && $delData->action == 'delete')      //判斷值是否由欄位輸入
+        if ($delData['action'] != NULL && $delData['action'] == 'delete')      //判斷值是否由欄位輸入
         {
-            $horseData=$this->horseName($delData->HId);
-            DB::table('bs_sdBetting')->where('num', '=', $delData->num)->delete();
+            $horseData=$this->horseDataOne($delData['hId']);
+            DB::table('bs_sdBetting')->where('num', '=', $delData['num'])->delete();
             return $horseData[0]->horse_name;
         }else{
             return false;
@@ -42,12 +44,11 @@ class bigOrSmallGameM extends horseRace
     public function bsBettingMoneyInsert($bettingData)
     {
         $user = Auth::user();
-        $userName = $user->name;
         $userId = $user->id;
 
-        if ($bettingData->action != NULL && $bettingData->action == 'betting')         //判斷值是否由欄位輸入
+        if ($bettingData['action'] != NULL && $bettingData['action'] == 'bsBetting')         //判斷值是否由欄位輸入
         {
-        $money = $bettingData->money;             //下注金額
+        $money = $bettingData['money'];             //下注金額
         $rowUserMoney=DB::table('member')
             ->select('money')
             ->where('id',$userId)
@@ -58,10 +59,10 @@ class bigOrSmallGameM extends horseRace
             ->where('id', $userId)
             ->update(['money' => $updateMoney]);  //修改玩家剩餘金額
             DB::table('bs_sdBetting')
-                ->where('num', $bettingData->num)
-                ->update(['money' => $bettingData->money]);  //修改玩家剩餘金額
+                ->where('num', $bettingData['num'])
+                ->update(['money' => $bettingData['money'],'control' => $bettingData['control'],'count' => 0]);  //修改玩家剩餘金額
 
-            return $userName;
+            return $bettingData['horseName'];
         }else{
             return false;
         }

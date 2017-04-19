@@ -10,7 +10,7 @@ class memberM
     public function memberSel()
     {
         $memberData=DB::table('member')
-            ->select('email','user_name','money','id')
+            ->select('email','name','money','id')
             ->get();
         return $memberData;
     }
@@ -18,7 +18,7 @@ class memberM
     public function memberSelOne($id)
     {
         $memberData=DB::table('member')
-            ->select('email','user_name','money')
+            ->select('email','name','money')
             ->where('id', $id)
             ->get();
         return $memberData;
@@ -32,7 +32,7 @@ class memberM
         if ($memberData->action != NULL && $memberData->action == 'insert')   //判斷值是否由欄位輸入
         {
                 DB::table('member')->insert(array(                            //新增會員資料
-                    array('user_name' => $memberData->userName, 'email' => $memberData->email, 'password' => $memberData->password, 'created_at' => $created_at)
+                    array('name' => $memberData->userName, 'email' => $memberData->email, 'password' => $memberData->password, 'created_at' => $created_at)
                 ));
             return $memberData->userName;
         }else{
@@ -46,7 +46,7 @@ class memberM
         {
             DB::table('member')
                 ->where('id', $memberData->id)
-                ->update(['user_name' => $memberData->userName]);
+                ->update(['name' => $memberData->userName]);
             $userName=$memberData->userName;
             return $userName;
         }else{
@@ -59,7 +59,7 @@ class memberM
         if ($memberData->action != NULL && $memberData->action == 'delete')      //判斷值是否由欄位輸入
         {
             $rowName=DB::table('member')
-                ->select('user_name')
+                ->select('name')
                 ->where('id', $memberData->id)
                 ->get();
             $userName=$rowName[0]->user_name;

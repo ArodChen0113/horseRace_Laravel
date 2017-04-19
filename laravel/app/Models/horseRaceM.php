@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
 use App\Models\bigOrSmallGameM;
 use App\Models\positionGameM;
+use Illuminate\Support\Facades\Auth;
 
 class horseRaceM
 {
@@ -16,7 +17,7 @@ class horseRaceM
         return $horseData;
     }
     //賽馬單筆資料搜尋
-    public function horseName($HId){
+    public function horseDataOne($HId){
         $horseData=DB::table('horse_data')
             ->select('h_id','horse_name','horse_age','horse_introduce','horse_picture')
             ->where('h_id',$HId)
@@ -28,9 +29,10 @@ class horseRaceM
         $user = Auth::user();
         $userId=$user->id;
         $bettingData=DB::table('bs_sdBetting')
-            ->select('user_id','user_name','h_id')
-            ->where('h_id',$userId)
+            ->select('num','user_id','user_name','h_id','horse_picture','horse_name')
+            ->where('user_id',$userId)
             ->where('control',0)
+            ->where('count',9)
             ->get();
         return $bettingData;
     }
@@ -323,11 +325,13 @@ class horseRaceM
     public function horseRaceResultPersonalData($id)
     {
         $rowHorseRaceResult=DB::table('bs_sdBetting')
-            ->select('money','h_id','h_rank','control','win')
+            ->select('money','horse_name','h_rank','control','win')
             ->where('user_id',$id)
             ->orderBy('open_time', 'desc')
             ->get();
 
+        $profit='';
+        $odds='';
         $num=count($rowHorseRaceResult);
         for ($i=0;$i<$num;$i++) {
             $value = $rowHorseRaceResult[$i];
@@ -374,7 +378,7 @@ class horseRaceM
                     $profit = $value->money;
                 }
             }
-            $resultData = ['hId' => $value->h_id, 'h_rank' => $value->h_rank, 'control' => $value->control, 'money' => $value->money, 'win' => $value->win, 'odds' => $odds, 'profit' => $profit];
+            $resultData = ['horse' => $value->horse_name, 'h_rank' => $value->h_rank, 'control' => $value->control, 'money' => $value->money, 'win' => $value->win, 'odds' => $odds, 'profit' => $profit];
             return $resultData;
         }
     }

@@ -18,7 +18,7 @@ class positionGameM extends horseRace
 
         if ($bettingData->action != NULL && $bettingData->action == 'insert')  //判斷值是否由欄位輸入
         {
-            DB::table('bs_sdBetting')->insert(array(                          //新增下注資料
+            DB::table('bs_sdBetting')->insert(array(                           //新增下注資料
                 array('user_id' => $userId, 'user_name' => $userName, 'h_id' => $bettingData->HId, 'betting_time' => $bettingTime, 'control' => $bettingData->control)
             ));
             return $horseData[0]->horse_name;
@@ -88,39 +88,5 @@ class positionGameM extends horseRace
                     ->update(['win' => 1, 'count' => 1]);   //修改成贏家和尚未派彩
             }
             }
-    }
-    //定位賽馬遊戲派彩資料修改
-    public function pgRaceBonus(){
-
-        $this->positionBettingResult();             //下注定位賽馬輸贏結果運算
-
-        $rowSDPayData=DB::table('bs_sdBetting')     //查詢下注定位賽馬贏家uId,下注金額
-        ->select('user_id','money')
-            ->where('control',5)
-            ->where('win',1)
-            ->where('count',1)
-            ->get();
-        $rowOdds=DB::table('horseGame_data')           //查詢遊戲賠率
-        ->select('odds')
-            ->where('game_name','賽馬定位遊戲')
-            ->get();
-        $odds=$rowOdds[0]->odds;
-
-        $count=count($rowSDPayData);
-        for ($i=0;$i<$count;$i++) {                    //定位賽馬下注贏家派彩
-            $value=$rowSDPayData[$i];
-            $rowUserMoney=DB::table('member')
-                ->select('money')
-                ->where('id',$value->user_id)
-                ->get();
-            $userMoney=$rowUserMoney[0]->money;        //查詢贏家現餘金額
-            $bettingMoney=$value->money;               //下注金額
-            $winMoney=$bettingMoney*$odds;             //贏得金額
-            $sumMoney=$userMoney+$winMoney;            //計算贏得後總金額
-
-            DB::table('member')
-                ->where('id', $value->user_id)
-                ->update(['money' => $sumMoney]);      //修改最終贏得金額
-        }
     }
 }

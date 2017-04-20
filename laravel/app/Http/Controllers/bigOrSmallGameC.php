@@ -52,4 +52,11 @@ class bigOrSmallGameC extends Controller
 
         return view('bsBettingV',['bettingData' => $bettingData,'alert' => $alert,'action' => $action,'memberData' => $memberData]);
     }
+    //大小單雙下注總覽(後台)頁面顯示
+    public function bsBettingOverviewShow(){
+        $bsGameM = new bigOrSmallGameM();
+        $bsHorseRaceResultData = $bsGameM->bsBettingData();
+        $sumProfit = $bsGameM->sumProfit();
+        return view('bsBettingOverviewV',['bsHorseRaceResultData' => $bsHorseRaceResultData,'sumProfit'=>$sumProfit]);
+    }
 }

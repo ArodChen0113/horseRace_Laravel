@@ -59,10 +59,7 @@
                             <a href="raceSurplusV">盈餘總覽</a>
                             <ul class="sub-menu">
                                 <li class="menu-item-has-children">
-                                    <a href="bsBettingOverviewV">大小賽馬投注結果</a>
-                                </li>
-                                <li class="menu-item-has-children">
-                                    <a href="sdBettingOverviewV">單雙賽馬投注結果</a>
+                                    <a href="bsBettingOverviewV">大小單雙投注結果</a>
                                 </li>
                                 <li class="menu-item-has-children">
                                     <a href="poBettingOverviewV">定位賽馬投注結果</a>
@@ -118,13 +115,14 @@
                                         <form action="/" method="get">
                                             <table class="shop_table cart" >
                                                 <thead>
+                                                <font color="red" size="5">帳戶金額：<?php echo $memberData[0]->money;?></font>
                                                 <tr>
-                                                    <th class="product-name">賽馬名稱</th>
-                                                    <th class="product-name">名次</th>
+                                                    <th class="product-name">場次/名稱</th>
                                                     <th class="product-name">玩法</th>
                                                     <th class="product-name">金額</th>
-                                                    <th class="product-name">勝負</th>
                                                     <th class="product-name">賠率</th>
+                                                    <th class="product-name">名次</th>
+                                                    <th class="product-name">勝負</th>
                                                     <th class="product-name">獲利</th>
                                                 </tr>
                                                 </thead>
@@ -137,64 +135,99 @@
                                                         ?>
                                                         <tr class="cart_item">
                                                             <td class="product-name">
-                                                                <?php echo $value->horse_name; ?>
-                                                            </td>
-                                                            <td class="product-name">
-                                                                <?php echo $value->h_rank; ?>
+                                                               第<?php echo $value['horseRaceNum']; ?>場 /
+                                                                <?php echo $value['horse_name']; ?>
                                                             </td>
                                                             <td class="product-name">
                                                                 <?php
-                                                                if($value->control==1) {
+                                                                if($value['control']==1) {
                                                                     echo '買單數';
                                                                 }
-                                                                if($value->control==2) {
+                                                                if($value['control']==2) {
                                                                     echo '買雙數';
                                                                 }
-                                                                if($value->control==3) {
-                                                                    echo '買比大';
-                                                                }
-                                                                if($value->control==4) {
+                                                                if($value['control']==3) {
                                                                     echo '買比小';
                                                                 }
-                                                                if($value->control==5) {
-                                                                    echo '買定位';
+                                                                if($value['control']==4) {
+                                                                    echo '買比大';
+                                                                }
+                                                                if($value['control']==5) {
+                                                                    echo '買定位( '.$value['h_rank'].' )';
+                                                                }
+                                                                if($value['money']==0) {
+                                                                    echo '-----';
                                                                 }
                                                                 ?>
                                                             </td>
                                                             <td class="product-name">
-                                                                $ <?php echo $value->money; ?>
+                                                                $ <?php echo $value['money']; ?>
+                                                            </td>
+                                                            <td class="product-name">
+                                                                <?php echo $value['odds']; ?>
                                                             </td>
                                                             <td class="product-name">
                                                                 <?php
-                                                                if($value->win==1) {
-                                                                    echo 'O';
-                                                                }
-                                                                if($value->win==0) {
-                                                                    echo 'X';
+                                                                if($value['r_rank']==0) {
+                                                                    echo '-----';
+                                                                }else{
+                                                                    echo $value['r_rank'];
                                                                 }
                                                                 ?>
                                                             </td>
                                                             <td class="product-name">
-                                                                <?php echo $value->odds; ?>
+                                                                <?php
+                                                                if($value['win']==1 and $value['count']==2 and $value['money']!=0) {
+                                                                    echo 'O';
+                                                                }
+                                                                if($value['win']==0 and $value['count']==2 and $value['money']!=0) {
+                                                                    echo 'X';
+                                                                }
+                                                                if($value['win']==1 and $value['count']==3 and $value['money']!=0) {
+                                                                    echo 'O';
+                                                                }
+                                                                if($value['win']==0 and $value['count']==3 and $value['money']!=0) {
+                                                                    echo 'X';
+                                                                }
+                                                                if($value['count']==0){
+                                                                    echo '未出賽';
+                                                                }
+                                                                if($value['money']==0) {
+                                                                    echo '-----';
+                                                                }
+                                                                ?>
                                                             </td>
                                                             <td class="product-quantity" data-title="Qty">
                                                                 <?php
-                                                                if($value->win==1) {
-                                                                    echo $value->profit;
+                                                                if($value['win']==1 and $value['count']==2 and $value['money']!=0) {
+                                                                    echo $value['profit'];
                                                                 }
-                                                                if($value->win==0) {
-                                                                    echo '- $ '.$value->profit;
+                                                                if($value['win']==0 and $value['count']==2 and $value['money']!=0) {
+                                                                    echo 0 ;
+                                                                }
+                                                                if($value['win']==1 and $value['count']==3 and $value['money']!=0) {
+                                                                    echo $value['profit'];
+                                                                }
+                                                                if($value['win']==0 and $value['count']==3 and $value['money']!=0) {
+                                                                    echo 0 ;
+                                                                }
+                                                                if($value['count']==0){
+                                                                    echo '-----';
+                                                                }
+                                                                if($value['money']==0) {
+                                                                    echo '未下注';
                                                                 }
                                                                 ?>
                                                             </td>
                                                         </tr>
                                                         <?php
                                                     }
+                                                }else{
+                                                    echo "尚未投注！";
                                                 }
                                                 ?>
                                                 </tbody>
                                             </table>
-                                            <font color="red">目前餘額：<?php echo $memberData[0]->money;?></font>
                                         </form>
                                     </div>
                                 </div>

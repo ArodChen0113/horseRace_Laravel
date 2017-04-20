@@ -84,10 +84,7 @@
                                 <a href="raceSurplusV">盈餘總覽</a>
                                 <ul class="sub-menu">
                                     <li class="menu-item-has-children">
-                                        <a href="bsBettingOverviewV">大小賽馬投注結果</a>
-                                    </li>
-                                    <li class="menu-item-has-children">
-                                        <a href="sdBettingOverviewV">單雙賽馬投注結果</a>
+                                        <a href="bsBettingOverviewV">大小單雙投注結果</a>
                                     </li>
                                     <li class="menu-item-has-children">
                                         <a href="poBettingOverviewV">定位賽馬投注結果</a>
@@ -105,6 +102,9 @@
                                     </li>
                                     <li class="menu-item-has-children">
                                         <a href="raceOddsV">賠率設定</a>
+                                    </li>
+                                    <li class="menu-item-has-children">
+                                        <a href="/?action=lottery">賽馬開獎</a>
                                     </li>
                                 </ul>
                             </li>

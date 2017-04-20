@@ -3,9 +3,6 @@
 Route::get('/','horseRaceC@horseRaceShow');
 
 Route::get('raceOverviewV','horseRaceC@raceOverviewShow');
-Route::get('bsBettingOverviewV','horseRaceC@bsBettingOverviewShow');
-Route::get('sdBettingOverviewV','horseRaceC@sdBettingOverviewShow');
-Route::get('poBettingOverviewV','horseRaceC@poBettingOverviewShow');
 Route::get('raceSurplusV','horseRaceC@raceSurplusShow');
 Route::get('raceOddsV','horseRaceC@raceOddsShow');
 
@@ -21,11 +18,14 @@ Route::get('horseUpdateV','horseC@horseUpdateShow');
 
 Route::get('poIntroduceV','positionGameC@poIntroduceShow');
 Route::get('poBettingV','positionGameC@poBettingShow');
+Route::get('poBettingOverviewV','positionGameC@poBettingOverviewShow');
 
 Route::get('bsIntroduceV','bigOrSmallGameC@bsIntroduceShow');
 Route::get('bsBettingV','bigOrSmallGameC@bsBettingShow');
-
+Route::get('bsBettingOverviewV','bigOrSmallGameC@bsBettingOverviewShow');
 
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+
+Route::get('testHTML','testC@testF');

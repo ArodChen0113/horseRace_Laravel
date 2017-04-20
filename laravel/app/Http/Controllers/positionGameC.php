@@ -52,4 +52,11 @@ class positionGameC extends Controller
 
         return view('poBettingV',['bettingData' => $bettingData,'alert' => $alert,'action' => $action,'memberData' => $memberData]);
     }
+    //定位賽馬下注總覽(後台)頁面顯示
+    public function poBettingOverviewShow(){
+        $poGameM = new positionGameM();
+        $poHorseRaceResultData = $poGameM->poBettingData();
+        $sumProfit = $poGameM->sumProfit();
+        return view('poBettingOverviewV',['poHorseRaceResultData' => $poHorseRaceResultData,'sumProfit'=>$sumProfit]);
+    }
 }

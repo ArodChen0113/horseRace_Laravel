@@ -7,6 +7,8 @@ use Illuminate\Http\UploadedFile;
 use App\Models\bigOrSmallGameM;
 use App\Models\positionGameM;
 use App\Models\horseRaceM;
+use App\Models\memberM;
+use Illuminate\Support\Facades\Auth;
 
 class horseRaceC extends Controller
 {
@@ -30,6 +32,10 @@ class horseRaceC extends Controller
             $alert = new positionGameM();
             $alert = $alert->poBettingMoneyInsert($bettingData);
         }
+        //賽馬開獎
+        if($action== 'lottery'){
+            $this->lotteryControl($action);
+        }
         return view('horseRaceShowV',['alert' => $alert,'action' => $action]);
     }
     //賽果總覽(前台)頁面顯示
@@ -37,26 +43,11 @@ class horseRaceC extends Controller
         $user = Auth::user();
         $userId=$user->id;
         $horseRaceM = new horseRaceM();
-        $resultData = $horseRaceM->horseRaceResultPersonalData($userId);
-        return view('raceOverviewV',['resultData' => $resultData]);
-    }
-    //大小下注總覽(後台)頁面顯示
-    public function bsBettingOverviewShow(){
-        $horseRaceM = new horseRaceM();
-        $bettingData = $horseRaceM->bsBettingData();
-        return view('bsBettingOverviewV',['bettingData' => $bettingData]);
-    }
-    //單雙下注總覽(後台)頁面顯示
-    public function sdBettingOverviewShow(){
-        $horseRaceM = new horseRaceM();
-        $bettingData = $horseRaceM->sdBettingData();
-        return view('sdBettingOverviewV',['bettingData' => $bettingData]);
-    }
-    //定位下注總覽(後台)頁面顯示
-    public function poBettingOverviewShow(){
-        $horseRaceM = new horseRaceM();
-        $bettingData = $horseRaceM->poBettingData();
-        return view('poBettingOverviewV',['bettingData' => $bettingData]);
+        $bettingData = $horseRaceM->horseRaceResultPersonalData($userId);
+        $memberM = new memberM();
+        $memberData = $memberM->memberSelOne($userId);
+
+        return view('raceOverviewV',['bettingData' => $bettingData,'memberData' => $memberData]);
     }
     //開獎盈餘(後台)頁面顯示
     public function raceSurplusShow(){
@@ -85,10 +76,10 @@ class horseRaceC extends Controller
     //賽馬賽果開獎
     public function lotteryControl($alert){
         $horseRaceM = new horseRaceM();
-        $horseRaceM->bettingHistoryUpdate($alert);  //之前下注改成歷史紀錄
+        $horseRaceM->bettingHistoryUpdate($alert);  //之前下注改成歷史紀錄&登錄新賽果時間
         $horseRaceM->horseRaceResult($alert);       //計算賽馬名次
-        $horseRaceM->sdRaceBonus();                 //單雙賽馬結果計算&贏家派彩
-        $horseRaceM->bsRaceBonus();                 //大小賽馬結果計算&贏家派彩
+        $bsGameM = new bigOrSmallGameM();
+        $bsGameM->RaceBonus();                      //單雙大小賽馬結果計算&贏家派彩
         $horseRaceM->poRaceBonus();                 //定位賽馬結果計算&贏家派彩
         $horseRaceM->raceLoseUpdate($alert);        //輸家狀態改為當次已計算,無派彩
     }

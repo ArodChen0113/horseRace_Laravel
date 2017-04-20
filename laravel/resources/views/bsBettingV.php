@@ -59,10 +59,7 @@
                             <a href="raceSurplusV">盈餘總覽</a>
                             <ul class="sub-menu">
                                 <li class="menu-item-has-children">
-                                    <a href="bsBettingOverviewV">大小賽馬投注結果</a>
-                                </li>
-                                <li class="menu-item-has-children">
-                                    <a href="sdBettingOverviewV">單雙賽馬投注結果</a>
+                                    <a href="bsBettingOverviewV">大小單雙投注結果</a>
                                 </li>
                                 <li class="menu-item-has-children">
                                     <a href="poBettingOverviewV">定位賽馬投注結果</a>
@@ -151,9 +148,9 @@
                                                                 <input type="radio" class="product-name" name="control"
                                                                        value="2">雙</br>
                                                                 <input type="radio" class="product-name" name="control"
-                                                                       value="3">大
+                                                                       value="3">小
                                                                 <input type="radio" class="product-name" name="control"
-                                                                       value="4">小
+                                                                       value="4">大
                                                             </td>
                                                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                                             <input type="hidden" name="num" value="<?php echo $value->num; ?>">

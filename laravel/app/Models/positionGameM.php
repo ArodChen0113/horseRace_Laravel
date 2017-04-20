@@ -8,6 +8,58 @@ use Illuminate\Support\Facades\Auth;
 
 class positionGameM extends horseRace
 {
+    //定位賽馬下注資料總覽
+    public function poBettingData(){
+        $horseRaceM = new horseRaceM();
+        $horseRaceData = $horseRaceM->horseRaceData();   //賽馬場次資料
+        $count=count($horseRaceData);
+        for ($i=0;$i<$count;$i++) {
+            $value=$horseRaceData[$i];
+            $bettingData = DB::table('bs_sdBetting') //該場次下注資料
+            ->select('money')
+                ->where('control', 5)
+                ->where('open_time',$value->end_time)
+                ->get();
+
+            $sumBettingMoney=0;
+            $numBettingData=count($bettingData);         //該場次投注筆數
+            for($j=0;$j<$numBettingData;$j++){
+                $value2=$bettingData[$j];
+                $bettingMoney=$value2->money;
+                $sumBettingMoney=$sumBettingMoney+$bettingMoney; //該場次投注總金額
+            }
+            $bettingLose = DB::table('bs_sdBetting')
+                ->select('money')
+                ->where('control', 5)
+                ->where('win', 1)
+                ->where('open_time',$value->end_time)
+                ->get();
+            $loseMoney=0;
+            $numBettingWin=count($bettingLose);
+            for($j=0;$j<$numBettingWin;$j++){
+                $value3=$bettingLose[$j];
+                $bettingMoneyLose=$value3->money;
+                $gameName='賽馬大小遊戲';
+                $odds=$horseRaceM->raceOddsOneData($gameName);
+                $bettingMoneyLose=$bettingMoneyLose*$odds[0]->odds;
+                $loseMoney=$loseMoney+$bettingMoneyLose; //該場次投注虧損金額
+            }
+            $winMoney=$sumBettingMoney-$loseMoney;
+            $poHorseRaceResultData[$i]=['num'=>$value->num,'raceCount'=>$numBettingData,'sumBettingMoney'=>$sumBettingMoney,'winMoney'=>$winMoney,'loseMoney'=>$loseMoney];
+        }
+        return $poHorseRaceResultData;
+    }
+    //定位賽馬總獲利
+    public function sumProfit(){
+        $bsHorseRaceResultData=$this->poBettingData();
+        $sumProfit=0;
+        $count=count($bsHorseRaceResultData);
+        for($i=0;$i<$count;$i++){
+            $value=$bsHorseRaceResultData[$i];
+            $sumProfit=$sumProfit+$value['winMoney'];
+        }
+        return $sumProfit;
+    }
     //定位遊戲下注新增
     public function poBettingInsert($bettingData)
     {
@@ -86,6 +138,8 @@ class positionGameM extends horseRace
             if($rankHId[$bettingRank]==$bettingHId) {  //比對下注名次馬號是否相符
                 DB::table('bs_sdBetting')
                     ->where('user_id', $value->user_id)
+                    ->where('count', 0)                    //是否已計算
+                    ->where('control', 5)                  //下注"大"的玩家
                     ->update(['win' => 1, 'count' => 1]);   //修改成贏家和尚未派彩
             }
             }

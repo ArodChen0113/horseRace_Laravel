@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="assets/css/vendors/font-awesome.min.css"> <!--選單-->
     <link rel="stylesheet" href="assets/css/vendors/woo/woocommerce.css"> <!--文字-->
     <link rel="stylesheet" href="assets/css/common/style.css"> <!--版面-->
-    <link href="assets/css/jsStar/jstarbox.css" rel="stylesheet"></link><!--評價星星效果-->
 </head>
 <body class="woocommerce woocommerce-page" onload="define()">
 <div class="wrap-main wrap-main-01">
@@ -54,9 +53,17 @@
                         </li>
                         <li class="menu-item-has-children tp-activated">
                             <a href="raceOverviewV">投注總覽</a>
+                            <ul class="sub-menu">
+                                <li class="menu-item-has-children">
+                                    <a href="raceOverviewV">投注總覽</a>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="accountStoredValueV">金額儲值</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="menu-item-has-children tp-activated">
-                            <a href="raceSurplusV">盈餘總覽</a>
+                            <a href="#">盈餘總覽</a>
                             <ul class="sub-menu">
                                 <li class="menu-item-has-children">
                                     <a href="bsBettingOverviewV">大小單雙投注結果</a>
@@ -77,6 +84,9 @@
                                 </li>
                                 <li class="menu-item-has-children">
                                     <a href="raceOddsV">賠率設定</a>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="/?action=lottery">賽馬開獎</a>
                                 </li>
                             </ul>
                         </li>
@@ -126,9 +136,9 @@
                                                 </thead>
                                                 <tbody>
                                                 <?php
-                                                if($bsHorseRaceResultData!=NULL) {
+                                                if($bsHorseRaceResultData != NULL) {
                                                     $num = count($bsHorseRaceResultData);
-                                                    for ($k = 0; $k <= $num - 1; $k++) {
+                                                    for ($k = 0 ; $k<$num ; $k++) {
                                                         $value = $bsHorseRaceResultData[$k];
                                                         ?>
                                                         <tr class="cart_item">
@@ -170,8 +180,5 @@
 <script src="assets/js/vendors/jquery.min.js"></script> <!--點觸淡出效果-->
 <script src="assets/js/vendors/bootstrap.min.js"></script> <!--點觸淡出效果-->
 <script src="assets/js/menu.js"></script> <!--RWD縮小選單列-->
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script> <!--評價星星效果-->
-<script src="assets/jstarbox.js"></script> <!--評價星星效果-->
-
 </body>
 </html>

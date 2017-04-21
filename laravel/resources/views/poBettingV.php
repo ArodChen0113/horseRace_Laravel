@@ -9,7 +9,24 @@
     <link rel="stylesheet" href="assets/css/vendors/font-awesome.min.css"> <!--選單-->
     <link rel="stylesheet" href="assets/css/vendors/woo/woocommerce.css"> <!--文字-->
     <link rel="stylesheet" href="assets/css/common/style.css"> <!--版面-->
-    <link href="assets/css/jsStar/jstarbox.css" rel="stylesheet"></link><!--評價星星效果-->
+    <script>
+        function bettingForm(){
+            var money = document.forms["betting"]["money"].value;
+            var rank = document.forms["betting"]["rank"].value;
+            if (money < 100){
+                alert("下注金額最少為100");
+                return false;
+            }
+            if (money > <?php echo $memberData[0]->money; ?>){
+                alert("帳戶金額不足！");
+                return false;
+            }
+            if (rank == null || rank == ''){
+                alert("請選擇賽馬名次");
+                return false;
+            }
+        }
+    </script>
 </head>
 <body class="woocommerce woocommerce-page" onload="define()">
 <div class="wrap-main wrap-main-01">
@@ -54,9 +71,17 @@
                         </li>
                         <li class="menu-item-has-children tp-activated">
                             <a href="raceOverviewV">投注總覽</a>
+                            <ul class="sub-menu">
+                                <li class="menu-item-has-children">
+                                    <a href="raceOverviewV">投注總覽</a>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="accountStoredValueV">金額儲值</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="menu-item-has-children tp-activated">
-                            <a href="raceSurplusV">盈餘總覽</a>
+                            <a href="#">盈餘總覽</a>
                             <ul class="sub-menu">
                                 <li class="menu-item-has-children">
                                     <a href="bsBettingOverviewV">大小單雙投注結果</a>
@@ -77,6 +102,9 @@
                                 </li>
                                 <li class="menu-item-has-children">
                                     <a href="raceOddsV">賠率設定</a>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="/?action=lottery">賽馬開獎</a>
                                 </li>
                             </ul>
                         </li>
@@ -112,22 +140,22 @@
                             <div class="tp-table-cart">
                                 <div class="container">
                                     <div class="tp-content-table-cart">
-                                        <form action="/" method="get">
+                                        <form id="betting" action="/" method="get" onsubmit="return bettingForm()">
                                             <table class="shop_table cart" >
                                                 <thead>
                                                 <tr>
                                                     <th class="product-name">賽馬圖片</th>
                                                     <th class="product-name">賽馬名稱</th>
                                                     <th class="product-price">下注金額</th>
-                                                    <th class="product-quantity">大小單雙</th>
+                                                    <th class="product-quantity">賽馬名次</th>
                                                     <th class="product-remove">刪除</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 <?php
-                                                if($bettingData!=NULL) {
+                                                if($bettingData != NULL) {
                                                     $num = count($bettingData);
-                                                    for ($k = 0; $k <= $num - 1; $k++) {
+                                                    for ($k=0; $k<=$num-1 ; $k++) {
                                                         $value = $bettingData[$k];
                                                         ?>
                                                         <tr class="cart_item">
@@ -140,7 +168,7 @@
                                                                 <?php echo $value->horse_name; ?>
                                                             </td>
                                                             <td class="product-price" data-title="Price">
-                                                                $ NT. <input type="text" class="product-name" name="money">
+                                                                $ NT. <input type="text" class="product-name" name="money" id="money" min="100">
                                                             </td>
                                                             <td class="product-quantity" data-title="Qty">
                                                                 <select name="rank">
@@ -172,7 +200,9 @@
                                                 ?>
                                                 </tbody>
                                             </table>
-                                            <font color="red">目前餘額：<?php echo $memberData[0]->money;?></font>
+                                            玩法介紹： 選擇賽馬，猜中您指定名次，即可獲得獎金。
+                                            <font color="blue">目前賠率：<?php echo $odds[0]->odds;?>。 </font>
+                                            <font color="red"> 帳戶金額：$NT. <?php echo $memberData[0]->money;?>。 </font>
                                             <input type="submit" value="確定下注">
                                         </form>
                                     </div>
@@ -190,7 +220,7 @@
 <script src="assets/js/menu.js"></script> <!--RWD縮小選單列-->
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script> <!--評價星星效果-->
 <script src="assets/jstarbox.js"></script> <!--評價星星效果-->
-<?php if($action=='insert'){?>
+<?php if($action == 'insert'){?>
     <script>
         function define() {
             alert("<?php echo $alert;?> 已選擇！");

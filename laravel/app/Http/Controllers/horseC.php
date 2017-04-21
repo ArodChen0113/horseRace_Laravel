@@ -17,23 +17,25 @@ class horseC extends Controller
     {
         $input = Input::all();
         $horseM = new horseM();
-        $alert = Input::get('action', '');
+        $action = Input::get('action', '');
+        $horseName = '';
         //賽馬資料新增
-        if($alert== 'insert'){
-            $horseData=['horseName'=>$input->horseName,'horseAge'=>$input->horseAge,'horseIntroduce'=>$input->horseIntroduce,'action'=>$input->action];
-            $alert = $horseM->horseInt($horseData);
+        if($action == 'insert'){
+            $horseData = ['horseName' => $input['horseName'], 'horseAge' => $input['horseAge'], 'horseIntroduce' => $input['horseIntroduce'], 'action' => $input['action']];
+            $horseName = $horseM->horseInt($horseData);
         }
         //賽馬資料修改
-        if($alert== 'update'){
-            $horseData=['horseName'=>$input->horseName,'horseAge'=>$input->horseAge,'horseIntroduce'=>$input->horseIntroduce,'action'=>$input->action,'HId'=>$input->HId];
-            $alert = $horseM->horseDel($horseData);
+        if($action == 'update'){
+            $horseData = ['horseName' => $input['horseName'], 'horseAge' => $input['horseAge'], 'horseIntroduce' => $input['horseIntroduce'], 'action' => $input['action'], 'hId' => $input['hId']];
+            $horseName = $horseM->horseUp($horseData);
         }
         //賽馬資料刪除
-        if($alert== 'delete'){
-            $alert = $horseM->horseDel($input->HId);
+        if($action == 'delete'){
+            $horseData = ['hId' => $input['hId'], 'action' => $action];
+            $horseName = $horseM->horseDel($horseData);
         }
         $horseData = $horseM->horseSel();
-        return view('horseManageV',['HorseData'=>$horseData,'alert'=>$alert]);
+        return view('horseManageV', ['horseData' => $horseData, 'horseName' => $horseName, 'action' => $action]);
     }
     //賽馬新增頁面顯示
     public function horseInsertShow()
@@ -45,7 +47,7 @@ class horseC extends Controller
     {
         $input = Input::all();
         $horseM = new horseM();
-        $horseData = $horseM->horseSelOne($input->HId);
-        return view('horseUpdateV',['horseData'=>$horseData]);
+        $horseData = $horseM->horseSelOne($input['hId']);
+        return view('horseUpdateV', ['horseData' => $horseData]);
     }
 }

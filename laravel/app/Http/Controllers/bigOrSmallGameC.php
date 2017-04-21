@@ -25,10 +25,10 @@ class bigOrSmallGameC extends Controller
         $horseName = '';
         //下注資料刪除
         if($action == 'delete'){
-            $delData=['num'=>$input['num'],'hId'=>$input['hId'],'action'=>$input['action']];
-            $horseName=$bsGameM->bsBettingDel($delData);
+            $delData = ['num' => $input['num'], 'hId' => $input['hId'], 'action' => $input['action']];
+            $horseName = $bsGameM->bsBettingDel($delData);
         }
-        return view('bsIntroduceV',['horseData' => $horseData,'horseName' => $horseName,'action' => $action]);
+        return view('bsIntroduceV', ['horseData' => $horseData, 'horseName' => $horseName, 'action' => $action]);
     }
     //大小單雙遊戲下注頁面顯示(首頁)
     public function bsBettingShow()
@@ -42,21 +42,23 @@ class bigOrSmallGameC extends Controller
         $alert = '';
         //下注資料新增
         if($action == 'insert'){
-            $rowHorseData=$horseRaceM->horseDataOne($input['hId']);
-            $horseData=['h_id'=>$input['hId'],'horseName'=>$rowHorseData[0]->horse_name,'horsePic'=>$rowHorseData[0]->horse_picture,'action'=>$input['action']];
+            $rowHorseData = $horseRaceM->horseDataOne($input['hId']);
+            $horseData = ['h_id' => $input['hId'], 'horseName' => $rowHorseData[0]->horse_name, 'horsePic' => $rowHorseData[0]->horse_picture, 'action' => $input['action']];
             $alert = $bsGameM->bsBettingInsert($horseData);
         }
-        $bettingData=$horseRaceM->bettingData();
+        $bettingData = $horseRaceM->bettingData();
         $member = new memberM();
         $memberData = $member->memberSelOne($userId);
+        $gameName = '賽馬大小遊戲';
+        $odds = $horseRaceM->raceOddsOneData($gameName); //遊戲賠率
 
-        return view('bsBettingV',['bettingData' => $bettingData,'alert' => $alert,'action' => $action,'memberData' => $memberData]);
+        return view('bsBettingV', ['bettingData' => $bettingData, 'alert' => $alert, 'action' => $action, 'memberData' => $memberData, 'odds' => $odds]);
     }
     //大小單雙下注總覽(後台)頁面顯示
     public function bsBettingOverviewShow(){
         $bsGameM = new bigOrSmallGameM();
         $bsHorseRaceResultData = $bsGameM->bsBettingData();
         $sumProfit = $bsGameM->sumProfit();
-        return view('bsBettingOverviewV',['bsHorseRaceResultData' => $bsHorseRaceResultData,'sumProfit'=>$sumProfit]);
+        return view('bsBettingOverviewV', ['bsHorseRaceResultData' => $bsHorseRaceResultData, 'sumProfit' => $sumProfit]);
     }
 }

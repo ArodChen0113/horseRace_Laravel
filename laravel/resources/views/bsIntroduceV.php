@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="assets/css/vendors/font-awesome.min.css"> <!--選單-->
     <link rel="stylesheet" href="assets/css/vendors/woo/woocommerce.css"> <!--文字-->
     <link rel="stylesheet" href="assets/css/common/style.css"> <!--版面-->
-    <link href="assets/css/jsStar/jstarbox.css" rel="stylesheet"></link><!--評價星星效果-->
 </head>
 <body class="woocommerce woocommerce-page" onload="define()">
 <div class="wrap-main wrap-main-01">
@@ -54,9 +53,17 @@
                         </li>
                         <li class="menu-item-has-children tp-activated">
                             <a href="raceOverviewV">投注總覽</a>
+                            <ul class="sub-menu">
+                                <li class="menu-item-has-children">
+                                    <a href="raceOverviewV">投注總覽</a>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="accountStoredValueV">金額儲值</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="menu-item-has-children tp-activated">
-                            <a href="raceSurplusV">盈餘總覽</a>
+                            <a href="#">盈餘總覽</a>
                             <ul class="sub-menu">
                                 <li class="menu-item-has-children">
                                     <a href="bsBettingOverviewV">大小單雙投注結果</a>
@@ -77,6 +84,9 @@
                                 </li>
                                 <li class="menu-item-has-children">
                                     <a href="raceOddsV">賠率設定</a>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="/?action=lottery">賽馬開獎</a>
                                 </li>
                             </ul>
                         </li>
@@ -115,20 +125,14 @@
                         <div role="tabpanel" class="tab-pane active" id="all">
                             <div class="row">
                                 <?php
-                                $num=count($horseData);
-                                for($i=0;$i<$num;$i++){
-                                    $value=$horseData[$i];
+                                $num = count($horseData);
+                                for($i=0 ; $i<$num ; $i++){
+                                    $value = $horseData[$i];
                                     ?>
                                     <div class="col-md-3 col-xs-6">
                                         <div class="product type-product has-post-thumbnail">
                                             <div class="product-image">
                                                 <img src="/userUpload/<?php echo $value->horse_picture; ?>" alt="shop item">
-                                                <div class="product-action">
-                                                    <a href="purchaseHotOrderV" class="tp-btn-wishlist"><i class="fa fa-heart-o"></i></a>
-                                                    <a href="purchaseHotStarV?pic=<?php echo $value->horse_picture; ?>#product-quickview" class="btn-quickview"><i class="fa fa-search-plus"></i></a>
-                                                    <a href="purchaseManageV" class="tp-btn-compare"><i class="fa fa-list-ul"></i></a>
-                                                    <div><font color="#FFFFFF">1 Hours 23 Minutes left</font></div>
-                                                </div>
                                             </div>
                                             <span class="onnew">HOT</span>
                                             <h3><a href="product-detail.html"><font color="red"><?php echo $value->horse_name;?></font>
@@ -171,13 +175,11 @@
 </div>
 <script src="assets/js/vendors/jquery.min.js"></script> <!--點觸淡出效果-->
 <script src="assets/js/vendors/bootstrap.min.js"></script> <!--點觸淡出效果-->
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script> <!--評價星星效果-->
-<script src="assets/jstarbox.js"></script> <!--評價星星效果-->
 <script src="assets/js/vendors/swiper.min.js"></script> <!--訂購圖片放大-->
 <script src="assets/js/global.js"></script> <!--訂購圖片放大-->
 <script src="assets/js/menu.js"></script> <!--RWD縮小選單列-->
 <?php
-if($action=='delete'){?>
+if($action == 'delete'){?>
     <script>
         function define() {
             alert("<?php echo $horseName;?> 已刪除！");

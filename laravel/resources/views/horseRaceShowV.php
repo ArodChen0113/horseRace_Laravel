@@ -79,9 +79,17 @@
                             </li>
                             <li class="menu-item-has-children tp-activated">
                                 <a href="raceOverviewV">投注總覽</a>
+                                <ul class="sub-menu">
+                                    <li class="menu-item-has-children">
+                                        <a href="raceOverviewV">投注總覽</a>
+                                    </li>
+                                    <li class="menu-item-has-children">
+                                        <a href="accountStoredValueV">金額儲值</a>
+                                    </li>
+                                </ul>
                             </li>
                             <li class="menu-item-has-children tp-activated">
-                                <a href="raceSurplusV">盈餘總覽</a>
+                                <a href="#">盈餘總覽</a>
                                 <ul class="sub-menu">
                                     <li class="menu-item-has-children">
                                         <a href="bsBettingOverviewV">大小單雙投注結果</a>
@@ -188,7 +196,7 @@
                                                 <a href="#" class="tp-btn tp-animate-keyframe-left-right">BETTING <i class="fa fa-angle-double-right"></i></a>
                                             </div>
                                             <div class="tp-img-banner">
-                                                <img src="http://placehold.it/315x238" alt="banner 1 image" class="tp-animate-keyframe-right-left">
+                                                <img src="/userUpload/2.jpg" alt="banner 1 image" class="tp-animate-keyframe-right-left">
                                             </div>
                                         </div>
                                     </div><!-- end item banner -->
@@ -200,7 +208,7 @@
                                                 <a href="#" class="tp-btn tp-animate-flash">BETTING <i class="fa fa-angle-double-right"></i></a>
                                             </div>
                                             <div class="tp-img-banner">
-                                                <img src="http://placehold.it/269x238" alt="banner 1 image" class="tp-animate-keyframe-left-right">
+                                                <img src="/userUpload/3.jpg" alt="banner 1 image" class="tp-animate-keyframe-left-right">
                                             </div>
                                         </div>
                                     </div><!-- end item banner -->
@@ -225,15 +233,21 @@
 <script src="assets/js/vendors/jquery.prettyPhoto.js"></script>
 <script src="assets/js/global.js"></script>
 <script src="assets/js/menu.js"></script>
-    <?php if($action=='bsBetting' or $action=='poBetting'){?>
+    <?php if($action == 'bsBetting' or $action=='poBetting'){?>
     <script>
         function define() {
             alert("<?php echo $alert;?> 已投注！");
         }
     </script>
 <?php
-}
-?>
-
+} if($action == 'lottery'){?>
+        <script>
+            function define() {
+                alert("賽馬已開獎！");
+            }
+        </script>
+        <?php
+    }
+    ?>
 </body>
 </html>

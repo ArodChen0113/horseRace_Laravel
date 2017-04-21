@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="assets/css/vendors/font-awesome.min.css"> <!--選單-->
     <link rel="stylesheet" href="assets/css/vendors/woo/woocommerce.css"> <!--文字-->
     <link rel="stylesheet" href="assets/css/common/style.css"> <!--版面-->
-    <link href="assets/css/jsStar/jstarbox.css" rel="stylesheet"></link><!--評價星星效果-->
 </head>
 <body class="woocommerce woocommerce-page" onload="define()">
 <div class="wrap-main wrap-main-01">
@@ -54,9 +53,17 @@
                         </li>
                         <li class="menu-item-has-children tp-activated">
                             <a href="raceOverviewV">投注總覽</a>
+                            <ul class="sub-menu">
+                                <li class="menu-item-has-children">
+                                    <a href="raceOverviewV">投注總覽</a>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="accountStoredValueV">金額儲值</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="menu-item-has-children tp-activated">
-                            <a href="raceSurplusV">盈餘總覽</a>
+                            <a href="#">盈餘總覽</a>
                             <ul class="sub-menu">
                                 <li class="menu-item-has-children">
                                     <a href="bsBettingOverviewV">大小單雙投注結果</a>
@@ -77,6 +84,9 @@
                                 </li>
                                 <li class="menu-item-has-children">
                                     <a href="raceOddsV">賠率設定</a>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="/?action=lottery">賽馬開獎</a>
                                 </li>
                             </ul>
                         </li>
@@ -115,7 +125,7 @@
                                         <form action="/" method="get">
                                             <table class="shop_table cart" >
                                                 <thead>
-                                                <font color="red" size="5">帳戶金額：<?php echo $memberData[0]->money;?></font>
+                                                <font color="red" size="5">帳戶金額：<?php echo $memberData[0]->money; ?></font>
                                                 <tr>
                                                     <th class="product-name">場次/名稱</th>
                                                     <th class="product-name">玩法</th>
@@ -128,9 +138,9 @@
                                                 </thead>
                                                 <tbody>
                                                 <?php
-                                                if($bettingData!=NULL) {
+                                                if($bettingData != NULL) {
                                                     $num = count($bettingData);
-                                                    for ($k = 0; $k <= $num - 1; $k++) {
+                                                    for ($k=0; $k<=$num-1; $k++) {
                                                         $value = $bettingData[$k];
                                                         ?>
                                                         <tr class="cart_item">
@@ -140,22 +150,22 @@
                                                             </td>
                                                             <td class="product-name">
                                                                 <?php
-                                                                if($value['control']==1) {
+                                                                if($value['control'] == 1) {
                                                                     echo '買單數';
                                                                 }
-                                                                if($value['control']==2) {
+                                                                if($value['control'] == 2) {
                                                                     echo '買雙數';
                                                                 }
-                                                                if($value['control']==3) {
+                                                                if($value['control'] == 3) {
                                                                     echo '買比小';
                                                                 }
-                                                                if($value['control']==4) {
+                                                                if($value['control'] == 4) {
                                                                     echo '買比大';
                                                                 }
-                                                                if($value['control']==5) {
+                                                                if($value['control'] == 5) {
                                                                     echo '買定位( '.$value['h_rank'].' )';
                                                                 }
-                                                                if($value['money']==0) {
+                                                                if($value['money'] == 0) {
                                                                     echo '-----';
                                                                 }
                                                                 ?>
@@ -168,7 +178,7 @@
                                                             </td>
                                                             <td class="product-name">
                                                                 <?php
-                                                                if($value['r_rank']==0) {
+                                                                if($value['r_rank'] == 0) {
                                                                     echo '-----';
                                                                 }else{
                                                                     echo $value['r_rank'];
@@ -189,10 +199,10 @@
                                                                 if($value['win']==0 and $value['count']==3 and $value['money']!=0) {
                                                                     echo 'X';
                                                                 }
-                                                                if($value['count']==0){
+                                                                if($value['count'] == 0){
                                                                     echo '未出賽';
                                                                 }
-                                                                if($value['money']==0) {
+                                                                if($value['money'] == 0) {
                                                                     echo '-----';
                                                                 }
                                                                 ?>
@@ -211,10 +221,10 @@
                                                                 if($value['win']==0 and $value['count']==3 and $value['money']!=0) {
                                                                     echo 0 ;
                                                                 }
-                                                                if($value['count']==0){
+                                                                if($value['count'] == 0){
                                                                     echo '-----';
                                                                 }
-                                                                if($value['money']==0) {
+                                                                if($value['money'] == 0) {
                                                                     echo '未下注';
                                                                 }
                                                                 ?>
@@ -242,8 +252,6 @@
 <script src="assets/js/vendors/jquery.min.js"></script> <!--點觸淡出效果-->
 <script src="assets/js/vendors/bootstrap.min.js"></script> <!--點觸淡出效果-->
 <script src="assets/js/menu.js"></script> <!--RWD縮小選單列-->
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script> <!--評價星星效果-->
-<script src="assets/jstarbox.js"></script> <!--評價星星效果-->
 
 </body>
 </html>

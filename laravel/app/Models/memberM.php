@@ -9,7 +9,7 @@ class memberM
     //會員資料搜尋
     public function memberSel()
     {
-        $memberData=DB::table('member')
+        $memberData = DB::table('member')
             ->select('email','name','money','id')
             ->get();
         return $memberData;
@@ -17,7 +17,7 @@ class memberM
     //會員單筆資料搜尋
     public function memberSelOne($id)
     {
-        $memberData=DB::table('member')
+        $memberData = DB::table('member')
             ->select('email','name','money')
             ->where('id', $id)
             ->get();
@@ -29,10 +29,10 @@ class memberM
         date_default_timezone_set("Asia/Taipei"); //目前時間
         $created_at = date("Y-m-d H:i:s");
 
-        if ($memberData->action != NULL && $memberData->action == 'insert')   //判斷值是否由欄位輸入
+        if ($memberData['action'] != NULL && $memberData['action'] == 'insert')   //判斷值是否由欄位輸入
         {
                 DB::table('member')->insert(array(                            //新增會員資料
-                    array('name' => $memberData->userName, 'email' => $memberData->email, 'password' => $memberData->password, 'created_at' => $created_at)
+                    array('name' => $memberData['userName'], 'email' => $memberData['email'], 'password' => $memberData['password'], 'created_at' => $created_at)
                 ));
             return $memberData->userName;
         }else{
@@ -42,12 +42,12 @@ class memberM
     //會員資料修改
     public function memberUp($memberData)
     {
-        if ($memberData->action != NULL && $memberData->action == 'update')      //判斷值是否由欄位輸入
+        if ($memberData['action'] != NULL && $memberData['action'] == 'update')      //判斷值是否由欄位輸入
         {
             DB::table('member')
-                ->where('id', $memberData->id)
-                ->update(['name' => $memberData->userName]);
-            $userName=$memberData->userName;
+                ->where('id', $memberData['id'])
+                ->update(['name' => $memberData['name'],'email' => $memberData['email']]);
+            $userName = $memberData['name'];
             return $userName;
         }else{
             return false;
@@ -56,14 +56,14 @@ class memberM
     //會員資料刪除
     public function memberDel($memberData)
     {
-        if ($memberData->action != NULL && $memberData->action == 'delete')      //判斷值是否由欄位輸入
+        if ($memberData['action'] != NULL && $memberData['action'] == 'delete')      //判斷值是否由欄位輸入
         {
-            $rowName=DB::table('member')
+            $rowName = DB::table('member')
                 ->select('name')
-                ->where('id', $memberData->id)
+                ->where('id', $memberData['id'])
                 ->get();
-            $userName=$rowName[0]->user_name;
-            DB::table('member')->where('id', '=', $memberData->id)->delete();
+            $userName = $rowName[0]->name;
+            DB::table('member')->where('id', '=', $memberData['id'])->delete();
             return $userName;
         }else{
             return false;
@@ -72,17 +72,15 @@ class memberM
     //會員儲值修改
     public function accountStoredValueUp($memberData)
     {
-        if ($memberData->action != NULL && $memberData->action == 'pay')      //判斷值是否由欄位輸入
+        if ($memberData['action'] != NULL && $memberData['action'] == 'pay')      //判斷值是否由欄位輸入
         {
-            $rowName=DB::table('member')
-                ->select('user_name')
-                ->where('id', $memberData->id)
-                ->get();
-            $userName=$rowName[0]->user_name;
+            $rowMemberData = $this->memberSelOne($memberData['id']);
+            $lastMoney = $rowMemberData[0]->money;                   //未儲值前金額
+            $updateMoney = $lastMoney + $memberData['money'];   //儲值後總金額
             DB::table('member')
-                ->where('id', $memberData->id)
-                ->update(['money' => $memberData->money]);
-            return $userName;
+                ->where('id', $memberData['id'])
+                ->update(['money' => $updateMoney]);
+            return $memberData['money'];
         }else{
             return false;
         }

@@ -7,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 class memberM
 {
     //會員資料搜尋
-    public function memberSel()
+    public static function memberSel()
     {
         $memberData = DB::table('member')
             ->select('email','name','money','id')
@@ -15,7 +15,7 @@ class memberM
         return $memberData;
     }
     //會員單筆資料搜尋
-    public function memberSelOne($id)
+    public static function memberSelOne($id)
     {
         $memberData = DB::table('member')
             ->select('email','name','money')
@@ -24,7 +24,7 @@ class memberM
         return $memberData;
     }
     //會員資料新增
-    public function memberInt($memberData)
+    public static function memberInt($memberData)
     {
         date_default_timezone_set("Asia/Taipei"); //目前時間
         $created_at = date("Y-m-d H:i:s");
@@ -40,7 +40,7 @@ class memberM
         }
     }
     //會員資料修改
-    public function memberUp($memberData)
+    public static function memberUp($memberData)
     {
         if ($memberData['action'] != NULL && $memberData['action'] == 'update')      //判斷值是否由欄位輸入
         {
@@ -54,7 +54,7 @@ class memberM
         }
     }
     //會員資料刪除
-    public function memberDel($memberData)
+    public static function memberDel($memberData)
     {
         if ($memberData['action'] != NULL && $memberData['action'] == 'delete')      //判斷值是否由欄位輸入
         {
@@ -70,11 +70,11 @@ class memberM
         }
     }
     //會員儲值修改
-    public function accountStoredValueUp($memberData)
+    public static function accountStoredValueUp($memberData)
     {
         if ($memberData['action'] != NULL && $memberData['action'] == 'pay')      //判斷值是否由欄位輸入
         {
-            $rowMemberData = $this->memberSelOne($memberData['id']);
+            $rowMemberData = memberM::memberSelOne($memberData['id']);
             $lastMoney = $rowMemberData[0]->money;                   //未儲值前金額
             $updateMoney = $lastMoney + $memberData['money'];   //儲值後總金額
             DB::table('member')

@@ -20,16 +20,15 @@ class memberC extends Controller
         $input = Input::all();
         $user = Auth::user();
         $userId = $user->id;      //會員id
-        $memberM = new memberM();
-        $memberData = $memberM->memberSelOne($userId); //搜尋會員資料
+        $memberData = memberM::memberSelOne($userId); //搜尋會員資料
         $alert = Input::get('action', '');
         if($alert == 'update'){
             $memberData = ['horseName' => $input->memberName, 'id' => $input->id, 'action' => $input->action];
-            $alert = $memberM->memberUp($memberData);  //會員資料修改
+            $alert = memberM::memberUp($memberData);  //會員資料修改
         }
         if($alert== 'pay'){
             $memberData = ['money' => $input->mmoney, 'id' => $input->id, 'action' => $input->action];
-            $alert = $memberM->accountStoredValueUp($memberData);  //帳號儲值
+            $alert = memberM::accountStoredValueUp($memberData);  //帳號儲值
         }
         return view('memberManageV', ['memberData' => $memberData, 'alert' => $alert]);
     }
@@ -40,14 +39,13 @@ class memberC extends Controller
         $action = Input::get('action', '');
         $user = Auth::user();
         $userId = $user->id;      //會員id
-        $memberM = new memberM();
         $memberName = '';
         //會員資料修改
         if($action == 'pay') {
             $storedData = ['money' => $input['money'], 'action' => $action, 'id' => $userId];
-            $memberName = $memberM->accountStoredValueUp($storedData);
+            $memberName = memberM::accountStoredValueUp($storedData);
         }
-        $memberData = $memberM -> memberSelOne($userId);
+        $memberData = memberM::memberSelOne($userId);
         $money = $memberData[0]->money;
 
         return view('accountStoredValueV', ['money' => $money, 'action' => $action, 'memberName' => $memberName]);
@@ -57,26 +55,24 @@ class memberC extends Controller
     {
         $input = Input::all();
         $action = Input::get('action', '');
-        $memberM = new memberM();
         $memberName = '';
         //會員資料新增
         if($action == 'insert'){
             $memberData = ['name' => $input['name'], 'email' => $input['email'], 'password' => $input['password']];
-            $authC = new AuthController();
-            $authC ->create($memberData);
+            AuthController::create($memberData);
             $memberName = $input['name'];
         }
         //會員資料修改
         if($action == 'update'){
             $memberData = ['name' => $input['name'], 'email' => $input['email'], 'action' => $action, 'id' => $input['id']];
-            $memberName = $memberM -> memberUp($memberData);
+            $memberName = memberM::memberUp($memberData);
         }
         //會員資料刪除
         if($action == 'delete'){
             $memberData = ['id' => $input['id'], 'action' => $action];
-            $memberName = $memberM->memberDel($memberData);
+            $memberName = memberM::memberDel($memberData);
         }
-        $memberData = $memberM -> memberSel();
+        $memberData = memberM::memberSel();
         return view('memberManageV', ['memberData' => $memberData, 'action' => $action, 'memberName' => $memberName]);
     }
     //會員新增頁面顯示
@@ -87,8 +83,6 @@ class memberC extends Controller
     //會員修改頁面顯示
     public function memberUpdateShow()
     {
-
-        $input = Input::all();
         $memberM = new memberM();
         $memberData = $memberM->memberSel();
 

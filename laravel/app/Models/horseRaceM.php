@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\Auth;
 class horseRaceM
 {
     //賽馬資料搜尋
-    public function horseData(){
+    public static function horseData(){
         $horseData = DB::table('horse_data')
             ->select('h_id','horse_name','horse_age','horse_introduce','horse_picture')
             ->get();
         return $horseData;
     }
     //賽馬單筆資料搜尋
-    public function horseDataOne($hId){
+    public static function horseDataOne($hId){
         $horseData = DB::table('horse_data')
             ->select('h_id','horse_name','horse_age','horse_introduce','horse_picture')
             ->where('h_id',$hId)
@@ -25,7 +25,7 @@ class horseRaceM
         return $horseData;
     }
     //user下注資料搜尋
-    public function bettingData(){
+    public static function bettingData(){
         $user = Auth::user();
         $userId = $user->id;  //登入者id
         $bettingData = DB::table('bs_sdBetting')
@@ -37,7 +37,7 @@ class horseRaceM
         return $bettingData;
     }
     //賽馬場次資料搜尋
-    public function horseRaceData(){
+    public static function horseRaceData(){
         $horseRaceData = DB::table('horseRace_result')
             ->select('num', 'end_time')
             ->orderBy('num', 'desc')
@@ -45,7 +45,7 @@ class horseRaceM
         return $horseRaceData;
     }
     //定位下注資料總覽
-    public function poBettingData(){
+    public static function poBettingData(){
         $bettingData = DB::table('bs_sdBetting')
             ->select('user_name','money','h_id','h_rank','control')
             ->where('control', 5)
@@ -54,12 +54,12 @@ class horseRaceM
     }
 
     //計算賽馬名次
-    public function horseRaceResult($action){
+    public static function horseRaceResult($action){
 
         $rank = array();
         $horseCount = 10;
         $count = 0;
-        while ($count < $horseCount) {           //計算賽馬名次
+        while ($count < $horseCount) {         //計算賽馬名次
             $number = rand(1, $horseCount);
             if (!in_array($number, $rank)) {   //去陣列重複值
                 $rank[$count] = $number;
@@ -76,84 +76,45 @@ class horseRaceM
                 $count++;
             }
         }
-
-        date_default_timezone_set("Asia/Taipei");  //目前時間
-        $endTime = date("Y-m-d H:i:s");
-        if ($action != NULL && $action == 'lottery') //判斷值是否由欄位輸入
+        $endTime = horseRaceM::nowDateTime(); //目前時間
+        if ($action != NULL && $action == 'lottery')  //判斷值是否由欄位輸入
         {
-            DB::table('horseRace_result')->insert(array(                          //新增賽果資料
-                array('firth' => $rankHId[0], 'second' => $rankHId[1], 'third' => $rankHId[2], 'fourth' => $rankHId[3], 'fifth' => $rankHId[4], 'sixth' => $rankHId[5], 'seventh' => $rankHId[6], 'eighth' => $rankHId[7], 'ninth' => $rankHId[8], 'tenth' => $rankHId[9], 'end_time' => $endTime )
+            DB::table('horseRace_result')->insert(array(  //新增賽果資料
+                array('firth' => $rankHId[0], 'second' => $rankHId[1], 'third' => $rankHId[2], 'fourth' => $rankHId[3],
+                    'fifth' => $rankHId[4], 'sixth' => $rankHId[5], 'seventh' => $rankHId[6], 'eighth' => $rankHId[7],
+                    'ninth' => $rankHId[8], 'tenth' => $rankHId[9], 'end_time' => $endTime )
             ));
-            return $success = 1;
         }else{
             return false;
         }
     }
     //賽馬區分名次hid
-    public function RankDistinguish()
+    public static function RankDistinguish()
     {
-        $rowRankHId = DB::table('horseRace_result') //第一名hid
-        ->select('firth')
+        $rowRankHId = DB::table('horseRace_result') //最新場次賽馬名次
+        ->select('firth','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth')
             ->orderBy('num', 'desc')
             ->get();
         $rankHId[0] = $rowRankHId[0]->firth;
-        $rowRankHId = DB::table('horseRace_result') //第二名hid
-        ->select('second')
-            ->orderBy('num', 'desc')
-            ->get();
         $rankHId[1] = $rowRankHId[0]->second;
-        $rowRankHId = DB::table('horseRace_result') //第三名hid
-        ->select('third')
-            ->orderBy('num', 'desc')
-            ->get();
         $rankHId[2] = $rowRankHId[0]->third;
-        $rowRankHId = DB::table('horseRace_result') //第四名hid
-        ->select('fourth')
-            ->orderBy('num', 'desc')
-            ->get();
         $rankHId[3] = $rowRankHId[0]->fourth;
-        $rowRankHId = DB::table('horseRace_result') //第五名hid
-        ->select('fifth')
-            ->orderBy('num', 'desc')
-            ->get();
         $rankHId[4] = $rowRankHId[0]->fifth;
-        $rowRankHId=DB::table('horseRace_result') //第六名hid
-        ->select('sixth')
-            ->orderBy('num', 'desc')
-            ->get();
         $rankHId[5] = $rowRankHId[0]->sixth;
-        $rowRankHId=DB::table('horseRace_result') //第七名hid
-        ->select('seventh')
-            ->orderBy('num', 'desc')
-            ->get();
         $rankHId[6] = $rowRankHId[0]->seventh;
-        $rowRankHId=DB::table('horseRace_result') //第八名hid
-        ->select('eighth')
-            ->orderBy('num', 'desc')
-            ->get();
         $rankHId[7] = $rowRankHId[0]->eighth;
-        $rowRankHId=DB::table('horseRace_result') //第九名hid
-        ->select('ninth')
-            ->orderBy('num', 'desc')
-            ->get();
         $rankHId[8] = $rowRankHId[0]->ninth;
-        $rowRankHId=DB::table('horseRace_result') //第十名hid
-        ->select('tenth')
-            ->orderBy('num', 'desc')
-            ->get();
         $rankHId[9] = $rowRankHId[0]->tenth;
         return $rankHId;
     }
     //賽馬遊戲派彩資料修改
-    public function RaceBonus(){
+    public static function RaceBonus(){
 
-        $bsGameM = new bigOrSmallGameM();
-        $bsGameM->singleBettingResult();     //下注"單數"輸贏結果運算
-        $bsGameM->doubleBettingResult();     //下注"雙數"輸贏結果運算
-        $bsGameM->smallerBettingResult();    //下注"比小"輸贏結果運算
-        $bsGameM->biggerBettingResult();     //下注"比大"輸贏結果運算
-        $poGameM = new positionGameM();
-        $poGameM->positionBettingResult();   //下注"定位"輸贏結果運算
+        bigOrSmallGameM::singleBettingResult();     //下注"單數"輸贏結果運算
+        bigOrSmallGameM::doubleBettingResult();     //下注"雙數"輸贏結果運算
+        bigOrSmallGameM::smallerBettingResult();    //下注"比小"輸贏結果運算
+        bigOrSmallGameM::biggerBettingResult();     //下注"比大"輸贏結果運算
+        positionGameM::positionBettingResult();     //下注"定位"輸贏結果運算
 
         $rowSDPayData = DB::table('bs_sdBetting')     //查詢下注定位賽馬贏家uId,下注金額
         ->select('num','user_id','money','odds')
@@ -162,8 +123,7 @@ class horseRaceM
             ->get();
 
         if($rowSDPayData != NULL) {
-            $count = count($rowSDPayData);
-            for ($i=0; $i<$count; $i++) {                    //定位賽馬下注贏家派彩
+            for ($i=0; $i<count($rowSDPayData); $i++) {                    //定位賽馬下注贏家派彩
                 $value = $rowSDPayData[$i];
                 $rowUserMoney = DB::table('member')
                     ->select('money')
@@ -186,7 +146,7 @@ class horseRaceM
         }
     }
     //輸家狀態改為當次已計算,無派彩
-    public function raceLoseUpdate($action)
+    public static function raceLoseUpdate($action)
     {
         if ($action != NULL && $action == 'lottery')      //判斷值是否由欄位輸入
         {
@@ -197,11 +157,11 @@ class horseRaceM
         }
     }
     //之前下注改成歷史紀錄&登錄新賽果時間
-    public function bettingHistoryUpdate($action)
+    public static function bettingHistoryUpdate($action)
     {
         if ($action != NULL && $action == 'lottery')      //判斷值是否由欄位輸入
         {
-            $nowTime = $this->nowDateTime();
+            $nowTime = horseRaceM::nowDateTime();
             DB::table('bs_sdBetting')
                 ->where('count', 2)
                 ->update(['count' => 3]);
@@ -212,7 +172,7 @@ class horseRaceM
         }
     }
     //計算賽果資料
-    public function horseRaceResultData()
+    public static function horseRaceResultData()
     {
         $rowWinMoney = DB::table('bs_sdBetting')
         ->select('money')
@@ -220,8 +180,7 @@ class horseRaceM
             ->where('count',2)
             ->get();
         $winMoney = 0;
-        $num = count($rowWinMoney);
-        for ($i=0 ; $i<$num ; $i++){
+        for ($i=0 ; $i<count($rowWinMoney) ; $i++){
             $value = $rowWinMoney[$i];
             $money = $value->money;
             $winMoney = $winMoney + $money;  //當次獲利金額
@@ -232,11 +191,10 @@ class horseRaceM
             ->where('count',2)
             ->get();
         $loseMoney = 0;
-        $num = count($rowWinMoney);
-        for ($i=0 ; $i<$num ; $i++){
+        for ($i=0 ; $i<count($rowWinMoney) ; $i++){
             $value = $rowWinMoney[$i];
             $money = $value->money;
-            $loseMoney = $loseMoney+$money;  //當次損失金額
+            $loseMoney = $loseMoney + $money;  //當次損失金額
         }
         $bettingCount = DB::table('bs_sdBetting')
             ->where('count',2)
@@ -245,7 +203,7 @@ class horseRaceM
         return $resultData;
     }
     //個人賽果資料
-    public function horseRaceResultPersonalData($id)
+    public static function horseRaceResultPersonalData($id)
     {
         $rowHorseRaceResult=DB::table('bs_sdBetting')
             ->select('money','horse_name','h_rank','r_rank','control','win','count','open_time')
@@ -255,47 +213,50 @@ class horseRaceM
 
         $profit='';
         $odds='';
-        $num=count($rowHorseRaceResult);
-        for ($i=0 ; $i<$num ; $i++) {
+        for ($i=0 ; $i<count($rowHorseRaceResult); $i++) {
             $value = $rowHorseRaceResult[$i];
 
-            if ($value->control == 1 OR $value->control == 2) {
-                $gameName = '賽馬單雙遊戲';
-                $rowOdds = $this->raceOddsOneData($gameName);
-                $odds = $rowOdds[0]->odds;
-                if ($value->win == 1) {
-                    $money = $value->money;
-                    $profit = $money * $odds;
-                }
-                if ($value->win == 0) {
-                    $profit = $value->money;
-                }
+            switch ($value->control) {
+                case 1:
+                case 2:
+                    $gameName = '賽馬單雙遊戲';
+                    $rowOdds = horseRaceM::raceOddsOneData($gameName);
+                    $odds = $rowOdds[0]->odds;
+                    if ($value->win == 1) {
+                        $money = $value->money;
+                        $profit = $money * $odds;
+                    }
+                    if ($value->win == 0) {
+                        $profit = $value->money;
+                    }
+                    break;
+                case 3:
+                case 4:
+                    $gameName = '賽馬大小遊戲';
+                    $rowOdds = horseRaceM::raceOddsOneData($gameName);
+                    $odds = $rowOdds[0]->odds;
+                    if ($value->win == 1) {
+                        $money = $value->money;
+                        $profit = $money * $odds;
+                    }
+                    if ($value->win == 0) {
+                        $profit = $value->money;
+                    }
+                    break;
+                case 5:
+                    $gameName = '賽馬定位遊戲';
+                    $rowOdds = horseRaceM::raceOddsOneData($gameName);
+                    $odds = $rowOdds[0]->odds;
+                    if ($value->win == 1) {
+                        $money = $value->money;
+                        $profit = $money * $odds;
+                    }
+                    if ($value->win == 0) {
+                        $profit = $value->money;
+                    }
+                    break;
             }
-            if ($value->control == 3 OR $value->control == 4) {
-                $gameName = '賽馬大小遊戲';
-                $rowOdds = $this->raceOddsOneData($gameName);
-                $odds = $rowOdds[0]->odds;
-                if ($value->win == 1) {
-                    $money = $value->money;
-                    $profit = $money * $odds;
-                }
-                if ($value->win == 0) {
-                    $profit = $value->money;
-                }
-            }
-            if ($value->control == 5) {
-                $gameName = '賽馬定位遊戲';
-                $rowOdds = $this->raceOddsOneData($gameName);
-                $odds = $rowOdds[0]->odds;
-                if ($value->win == 1) {
-                    $money = $value->money;
-                    $profit = $money * $odds;
-                }
-                if ($value->win == 0) {
-                    $profit = $value->money;
-                }
-            }
-            $rowNum = DB::table('horseRace_result')
+            $rowNum = DB::table('horseRace_result')  //賽馬場次資料
                 ->select('num')
                 ->where('end_time', $value->open_time)
                 ->get();
@@ -309,12 +270,14 @@ class horseRaceM
                 $lastNum = $rowNum[0]->num;
                 $horseRaceNum = $lastNum + 1;
             }
-            $resultData[$i] = ['horseRaceNum' => $horseRaceNum, 'horse_name' => $value->horse_name, 'h_rank' => $value->h_rank, 'r_rank' => $value->r_rank, 'control' => $value->control, 'money' => $value->money, 'win' => $value->win, 'odds' => $odds, 'profit' => $profit , 'count' => $value->count];
+            $resultData[$i] = ['horseRaceNum' => $horseRaceNum, 'horse_name' => $value->horse_name,
+                'h_rank' => $value->h_rank, 'r_rank' => $value->r_rank, 'control' => $value->control,
+                'money' => $value->money, 'win' => $value->win, 'odds' => $odds, 'profit' => $profit , 'count' => $value->count];
         }
         return $resultData;
     }
     //賠率資料
-    public function raceOddsData()
+    public static function raceOddsData()
     {
         $rowOddsData = DB::table('horseGame_data')
             ->select('num','game_name','odds')
@@ -322,7 +285,7 @@ class horseRaceM
         return $rowOddsData;
     }
     //查詢遊戲賠率
-    public function raceOddsOneData($gameName)
+    public static function raceOddsOneData($gameName)
     {
         $rowOdds = DB::table('horseGame_data')
             ->select('odds')
@@ -331,12 +294,11 @@ class horseRaceM
         return $rowOdds;
     }
     //賠率修改
-    public function raceOddsUpdate($oddsData)
+    public static function raceOddsUpdate($oddsData)
     {
         if ($oddsData['action'] != NULL && $oddsData['action'] == 'update')      //判斷值是否由欄位輸入
         {
-            $num = count($oddsData['gameName']);
-            for ($i=0 ; $i<$num ; $i++) {
+            for ($i=0 ; $i<count($oddsData['gameName']) ; $i++) {
                 DB::table('horseGame_data')
                     ->where('num', $oddsData['num'][$i])
                     ->update(['game_name' => $oddsData['gameName'][$i], 'odds' => $oddsData['odds'][$i]]);
@@ -347,18 +309,16 @@ class horseRaceM
         }
     }
     //賽馬遊戲開關
-    public function horseRaceControl($horseRaceData){
+    public static function horseRaceControl($horseRaceData){
         if ($horseRaceData->action != NULL && $horseRaceData->action == 'update')      //判斷值是否由欄位輸入
         {
+            $query = DB::table('horseGame_data')
+                ->where('game_name', $horseRaceData->gameName);
             if($horseRaceData->gameName == 0) {
-                DB::table('horseGame_data')
-                    ->where('game_name', $horseRaceData->gameName)
-                    ->update(['open' => 1]);
+                $query->update(['open' => 1]);
             }
             if($horseRaceData->gameName == 1) {
-                DB::table('horseGame_data')
-                    ->where('game_name', $horseRaceData->gameName)
-                    ->update(['open' => 0]);
+                $query->update(['open' => 0]);
             }
             return $horseRaceData->gameName;
         }else{
@@ -366,7 +326,7 @@ class horseRaceM
         }
     }
     //目前時間
-    public function nowDateTime()
+    public static function nowDateTime()
     {
         date_default_timezone_set("Asia/Taipei"); //目前時間
         $dateTime = date("Y-m-d H:i:s");

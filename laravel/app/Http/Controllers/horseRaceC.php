@@ -24,13 +24,11 @@ class horseRaceC extends Controller
         //賽馬下注後提示顯示
         if($action == 'bsBetting'){
             $bettingData = ['num' => $input['num'], 'money' => $input['money'], 'horseName' => $input['horseName'], 'action' => $input['action'], 'control' => $input['control']];
-            $alert = new bigOrSmallGameM();
-            $alert = $alert->bsBettingMoneyInsert($bettingData);
+            $alert = bigOrSmallGameM::bsBettingMoneyInsert($bettingData);
         }
         if($action == 'poBetting'){
             $bettingData = ['num' => $input['num'], 'money' => $input['money'], 'horseName' => $input['horseName'], 'action' => $input['action'], 'control' => $input['control'], 'rank' => $input['rank']];
-            $alert = new positionGameM();
-            $alert = $alert->poBettingMoneyInsert($bettingData);
+            $alert = positionGameM::poBettingMoneyInsert($bettingData);
         }
         //賽馬開獎
         if($action == 'lottery'){
@@ -42,10 +40,8 @@ class horseRaceC extends Controller
     public function raceOverviewShow(){
         $user = Auth::user();
         $userId = $user->id;
-        $horseRaceM = new horseRaceM();
-        $bettingData = $horseRaceM->horseRaceResultPersonalData($userId);
-        $memberM = new memberM();
-        $memberData = $memberM->memberSelOne($userId);
+        $bettingData = horseRaceM::horseRaceResultPersonalData($userId);
+        $memberData = memberM::memberSelOne($userId);
 
         return view('raceOverviewV', ['bettingData' => $bettingData, 'memberData' => $memberData]);
     }
@@ -56,29 +52,26 @@ class horseRaceC extends Controller
         if($alert == 'lottery'){
             $this->lotteryControl($alert);
         }
-        $horseRaceM = new horseRaceM();
-        $horseRaceResultData = $horseRaceM->horseRaceResultData();
+        $horseRaceResultData = horseRaceM::horseRaceResultData();
         return view('raceSurplusV', ['horseRaceResultData' => $horseRaceResultData, 'alert' => $alert]);
     }
     //賠率管理(後台)頁面顯示
     public function raceOddsShow(){
         $input = Input::all();
-        $horseRaceM = new horseRaceM();
-        $oddsData = $horseRaceM->raceOddsData();
+        $oddsData = horseRaceM::raceOddsData(); //賠率資料
         $action = Input::get('action', '');
         $gameName = '';
         //修改遊戲賠率
         if($action == 'update'){
-            $gameName = $horseRaceM->raceOddsUpdate($input);
+            $gameName = horseRaceM::raceOddsUpdate($input);
         }
         return view('raceOddsV',['oddsData' => $oddsData, 'action' => $action, 'gameName' => $gameName]);
     }
     //賽馬賽果開獎
     public function lotteryControl($alert){
-        $horseRaceM = new horseRaceM();
-        $horseRaceM->bettingHistoryUpdate($alert);  //之前下注改成歷史紀錄&登錄新賽果時間
-        $horseRaceM->horseRaceResult($alert);       //計算賽馬名次
-        $horseRaceM->RaceBonus();                   //賽馬結果計算&贏家派彩
-        $horseRaceM->raceLoseUpdate($alert);        //輸家狀態改為當次已計算,無派彩
+        horseRaceM::bettingHistoryUpdate($alert);  //之前下注改成歷史紀錄&登錄新賽果時間
+        horseRaceM::horseRaceResult($alert);       //計算賽馬名次
+        horseRaceM::RaceBonus();                   //賽馬結果計算&贏家派彩
+        horseRaceM::raceLoseUpdate($alert);        //輸家狀態改為當次已計算,無派彩
     }
 }

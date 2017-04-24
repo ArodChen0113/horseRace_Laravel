@@ -10,11 +10,9 @@ use App\Models\horseRaceM;
 class bigOrSmallGameM extends horseRace
 {
     //大小單雙下注總覽資料
-    public function bsBettingData(){
-        $horseRaceM = new horseRaceM();
-        $horseRaceData = $horseRaceM->horseRaceData();   //賽馬場次資料
-        $count = count($horseRaceData);
-        for ($i=0 ; $i<$count ; $i++) {
+    public static function bsBettingData(){
+        $horseRaceData = horseRaceM::horseRaceData();    //賽馬場次資料
+        for ($i=0 ; $i<count($horseRaceData) ; $i++) {
             $value=$horseRaceData[$i];
             $bettingData = DB::table('bs_sdBetting')     //該場次下注資料
                 ->select('money')
@@ -24,7 +22,7 @@ class bigOrSmallGameM extends horseRace
 
             $sumBettingMoney = 0;
             $numBettingData = count($bettingData);       //該場次投注筆數
-            for($j=0 ; $j<$numBettingData ; $j++){
+            for($j=0 ; $j<count($bettingData) ; $j++){
                 $value2 = $bettingData[$j];
                 $bettingMoney = $value2->money;
                 $sumBettingMoney = $sumBettingMoney + $bettingMoney; //該場次投注總金額
@@ -36,8 +34,7 @@ class bigOrSmallGameM extends horseRace
                 ->where('open_time', $value->end_time)
                 ->get();
             $loseMoney = 0;
-            $numBettingWin = count($bettingLose);
-            for($j=0 ; $j<$numBettingWin ; $j++){
+            for($j=0 ; $j<count($bettingLose) ; $j++){
                 $value3 = $bettingLose[$j];
                 $bettingMoneyLose = $value3->money;
                 $odds = $value3->odds;                       //場次賠率
@@ -45,37 +42,38 @@ class bigOrSmallGameM extends horseRace
                 $loseMoney = $loseMoney + $bettingMoneyLose;     //該場次虧損金額
             }
             $winMoney = $sumBettingMoney - $loseMoney;           //剛場次獲利金額
-            $bsHorseRaceResultData[$i] = ['num' => $value->num, 'raceCount' => $numBettingData, 'sumBettingMoney' => $sumBettingMoney, 'winMoney' => $winMoney, 'loseMoney' => $loseMoney];
+            $bsHorseRaceResultData[$i] = ['num' => $value->num, 'raceCount' => $numBettingData,
+                'sumBettingMoney' => $sumBettingMoney, 'winMoney' => $winMoney, 'loseMoney' => $loseMoney];
         }
         return $bsHorseRaceResultData;
     }
     //大小單雙總獲利
-    public function sumProfit(){
-        $bsHorseRaceResultData = $this->bsBettingData();  //大小單雙下注總覽資料
+    public static function sumProfit(){
+        $bsHorseRaceResultData = bigOrSmallGameM::bsBettingData();  //大小單雙下注總覽資料
         $sumProfit = 0;
-        $count = count($bsHorseRaceResultData);
-        for($i=0 ; $i<$count ; $i++){
+        for($i=0 ; $i<count($bsHorseRaceResultData) ; $i++){
             $value = $bsHorseRaceResultData[$i];
             $sumProfit = $sumProfit + $value['winMoney']; //大小單雙總獲利
         }
         return $sumProfit;
     }
     //大小單雙遊戲下注新增
-    public function bsBettingInsert($bettingData)
+    public static function bsBettingInsert($bettingData)
     {
         $user = Auth::user();
         $userName = $user->name;
         $userId = $user->id;
-        $bettingTime = $this->nowDateTime();  //現在時間
-        $horseData = $this->horseDataOne($bettingData['h_id']);  //賽馬資料
+        $bettingTime = horseRaceM::nowDateTime();  //現在時間
+        $horseData = horseRaceM::horseDataOne($bettingData['h_id']);  //賽馬資料
         $gameName = '賽馬大小遊戲';
-        $odds = $this->raceOddsOneData($gameName); //查詢賠率
+        $odds = horseRaceM::raceOddsOneData($gameName); //查詢賠率
 
         if ($bettingData['action'] != NULL && $bettingData['action'] == 'insert')  //判斷值是否由欄位輸入
         {
-            DB::table('bs_sdBetting')->where('user_id', '=', $userId)->where('count', '=', 9)->delete(); //清空之前下注紀錄
-            DB::table('bs_sdBetting')->insert(array(                          //新增下注資料
-                array('user_id' => $userId, 'user_name' => $userName, 'odds' => $odds[0]->odds, 'h_id' => $bettingData['h_id'], 'horse_name' => $bettingData['horseName'], 'horse_picture' => $bettingData['horsePic'], 'betting_time' => $bettingTime)
+            DB::table('bs_sdBetting')->where('user_id', '=', $userId)->where('control', '=', 0)->delete();  //清空之前下注紀錄
+            DB::table('bs_sdBetting')->insert(array(  //新增下注資料
+                array('user_id' => $userId, 'user_name' => $userName, 'odds' => $odds[0]->odds, 'h_id' => $bettingData['h_id'],
+                    'horse_name' => $bettingData['horseName'], 'horse_picture' => $bettingData['horsePic'], 'betting_time' => $bettingTime)
             ));
             return $horseData[0]->horse_name;
         }else{
@@ -83,11 +81,11 @@ class bigOrSmallGameM extends horseRace
         }
     }
     //大小單雙遊戲下注刪除
-    public function bsBettingDel($delData)
+    public static function bsBettingDel($delData)
     {
         if ($delData['action'] != NULL && $delData['action'] == 'delete')  //判斷值是否由欄位輸入
         {
-            $horseData = $this->horseDataOne($delData['hId']);  //賽馬hid
+            $horseData = horseRaceM::horseDataOne($delData['hId']);  //賽馬hid
             DB::table('bs_sdBetting')->where('num', '=', $delData['num'])->delete();
             return $horseData[0]->horse_name;
         }else{
@@ -95,7 +93,7 @@ class bigOrSmallGameM extends horseRace
         }
     }
     //大小單雙遊戲金額新增
-    public function bsBettingMoneyInsert($bettingData)
+    public static function bsBettingMoneyInsert($bettingData)
     {
         $user = Auth::user();
         $userId = $user->id;
@@ -122,9 +120,9 @@ class bigOrSmallGameM extends horseRace
         }
     }
     //賽馬比單數遊戲投注結果(計算輸贏)
-    public function singleBettingResult()
+    public static function singleBettingResult()
     {
-        $rankHId = $this->RankDistinguish();
+        $rankHId = horseRaceM::RankDistinguish();
         $j=0;
         for($i=0 ; $i<10 ; $i++) {
             if($i % 2 == 0) {
@@ -132,8 +130,7 @@ class bigOrSmallGameM extends horseRace
                 $j++;
             }
         }
-        $count = count($singleHId);
-        for ($i=0 ; $i<$count ; $i++) {
+        for ($i=0 ; $i<count($singleHId) ; $i++) {
                 DB::table('bs_sdBetting')
                     ->where('count', 0)                    //是否已計算
                     ->where('control', 1)                  //下注"單數"的玩家
@@ -142,9 +139,9 @@ class bigOrSmallGameM extends horseRace
         }
     }
     //賽馬比雙數遊戲投注結果(計算輸贏)
-    public function doubleBettingResult()
+    public static function doubleBettingResult()
     {
-        $rankHId = $this->RankDistinguish();
+        $rankHId = horseRaceM::RankDistinguish();
         $j = 0;
         for($i=0 ; $i<10 ; $i++) {
             if($i % 2 == 1) {
@@ -152,8 +149,7 @@ class bigOrSmallGameM extends horseRace
                 $j++;
             }
         }
-        $count = count($doubleHId);
-        for ($i=0 ; $i<$count ; $i++) {
+        for ($i=0 ; $i<count($doubleHId) ; $i++) {
             DB::table('bs_sdBetting')
                 ->where('count', 0)                   //是否已計算
                 ->where('control', 2)                 //下注"雙數"的玩家
@@ -162,14 +158,13 @@ class bigOrSmallGameM extends horseRace
         }
     }
     //賽馬比小遊戲投注結果(計算輸贏)
-    public function smallerBettingResult()
+    public static function smallerBettingResult()
     {
-        $rankHId = $this->RankDistinguish();
+        $rankHId = horseRaceM::RankDistinguish();
         for($i=0 ; $i<5 ; $i++) {
             $smallerHId[$i] = $rankHId[$i];  //賽馬比小hid
         }
-        $count = count($smallerHId);
-        for ($i=0 ; $i<$count ; $i++) {
+        for ($i=0 ; $i<count($smallerHId) ; $i++) {
             DB::table('bs_sdBetting')
                 ->where('count', 0)                   //是否已計算
                 ->where('control', 3)                 //下注"小"的玩家
@@ -178,15 +173,14 @@ class bigOrSmallGameM extends horseRace
         }
     }
     //賽馬比大遊戲投注結果(計算輸贏)
-    public function biggerBettingResult()
+    public static function biggerBettingResult()
     {
-        $rankHId = $this->RankDistinguish();
+        $rankHId = horseRaceM::RankDistinguish();
         for($i=0 ; $i<5 ; $i++) {
             $j = $i + 5;
             $biggerHId[$i] = $rankHId[$j];  //賽馬比大hid
         }
-        $count = count($biggerHId);
-        for ($i=0 ; $i<$count ; $i++) {
+        for ($i=0 ; $i<count($biggerHId); $i++) {
             DB::table('bs_sdBetting')
                 ->where('count', 0)                   //是否已計算
                 ->where('control', 4)                 //下注"大"的玩家

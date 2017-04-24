@@ -19,14 +19,13 @@ class positionGameC extends Controller
     public function poIntroduceShow()
     {
         $input = Input::all();
-        $poGameM = new positionGameM();
-        $horseData = $poGameM->horseData();  //賽馬資料
+        $horseData = positionGameM::horseData();  //賽馬資料
         $action = Input::get('action', '');
         $horseName = '';
         //取消賽馬下注(未付款)
         if($action == 'delete'){
             $delData = ['num' => $input['num'], 'hId' => $input['hId'], 'action' => $input['action']];
-            $horseName = $poGameM->poBettingDel($delData);
+            $horseName = positionGameM::poBettingDel($delData);
         }
         return view('poIntroduceV', ['horseData' => $horseData, 'horseName' => $horseName, 'action' => $action]);
     }
@@ -36,29 +35,26 @@ class positionGameC extends Controller
         $input = Input::all();
         $user = Auth::user();
         $userId = $user->id;
-        $poGameM = new positionGameM();
-        $horseRaceM = new horseRaceM();
         $action = Input::get('action', '');
         $alert = '';
         //下注資料新增
         if($action == 'insert'){
-            $rowHorseData = $horseRaceM->horseDataOne($input['hId']);
+            $rowHorseData = horseRaceM::horseDataOne($input['hId']);
             $horseData = ['h_id' => $input['hId'], 'horseName' => $rowHorseData[0]->horse_name, 'horsePic' => $rowHorseData[0]->horse_picture, 'action' => $input['action']];
-            $alert = $poGameM->poBettingInsert($horseData);
+            $alert = positionGameM::poBettingInsert($horseData);
         }
-        $bettingData = $horseRaceM->bettingData();
+        $bettingData = horseRaceM::bettingData();
         $member = new memberM();
         $memberData = $member->memberSelOne($userId);  //會員資料
         $gameName = '賽馬定位遊戲';
-        $odds = $horseRaceM->raceOddsOneData($gameName); //遊戲賠率
+        $odds = horseRaceM::raceOddsOneData($gameName); //遊戲賠率
 
         return view('poBettingV', ['bettingData' => $bettingData, 'alert' => $alert,'action' => $action, 'memberData' => $memberData, 'odds' => $odds]);
     }
     //定位賽馬下注總覽(後台)頁面顯示
     public function poBettingOverviewShow(){
-        $poGameM = new positionGameM();
-        $poHorseRaceResultData = $poGameM->poBettingData();
-        $sumProfit = $poGameM->sumProfit();
+        $poHorseRaceResultData = positionGameM::poBettingData();
+        $sumProfit = positionGameM::sumProfit();
         return view('poBettingOverviewV' ,['poHorseRaceResultData' => $poHorseRaceResultData, 'sumProfit' => $sumProfit]);
     }
 }

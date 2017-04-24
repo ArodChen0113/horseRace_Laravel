@@ -6,42 +6,42 @@ use Illuminate\Http\UploadedFile;
 use App\Models\horseRaceM as horseRace;
 use Illuminate\Support\Facades\Auth;
 use App\Models\horseRaceM;
+use Illuminate\Support\Collection;
 
 class bigOrSmallGameM extends horseRace
 {
     //大小單雙下注總覽資料
-    public static function bsBettingData(){
-        $horseRaceData = horseRaceM::horseRaceData();    //賽馬場次資料
-        for ($i=0 ; $i<count($horseRaceData) ; $i++) {
-            $value=$horseRaceData[$i];
-            $bettingData = DB::table('bs_sdBetting')     //該場次下注資料
-                ->select('money')
+    public static function bsBettingData()
+    {
+        $horseRaceData = horseRaceM::horseRaceData(); //賽馬場次資料
+        for ($i = 0; $i < count($horseRaceData); $i++) {
+            $value = $horseRaceData[$i];
+            $bettingData = DB::table('bs_sdBetting') //該場次下注資料
+            ->select('money')
                 ->whereIn('control', [1, 2, 3, 4])
                 ->where('open_time', $value->end_time)
                 ->get();
 
             $sumBettingMoney = 0;
-            $numBettingData = count($bettingData);       //該場次投注筆數
-            for($j=0 ; $j<count($bettingData) ; $j++){
-                $value2 = $bettingData[$j];
+            $numBettingData = count($bettingData); //該場次投注筆數
+            foreach ($bettingData as $value2){
                 $bettingMoney = $value2->money;
-                $sumBettingMoney = $sumBettingMoney + $bettingMoney; //該場次投注總金額
+                $sumBettingMoney = $sumBettingMoney + $bettingMoney;  //該場次投注總金額
             }
             $bettingLose = DB::table('bs_sdBetting')
-            ->select('money','odds')
+                ->select('money', 'odds')
                 ->whereIn('control', [1, 2, 3, 4])
                 ->where('win', 1)
                 ->where('open_time', $value->end_time)
                 ->get();
             $loseMoney = 0;
-            for($j=0 ; $j<count($bettingLose) ; $j++){
-                $value3 = $bettingLose[$j];
+            foreach ($bettingLose as $value3){
                 $bettingMoneyLose = $value3->money;
-                $odds = $value3->odds;                       //場次賠率
+                $odds = $value3->odds;                         //場次賠率
                 $bettingMoneyLose = $bettingMoneyLose * $odds;
-                $loseMoney = $loseMoney + $bettingMoneyLose;     //該場次虧損金額
+                $loseMoney = $loseMoney + $bettingMoneyLose;   //該場次虧損金額
             }
-            $winMoney = $sumBettingMoney - $loseMoney;           //剛場次獲利金額
+            $winMoney = $sumBettingMoney - $loseMoney;     //剛場次獲利金額
             $bsHorseRaceResultData[$i] = ['num' => $value->num, 'raceCount' => $numBettingData,
                 'sumBettingMoney' => $sumBettingMoney, 'winMoney' => $winMoney, 'loseMoney' => $loseMoney];
         }
@@ -49,10 +49,9 @@ class bigOrSmallGameM extends horseRace
     }
     //大小單雙總獲利
     public static function sumProfit(){
-        $bsHorseRaceResultData = bigOrSmallGameM::bsBettingData();  //大小單雙下注總覽資料
+        $bsHorseRaceResultData = bigOrSmallGameM::bsBettingData(); //大小單雙下注總覽資料
         $sumProfit = 0;
-        for($i=0 ; $i<count($bsHorseRaceResultData) ; $i++){
-            $value = $bsHorseRaceResultData[$i];
+        foreach ($bsHorseRaceResultData as $value){
             $sumProfit = $sumProfit + $value['winMoney']; //大小單雙總獲利
         }
         return $sumProfit;
@@ -64,11 +63,11 @@ class bigOrSmallGameM extends horseRace
         $userName = $user->name;
         $userId = $user->id;
         $bettingTime = horseRaceM::nowDateTime();  //現在時間
-        $horseData = horseRaceM::horseDataOne($bettingData['h_id']);  //賽馬資料
+        $horseData = horseRaceM::horseDataOne($bettingData['h_id']); //賽馬資料
         $gameName = '賽馬大小遊戲';
         $odds = horseRaceM::raceOddsOneData($gameName); //查詢賠率
 
-        if ($bettingData['action'] != NULL && $bettingData['action'] == 'insert')  //判斷值是否由欄位輸入
+        if ($bettingData['action'] != NULL && $bettingData['action'] == 'insert') //判斷值是否由欄位輸入
         {
             DB::table('bs_sdBetting')->where('user_id', '=', $userId)->where('control', '=', 0)->delete();  //清空之前下注紀錄
             DB::table('bs_sdBetting')->insert(array(  //新增下注資料
@@ -98,21 +97,21 @@ class bigOrSmallGameM extends horseRace
         $user = Auth::user();
         $userId = $user->id;
 
-        if ($bettingData['action'] != NULL && $bettingData['action'] == 'bsBetting')         //判斷值是否由欄位輸入
+        if ($bettingData['action'] != NULL && $bettingData['action'] == 'bsBetting') //判斷值是否由欄位輸入
         {
-        $money = $bettingData['money'];             //下注金額
+        $money = $bettingData['money'];          //下注金額
         $rowUserMoney = DB::table('member')
             ->select('money')
             ->where('id',$userId)
             ->get();
-        $userMoney = $rowUserMoney[0]->money;       //查詢玩家現餘金額
-        $updateMoney = $userMoney-$money;           //下注後剩餘金額
+        $userMoney = $rowUserMoney[0]->money;    //查詢玩家現餘金額
+        $updateMoney = $userMoney-$money;        //下注後剩餘金額
         DB::table('member')
             ->where('id', $userId)
-            ->update(['money' => $updateMoney]);    //修改玩家剩餘金額
+            ->update(['money' => $updateMoney]); //修改玩家剩餘金額
             DB::table('bs_sdBetting')
                 ->where('num', $bettingData['num'])
-                ->update(['money' => $bettingData['money'], 'control' => $bettingData['control'], 'count' => 0]);  //修改玩家剩餘金額
+                ->update(['money' => $bettingData['money'], 'control' => $bettingData['control'], 'count' => 0]); //修改玩家剩餘金額
 
             return $bettingData['horseName'];
         }else{

@@ -6,6 +6,7 @@ use Illuminate\Http\UploadedFile;
 use App\Models\bigOrSmallGameM;
 use App\Models\positionGameM;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Collection;
 
 class horseRaceM
 {
@@ -59,9 +60,9 @@ class horseRaceM
         $rank = array();
         $horseCount = 10;
         $count = 0;
-        while ($count < $horseCount) {         //計算賽馬名次
+        while ($count < $horseCount) {        //計算賽馬名次
             $number = rand(1, $horseCount);
-            if (!in_array($number, $rank)) {   //去陣列重複值
+            if (!in_array($number, $rank)) {  //去陣列重複值
                 $rank[$count] = $number;
                 $rowHId = DB::table('horseGame_horse')
                     ->select('h_id')
@@ -72,14 +73,14 @@ class horseRaceM
                 DB::table('bs_sdBetting')
                     ->where('h_id', $rowHId[0]->h_id)
                     ->where('count','!=', 3)
-                    ->update(['r_rank' => $trueRank]);  //更新下注單賽果賽馬名次
+                    ->update(['r_rank' => $trueRank]);   //更新下注單賽果賽馬名次
                 $count++;
             }
         }
         $endTime = horseRaceM::nowDateTime(); //目前時間
-        if ($action != NULL && $action == 'lottery')  //判斷值是否由欄位輸入
+        if ($action != NULL && $action == 'lottery')     //判斷值是否由欄位輸入
         {
-            DB::table('horseRace_result')->insert(array(  //新增賽果資料
+            DB::table('horseRace_result')->insert(array( //新增賽果資料
                 array('firth' => $rankHId[0], 'second' => $rankHId[1], 'third' => $rankHId[2], 'fourth' => $rankHId[3],
                     'fifth' => $rankHId[4], 'sixth' => $rankHId[5], 'seventh' => $rankHId[6], 'eighth' => $rankHId[7],
                     'ninth' => $rankHId[8], 'tenth' => $rankHId[9], 'end_time' => $endTime )
@@ -110,45 +111,44 @@ class horseRaceM
     //賽馬遊戲派彩資料修改
     public static function RaceBonus(){
 
-        bigOrSmallGameM::singleBettingResult();     //下注"單數"輸贏結果運算
-        bigOrSmallGameM::doubleBettingResult();     //下注"雙數"輸贏結果運算
-        bigOrSmallGameM::smallerBettingResult();    //下注"比小"輸贏結果運算
-        bigOrSmallGameM::biggerBettingResult();     //下注"比大"輸贏結果運算
-        positionGameM::positionBettingResult();     //下注"定位"輸贏結果運算
+        bigOrSmallGameM::singleBettingResult();    //下注"單數"輸贏結果運算
+        bigOrSmallGameM::doubleBettingResult();    //下注"雙數"輸贏結果運算
+        bigOrSmallGameM::smallerBettingResult();   //下注"比小"輸贏結果運算
+        bigOrSmallGameM::biggerBettingResult();    //下注"比大"輸贏結果運算
+        positionGameM::positionBettingResult();    //下注"定位"輸贏結果運算
 
-        $rowSDPayData = DB::table('bs_sdBetting')     //查詢下注定位賽馬贏家uId,下注金額
+        $rowSDPayData = DB::table('bs_sdBetting')  //查詢下注定位賽馬贏家uId,下注金額
         ->select('num','user_id','money','odds')
             ->where('win', 1)
             ->where('count', 1)
             ->get();
 
         if($rowSDPayData != NULL) {
-            for ($i=0; $i<count($rowSDPayData); $i++) {                    //定位賽馬下注贏家派彩
-                $value = $rowSDPayData[$i];
+            foreach ($rowSDPayData as $value){     //定位賽馬下注贏家派彩
                 $rowUserMoney = DB::table('member')
                     ->select('money')
                     ->where('id', $value->user_id)
                     ->get();
-                $userMoney = $rowUserMoney[0]->money;        //查詢贏家現餘金額
-                $odds = $value -> odds;                      //投注賠率
-                $bettingMoney = $value->money;               //投注金額
-                $winMoney = $bettingMoney * $odds;           //贏得金額
-                $sumMoney = $userMoney + $winMoney;          //計算贏得後總金額
+                $userMoney = $rowUserMoney[0]->money;    //查詢贏家現餘金額
+                $odds = $value -> odds;                  //投注賠率
+                $bettingMoney = $value->money;           //投注金額
+                $winMoney = $bettingMoney * $odds;       //贏得金額
+                $sumMoney = $userMoney + $winMoney;      //計算贏得後總金額
 
                 DB::table('member')
                     ->where('id', $value->user_id)
-                    ->update(['money' => $sumMoney]);      //修改最終贏得金額
+                    ->update(['money' => $sumMoney]);    //修改最終贏得金額
                 DB::table('bs_sdBetting')
                     ->where('num', $value->num)
                     ->where('count','!=', 3)
-                    ->update(['count' => 2]);              //改為已派彩
+                    ->update(['count' => 2]);            //改為已派彩
             }
         }
     }
     //輸家狀態改為當次已計算,無派彩
     public static function raceLoseUpdate($action)
     {
-        if ($action != NULL && $action == 'lottery')      //判斷值是否由欄位輸入
+        if ($action != NULL && $action == 'lottery') //判斷值是否由欄位輸入
         {
             DB::table('bs_sdBetting')
                 ->where('win', 0)
@@ -159,7 +159,7 @@ class horseRaceM
     //之前下注改成歷史紀錄&登錄新賽果時間
     public static function bettingHistoryUpdate($action)
     {
-        if ($action != NULL && $action == 'lottery')      //判斷值是否由欄位輸入
+        if ($action != NULL && $action == 'lottery')  //判斷值是否由欄位輸入
         {
             $nowTime = horseRaceM::nowDateTime();
             DB::table('bs_sdBetting')
@@ -180,8 +180,7 @@ class horseRaceM
             ->where('count',2)
             ->get();
         $winMoney = 0;
-        for ($i=0 ; $i<count($rowWinMoney) ; $i++){
-            $value = $rowWinMoney[$i];
+        foreach ($rowWinMoney as $value){
             $money = $value->money;
             $winMoney = $winMoney + $money;  //當次獲利金額
         }
@@ -191,8 +190,7 @@ class horseRaceM
             ->where('count',2)
             ->get();
         $loseMoney = 0;
-        for ($i=0 ; $i<count($rowWinMoney) ; $i++){
-            $value = $rowWinMoney[$i];
+        foreach ($rowWinMoney as $value){
             $money = $value->money;
             $loseMoney = $loseMoney + $money;  //當次損失金額
         }
@@ -296,7 +294,7 @@ class horseRaceM
     //賠率修改
     public static function raceOddsUpdate($oddsData)
     {
-        if ($oddsData['action'] != NULL && $oddsData['action'] == 'update')      //判斷值是否由欄位輸入
+        if ($oddsData['action'] != NULL && $oddsData['action'] == 'update') //判斷值是否由欄位輸入
         {
             for ($i=0 ; $i<count($oddsData['gameName']) ; $i++) {
                 DB::table('horseGame_data')
@@ -310,7 +308,7 @@ class horseRaceM
     }
     //賽馬遊戲開關
     public static function horseRaceControl($horseRaceData){
-        if ($horseRaceData->action != NULL && $horseRaceData->action == 'update')      //判斷值是否由欄位輸入
+        if ($horseRaceData->action != NULL && $horseRaceData->action == 'update') //判斷值是否由欄位輸入
         {
             $query = DB::table('horseGame_data')
                 ->where('game_name', $horseRaceData->gameName);

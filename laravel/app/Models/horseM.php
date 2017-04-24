@@ -32,7 +32,8 @@ class horseM
                     array('horse_name' => $horseData['horseName'], 'horse_age' => $horseData['horseAge'], 'horse_introduce' => $horseData['horseIntroduce'])
                 ));
             return $horseData['horseName'];
-        }else{
+        }
+        if ($horseData['action'] == NULL){ //判斷值是否由欄位輸入
             return false;
         }
     }
@@ -46,7 +47,8 @@ class horseM
                 ->update(['horse_name' => $horseData['horseName'], 'horse_age' => $horseData['horseAge'], 'horse_introduce' => $horseData['horseIntroduce']]);
 
             return $horseData['horseName'];
-        }else{
+        }
+        if ($horseData['action'] == NULL){ //判斷值是否由欄位輸入
             return false;
         }
     }
@@ -62,7 +64,8 @@ class horseM
             $horseName = $rowName[0]->horse_name;
             DB::table('horse_data')->where('h_id', '=', $horseData['hId'])->delete();
             return $horseName;
-        }else{
+        }
+        if ($horseData['action'] == NULL){ //判斷值是否由欄位輸入
             return false;
         }
     }

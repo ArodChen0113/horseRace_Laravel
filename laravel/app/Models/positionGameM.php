@@ -10,9 +10,9 @@ class positionGameM extends horseRace
 {
     //定位賽馬下注資料總覽
     public static function poBettingData(){
+        $poHorseRaceResultData = array();
         $horseRaceData = horseRaceM::horseRaceData(); //賽馬場次資料
-        for ($i=0 ; $i<count($horseRaceData) ; $i++) {
-            $value = $horseRaceData[$i];
+        foreach ($horseRaceData as $value){
             $bettingData = DB::table('bs_sdBetting') //該場次下注資料
             ->select('money')
                 ->where('control', 5)
@@ -23,7 +23,7 @@ class positionGameM extends horseRace
             $numBettingData = count($bettingData); //該場次投注筆數
             foreach ($bettingData as $value2){
                 $bettingMoney = $value2->money;
-                $sumBettingMoney = $sumBettingMoney + $bettingMoney; //該場次投注總金額
+                $sumBettingMoney += $bettingMoney; //該場次投注總金額
             }
             $bettingLose = DB::table('bs_sdBetting')
                 ->select('money','odds')
@@ -35,11 +35,11 @@ class positionGameM extends horseRace
             foreach ($bettingLose as $value3){
                 $bettingMoneyLose = $value3->money;
                 $odds = $value3->odds;
-                $bettingMoneyLose = $bettingMoneyLose * $odds;
-                $loseMoney = $loseMoney + $bettingMoneyLose; //該場次投注虧損金額
+                $bettingMoneyLose *= $odds;
+                $loseMoney += $bettingMoneyLose; //該場次投注虧損金額
             }
             $winMoney = $sumBettingMoney - $loseMoney;
-            $poHorseRaceResultData[$i] = ['num' => $value->num, 'raceCount' => $numBettingData,
+            $poHorseRaceResultData[] = ['num' => $value->num, 'raceCount' => $numBettingData,
                 'sumBettingMoney' => $sumBettingMoney, 'winMoney' => $winMoney, 'loseMoney' => $loseMoney];
         }
         return $poHorseRaceResultData;
@@ -49,7 +49,7 @@ class positionGameM extends horseRace
         $bsHorseRaceResultData = positionGameM::poBettingData();
         $sumProfit = 0;
         foreach ($bsHorseRaceResultData as $value){
-            $sumProfit = $sumProfit + $value['winMoney'];
+            $sumProfit += $value['winMoney'];
         }
         return $sumProfit;
     }
@@ -72,7 +72,8 @@ class positionGameM extends horseRace
                     'odds' => $odds[0]->odds, 'horse_picture' => $bettingData['horsePic'], 'betting_time' => $bettingTime)
             ));
             return $horseData[0]->horse_name;
-        }else{
+        }
+        if ($bettingData['action'] == NULL){ //判斷值是否由欄位輸入
             return false;
         }
     }
@@ -84,7 +85,8 @@ class positionGameM extends horseRace
             $horseData = horseRaceM::horseDataOne($delData['hId']);
             DB::table('bs_sdBetting')->where('num', '=', $delData['num'])->delete();
             return $horseData[0]->horse_name;
-        }else{
+        }
+        if ($delData['action'] == NULL){ //判斷值是否由欄位輸入
             return false;
         }
     }
@@ -111,7 +113,8 @@ class positionGameM extends horseRace
                 ->update(['money' => $bettingData['money'], 'control' => $bettingData['control'], 'h_rank' => $bettingData['rank'], 'count' => 0]);  //修改玩家剩餘金額
 
             return $bettingData['horseName'];
-        }else{
+        }
+        if ($bettingData['action'] == NULL){ //判斷值是否由欄位輸入
             return false;
         }
     }

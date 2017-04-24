@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="assets/css/common/slider-banner.css">
     <link rel="stylesheet" href="assets/css/common/style.css">
 </head>
-<body class="woocommerce woocommerce-page">
+<body class="woocommerce woocommerce-page" onload="define()">
 <div class="wrap-main wrap-main-01">
     @include('partials.nav')
     <div class="site-content-contain">

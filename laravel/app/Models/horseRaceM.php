@@ -85,7 +85,8 @@ class horseRaceM
                     'fifth' => $rankHId[4], 'sixth' => $rankHId[5], 'seventh' => $rankHId[6], 'eighth' => $rankHId[7],
                     'ninth' => $rankHId[8], 'tenth' => $rankHId[9], 'end_time' => $endTime )
             ));
-        }else{
+        }
+        if ($action == NULL){ //判斷值是否由欄位輸入
             return false;
         }
     }
@@ -182,7 +183,7 @@ class horseRaceM
         $winMoney = 0;
         foreach ($rowWinMoney as $value){
             $money = $value->money;
-            $winMoney = $winMoney + $money;  //當次獲利金額
+            $winMoney += $money;  //當次獲利金額
         }
         $rowWinMoney = DB::table('bs_sdBetting')
         ->select('money')
@@ -192,7 +193,7 @@ class horseRaceM
         $loseMoney = 0;
         foreach ($rowWinMoney as $value){
             $money = $value->money;
-            $loseMoney = $loseMoney + $money;  //當次損失金額
+            $loseMoney += $money;  //當次損失金額
         }
         $bettingCount = DB::table('bs_sdBetting')
             ->where('count',2)
@@ -203,6 +204,7 @@ class horseRaceM
     //個人賽果資料
     public static function horseRaceResultPersonalData($id)
     {
+        $resultData = array();
         $rowHorseRaceResult=DB::table('bs_sdBetting')
             ->select('money','horse_name','h_rank','r_rank','control','win','count','open_time')
             ->where('user_id',$id)
@@ -211,8 +213,7 @@ class horseRaceM
 
         $profit='';
         $odds='';
-        for ($i=0 ; $i<count($rowHorseRaceResult); $i++) {
-            $value = $rowHorseRaceResult[$i];
+        foreach ($rowHorseRaceResult as $value){
 
             switch ($value->control) {
                 case 1:
@@ -268,7 +269,7 @@ class horseRaceM
                 $lastNum = $rowNum[0]->num;
                 $horseRaceNum = $lastNum + 1;
             }
-            $resultData[$i] = ['horseRaceNum' => $horseRaceNum, 'horse_name' => $value->horse_name,
+            $resultData[] = ['horseRaceNum' => $horseRaceNum, 'horse_name' => $value->horse_name,
                 'h_rank' => $value->h_rank, 'r_rank' => $value->r_rank, 'control' => $value->control,
                 'money' => $value->money, 'win' => $value->win, 'odds' => $odds, 'profit' => $profit , 'count' => $value->count];
         }
@@ -302,13 +303,14 @@ class horseRaceM
                     ->update(['game_name' => $oddsData['gameName'][$i], 'odds' => $oddsData['odds'][$i]]);
             }
             return $oddsData['gameName'];
-        } else {
+        }
+        if ($oddsData['action'] == NULL){ //判斷值是否由欄位輸入
             return false;
         }
     }
     //賽馬遊戲開關
     public static function horseRaceControl($horseRaceData){
-        if ($horseRaceData->action != NULL && $horseRaceData->action == 'update') //判斷值是否由欄位輸入
+        if ($horseRaceData['action'] != NULL && $horseRaceData['action'] == 'update') //判斷值是否由欄位輸入
         {
             $query = DB::table('horseGame_data')
                 ->where('game_name', $horseRaceData->gameName);
@@ -319,7 +321,8 @@ class horseRaceM
                 $query->update(['open' => 0]);
             }
             return $horseRaceData->gameName;
-        }else{
+        }
+        if ($horseRaceData['action'] == NULL){ //判斷值是否由欄位輸入
             return false;
         }
     }

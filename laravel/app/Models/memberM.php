@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
+use App\Models\horseRaceM;
 
 class memberM
 {
@@ -26,8 +27,7 @@ class memberM
     //會員資料新增
     public static function memberInt($memberData)
     {
-        date_default_timezone_set("Asia/Taipei"); //目前時間
-        $created_at = date("Y-m-d H:i:s");
+        $created_at = horseRaceM::nowDateTime(); //目前時間
 
         if ($memberData['action'] != NULL && $memberData['action'] == 'insert') //判斷值是否由欄位輸入
         {
@@ -35,7 +35,8 @@ class memberM
                     array('name' => $memberData['userName'], 'email' => $memberData['email'], 'password' => $memberData['password'], 'created_at' => $created_at)
                 ));
             return $memberData->userName;
-        }else{
+        }
+        if ($memberData['action'] == NULL){ //判斷值是否由欄位輸入
             return false;
         }
     }
@@ -49,7 +50,8 @@ class memberM
                 ->update(['name' => $memberData['name'],'email' => $memberData['email']]);
             $userName = $memberData['name'];
             return $userName;
-        }else{
+        }
+        if ($memberData['action'] == NULL){ //判斷值是否由欄位輸入
             return false;
         }
     }
@@ -65,7 +67,8 @@ class memberM
             $userName = $rowName[0]->name;
             DB::table('member')->where('id', '=', $memberData['id'])->delete();
             return $userName;
-        }else{
+        }
+        if ($memberData['action'] == NULL){ //判斷值是否由欄位輸入
             return false;
         }
     }
@@ -81,7 +84,8 @@ class memberM
                 ->where('id', $memberData['id'])
                 ->update(['money' => $updateMoney]);
             return $memberData['money'];
-        }else{
+        }
+        if ($memberData['action'] == NULL){ //判斷值是否由欄位輸入
             return false;
         }
     }

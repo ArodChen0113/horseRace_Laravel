@@ -27,7 +27,7 @@
                                         <form action="/" method="get">
                                             <table class="shop_table cart" >
                                                 <thead>
-                                                <font color="red" size="5">總獲利：<?php echo $sumProfit;?></font>
+                                                <font color="red" size="5">總獲利：{!! $sumProfit !!}</font>
                                                 <tr>
                                                     <th class="product-name">場次</th>
                                                     <th class="product-name">下注筆數</th>
@@ -38,10 +38,7 @@
                                                 </thead>
                                                 <tbody>
                                                 @if($bsHorseRaceResultData != NULL)
-                                                    @for($k = 0 ; $k<count($bsHorseRaceResultData); $k++)
-                                                        <?php
-                                                        $value = $bsHorseRaceResultData[$k];
-                                                        ?>
+                                                    @foreach($bsHorseRaceResultData as $value)
                                                         <tr class="cart_item">
                                                             <td class="product-name">
                                                                 第{!!$value['num']!!}場
@@ -59,7 +56,7 @@
                                                                 $ {!! $value['loseMoney'] !!}
                                                             </td>
                                                         </tr>
-                                                    @endfor
+                                                    @endforeach
                                                      @else
                                                     <?php echo "尚未投注！"; ?>
                                                 @endif

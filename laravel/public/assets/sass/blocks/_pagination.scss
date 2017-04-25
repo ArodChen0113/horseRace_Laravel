@@ -1,0 +1,77 @@
+@import "../common/mixins/mixin-common";
+@import "../common/mixins/mixin-menu";
+@import "../common/variables";
+/*---------------------------------------------------
+[  Pagination  ]
+-------------------------------------------------- */
+
+.woocommerce nav.woocommerce-pagination{
+	text-align: left;
+	margin-bottom: 80px;
+	overflow: hidden;
+	.woocommerce-result-count{
+		float: none;
+		margin-bottom: 0;
+		display: inline-block;
+	}
+	ul.page-numbers{
+		float: right;
+		border:none;
+		li{
+			border:none;
+			margin-left: 3px;
+			a{
+
+				width: 20px;
+				height: 20px;
+				line-height: 20px;
+				display: inline-block;
+				text-align: center;
+				@extend .primary_color;
+				padding: 0;
+				&:hover{
+					@extend .primary_bg_color;
+					color:$color-white;
+					&.prev:before,&.next:before{
+						color: $color-white;
+					}
+				}
+				&.prev,&.next{
+					font-size: 0;
+					font-size: 18px;
+					@extend .primary_color;
+				}
+				&.prev:before{
+					content: "\f104"; 
+					font-family: "FontAwesome";
+					
+				}
+				&.next:before{
+					content: "\f105";
+					font-family: "FontAwesome";
+				}
+			}
+			span.current{
+				width: 20px;
+				height: 20px;
+				line-height: 20px;
+				display: inline-block;
+				text-align: center;
+				padding: 0;
+				@extend .primary_bg_color;
+				color:$color-white;
+
+			}
+		}
+	}
+	@media (max-width:480px){
+		text-align: center;
+		.woocommerce-result-count{
+			display: block;
+			margin-bottom: 30px;
+		}
+		ul.page-numbers{
+			float: none;
+		}
+	}
+}

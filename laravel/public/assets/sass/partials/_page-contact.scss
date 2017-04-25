@@ -1,0 +1,151 @@
+@import "../common/mixins/mixin-common";
+@import "../common/mixins/mixin-menu";
+@import "../common/variables";
+/*---------------------------------------------------
+[  Pages contact ]
+-------------------------------------------------- */
+
+
+.form-contact-us {
+	margin-bottom: 50px;
+	.entry-content {
+
+		@media screen and ( min-width: 1200px ) {
+			padding: 0 100px;
+		}
+
+		.wpcf7-form {
+			p{
+				margin-bottom: 35px;
+				@media(max-width:767px){
+						margin-bottom: 20px;
+				}
+				label {
+				
+					@extend .secondary_text_color;
+				    font-weight: normal;
+				    letter-spacing: 0.05em;
+					font-size: $tp-size-16;
+					width: 13%;
+				    float: left;
+				    margin: 0;
+				    line-height: 45px;
+				    @media(max-width:767px){
+				    	float: none;
+				    	width: 100%;
+				    }
+				}
+
+				textarea {
+					min-height: 90px;
+					width: 87%;
+					@media(max-width:767px){
+						width: 100%;
+					}
+				}
+				input,select{
+					width: 87%;
+					@media(max-width:767px){
+						width: 100%;
+					}
+				}
+				input[type="submit"] {
+					width: auto;
+					padding: 0 45px;
+					line-height: 45px;
+					font-weight: 600;
+					@extend .primary_bg_color;
+					color: $color-white;
+					&:hover{
+						background: $color-white;
+						@extend .primary_color;
+					}
+				}
+			}
+			
+		}
+	}
+	.entry-header{
+		margin-bottom: 60px;
+		.entry-title{
+			font-size: 45px;
+			font-weight: bold;
+			@extend .primary_color;
+		}
+		p{
+			font-size: 16px;
+			@extend .secondary_text_color;
+		}
+	} 
+}
+	
+//box contact info
+.tp-box-info-contact {
+	padding: 30px 0;
+	margin-bottom: 50px;
+	.tp-item {
+
+		.tp-content-item {
+		
+			background: $color-01;
+			padding: 40px 50px;
+			overflow: hidden;
+
+			@media screen and ( min-width: 992px ) and ( max-width: 1199px ) {
+				padding: 30px;
+			}
+
+			@media screen and ( min-width: 768px ) and ( max-width: 991px ) {
+				padding: 30px 15px;
+
+				li a {
+					font-size: $tp-size-14;
+					padding-left: 22px;
+				}
+			}
+
+			@media screen and ( max-width: 767px ) {
+				margin-bottom: 15px;
+			}
+
+			@media screen and ( max-width: 360px ) {
+				padding: 30px 15px;
+
+				li a {
+					font-size: $tp-size-14;
+					padding-left: 22px;
+				}
+			}
+		}
+
+		h2 {
+			@extend .primary_text_color;
+			font-weight: bold;
+			line-height: $tp-line-height-25;
+			font-size: $tp-size-16;
+			margin-bottom: 25px;
+		}
+
+		ul {
+
+			li {
+				position: relative;
+				margin-bottom: 20px;
+
+				a {
+					display: block;
+					padding-left: 35px;
+					@extend .primary_text_color;
+					font-weight: normal;
+					line-height: $tp-line-height-25;
+					font-size: $tp-size-16;
+
+					i {
+						@include tp-position-top-left;
+						padding: 6px 5px;
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,217 @@
+@import "../common/mixins/mixin-common";
+@import "../common/mixins/mixin-menu";
+@import "../common/variables";
+/*---------------------------------------------------
+[  Form  ]
+-------------------------------------------------- */
+.tp-form-site {
+
+    &.tp-form-height-45 {
+        form {
+
+            input, select {
+                line-height: $tp-line-height-45;
+                height: 45px;
+            }
+        }
+    }
+
+    &.tp-text-form-italic {
+
+        form {
+
+            input, select, textarea {
+                font-style: italic;
+            }
+
+            input[type="submit"], input[type="reset"] {
+                font-style: normal;
+            }
+        }
+    }
+
+	form {
+
+		input, select, textarea {
+			border: 1px solid $color-02;
+			line-height: $tp-line-height-45;
+            height: 45px;
+			width: 100%;
+			padding: 0 20px;
+		}
+
+        .tp-input-couple {
+
+            input {
+                margin-bottom: 15px;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+		.form-group {
+			margin-bottom: 35px;
+		}
+	}
+}
+//Select form
+.tp-select-orderby {
+  position: relative;
+  
+  &:after {
+    content: "\f107"!important;
+    font-family: "FontAwesome";
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    font-size: 22px;
+    display: inline-block;
+    background: $color-white;
+    width: 42px;
+    height: 42px;
+    text-align: center;
+    line-height:42px;
+    color: $primary_text_color;
+    cursor: pointer;
+    pointer-events: none;
+  }
+}
+
+//Checkbox CSS
+.tp-checkbox-custom {
+    opacity: 0;
+    z-index: 99;
+    position: absolute;
+    width: 100%;
+    height: $tp-line-height-30;
+}
+.tp-checkbox-custom, .tp-checkbox-custom-label {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 5px;
+    cursor: pointer;
+}
+.tp-checkbox-custom-label {
+    position: relative;
+    color: $secondary_text_color;
+    font-size: $tp-size-16;
+    font-weight: normal;
+    font-style: italic;
+}
+.tp-checkbox-custom + .tp-checkbox-custom-label:before {
+    content: '';
+    background: $color-white;
+    border: 1px solid  $primary_color;
+    display: inline-block;
+    vertical-align: middle;
+    @include tp-size( 28px, 28px );
+    padding: 2px;
+    margin-right: 15px;
+    text-align: center;
+}
+.tp-checkbox-custom:checked + .tp-checkbox-custom-label:before {
+    @include tp-icon-after-before( "\f00c", 14px, $primary_color );
+    z-index: 9;
+    line-height: 23px;
+}
+
+//Form radio
+.tp-radio-custom {
+    @include tp-box-full;
+
+    input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      -webkit-opacity: 0;
+    }
+
+    label {
+        width: 100%;
+        cursor: pointer;
+    }
+
+    input[type="radio"] + label {
+      position: relative;
+      padding: 0 0 0 30px;
+      font-size: 16px;
+      line-height: 25px;
+      margin:0 0 10px 0;
+    }
+
+    input[type="radio"] + label:before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 5px;
+      left: 0;
+      height: 14px;
+      width: 14px;
+      background: white;
+      border: 1px solid gray;
+      box-shadow: inset 0px 0px 0px 2px white;
+      -webkit-box-shadow: inset 0px 0px 0px 2px white;
+      -webkit-border-radius: 8px;
+      border-radius: 8px;
+    }
+
+    input[type="radio"]:checked + label:before {
+      background: $secondary_color;
+    }
+}
+
+//From inline lable
+@media screen and ( min-width: 992px ) {
+    form .tp-form-inline-lable {
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            width: 26%;
+            float: left;
+            margin: 0;
+            line-height: $tp-line-height-45;
+        }
+
+        input, select, textarea {
+            width: 74%;
+        }
+    }
+}
+@media screen and ( min-width: 992px ) {
+    form .tp-form-inline-lable-1-8 {
+
+        label {
+            width: 13%;
+            float: left;
+            margin: 0;
+            line-height: $tp-line-height-45;
+        }
+
+        input, select, textarea {
+            width: 87%;
+        }
+    }
+}
+//Style for btn action form
+form {
+
+    .tp-action {
+
+        a {
+            @include tp-size-color-text( $secondary_text_color, normal, 0 );
+            font-size: $tp-size-14;
+        }
+
+        a, input[type="submit"], input[type="reset"] {
+            width: auto;
+        }
+
+        @media screen and ( max-width: 600px ) {
+            text-align: center;
+        }
+    }
+}

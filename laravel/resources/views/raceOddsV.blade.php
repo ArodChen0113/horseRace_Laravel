@@ -4,7 +4,7 @@
     <title>賽馬賠率設定</title>
     @include('partials.head')
 </head>
-<body class="woocommerce woocommerce-page">
+<body class="woocommerce woocommerce-page" onload="define()">
 <div class="wrap-main">
     @include('partials.nav')
     <div class="site-content-contain">
@@ -33,18 +33,17 @@
                                                         <td align="center" width="300px" bgcolor="#FFE1AB">賠率</td>
                                                     </tr>
 
-                                                    @for($k=0 ; $k<count($oddsData) ; $k++)
-                                                        <?php $value = $oddsData[$k]; ?>
+                                                    @foreach($oddsData as $value)
                                                         <tr>
                                                             <td><input type="text" name="gameName[]" value="{!! $value->game_name !!}"></td>
                                                             <td><input type="text" name="odds[]" value="{!! $value->odds !!}"></td>
                                                             <input type="hidden" name="num[]" value="{!! $value->num !!}">
                                                         </tr>
-                                                    @endfor
+                                                    @endforeach
                                                 </table>
                                                 <br>
                                                 <input type="hidden" name="_token" value="{!! csrf_token() !!}">
-                                                <input type="hidden" name="action" value="update">
+                                                <input type="hidden" name="action" value="update2">
                                                 <input type="submit" value="確定修改">
                                             </form>
                                         </div>

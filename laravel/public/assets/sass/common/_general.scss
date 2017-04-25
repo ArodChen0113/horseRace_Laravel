@@ -1,0 +1,156 @@
+@import "mixins/mixin-common";
+@import "mixins/mixin-menu";
+@import "variables";
+/*---------------------------------------------------
+[  General Styles  ]
+-------------------------------------------------- */
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased !important; 
+  -moz-osx-font-smoothing: grayscale !important;
+  font-family: $primary_font;
+}
+
+
+.container {
+  width: 1170px;
+  margin: 0 auto;
+  padding: 0;
+  position: relative;
+  @media screen and (max-width: 1160px) {
+    width: 990px;
+  }
+  @media screen and (max-width: 1023px) {
+    width: 960px;
+  }
+  @media screen and (max-width: 979px) {
+    width: 760px;
+  }
+  @media screen and (max-width: 799px) {
+    width: 708px;
+  }
+  @media screen and (max-width: 767px) {
+    width: 620px;
+  }
+  @media screen and (max-width: 639px) {
+    width: 460px;
+  }
+  @media screen and (max-width: 479px) {
+    width: 340px;
+  }
+  @media screen and (max-width: 359px) {
+    width: 300px;
+  }
+  
+}
+
+//a not line
+a, a:hover, a:focus, a:active {
+  text-decoration: none;
+  outline: 0;
+}
+ul li{
+  list-style: none;
+
+}
+ul{
+  padding-left: 0px;
+}
+//set  list style for list
+.tp-ul-no-padding {
+  padding: 0;
+  margin: 0;
+}
+
+.tp-li-list-style li {
+  list-style-type: none;
+}
+
+input, select, button, textarea {
+
+  &:focus, &:active {
+    outline: 0;
+  }
+}
+.wrap-main{
+  width: 100%;
+  overflow: hidden;
+}
+
+.tp-line-height-45 {
+  line-height: $tp-line-height-45;
+}
+
+//color text for bg white
+.tp-color-bg-white {
+ color: $color-white;
+}
+
+.tp-color-bg-black {
+  color: $color-white;
+}
+//img max with & max height 100%
+.tp-max-size-full {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+//class btn site
+.btn-site {
+  @include tp-btn( $primary_color, 1px solid $primary_color, bold, $color-white, $tp-line-height-45, 0 30px );
+}
+//width 100% for mobile
+@media screen and ( max-width: 600px ) {
+  .tp-full-xs {
+    width: 100%;
+  }
+}
+@media screen and ( max-width: 384px ) {
+  .tp-full-xs-384 {
+    width: 100%;
+  }
+}
+.tp-clear {
+  clear: both;
+}
+.hide{
+  display: none;
+  @include transition;
+}
+
+a{
+  @include transition;
+}
+
+
+.btn{   
+  display: inline-block;
+  padding: 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 36px;   
+  height: 38px; 
+  border-radius: 0px;
+  @extend .primary_color;
+  border: 1px solid;
+  @extend .primary_bd_color;
+  &:hover{
+    @extend .primary_bg_color;
+    color: $color-white;
+  }
+
+  &--dark{
+    @extend .primary_bg_color;
+    color: $color-white !important;
+    &:hover{
+      @extend .primary_color;
+      background-color: $color-white;
+    }
+  }
+}
+
+
+  

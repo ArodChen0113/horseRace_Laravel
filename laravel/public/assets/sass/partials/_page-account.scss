@@ -1,0 +1,273 @@
+@import "../common/mixins/mixin-common";
+@import "../common/mixins/mixin-menu";
+@import "../common/variables";
+/*---------------------------------------------------
+[  Pages Account ]
+-------------------------------------------------- */
+//Register page
+.woocommerce {
+	//btn
+	form.register{
+		padding: 0;
+		margin: 0;
+		border:none;
+		border-radius: 0;
+		.form-row{
+			label{
+				&.hidden-label{
+					display: none;
+				}
+			}
+			padding: 0;
+			margin-bottom: 35px;
+			input{
+				height: auto;
+				border: 1px solid $color-02;
+				padding: 0 15px;
+			}
+			input.input-text{
+				line-height: 45px;
+			}
+
+		}
+		.woocommerce-Button{
+			font-weight: 600;
+			width: auto;
+			line-height: 45px;
+			@extend .primary_bg_color;
+			color:$color-white;
+			border: 1px solid ;
+			@extend .primary_bd_color;
+			border-radius: 0px;
+			&:hover{
+				background: $color-white;
+				@extend .primary_color;
+			}
+			padding: 0 40px;
+		}
+	}
+	.tp-action {
+		@include tp-box-full;
+		margin: 30px 0 45px 0;
+
+		@media screen and ( max-width: 991px ) {
+			margin: 25px 0;
+		}
+
+		 input[type="reset"] {
+		 	border: 0;
+		 }
+
+		input[type="reset"] {
+			padding: 0 40px;
+		}
+	}
+
+}
+	
+//Login page
+.content-page-login{
+	padding-bottom: 80px;
+}
+.tp-box-item-login {
+
+	.tp-content {
+		padding: 40px 45px;
+		min-height: 390px;
+
+		@media screen and ( max-width: 991px ) {
+			padding: 40px 20px;
+		}
+
+		@media screen and ( max-width: 767px ) {
+			margin-bottom: 20px;
+			min-height: auto; 
+		}
+
+		h2 {
+			@extend .primary_text_color;
+		    font-weight: bold;
+		    letter-spacing: 0;
+			font-size: $tp-size-16;
+			margin-bottom: 27px;
+		}
+	}
+}
+
+.tp-box-new-cus {
+
+	.tp-content {
+		background: $color-01;
+		
+		p {
+		    @extend .primary_color;
+		    font-weight: normal;
+		    letter-spacing: 0;
+			font-size: $tp-size-16;
+			margin-bottom: 36px;
+		}
+
+		a {
+			padding: 12px 20px;
+		}
+	}
+}
+.tp-box-form-login {
+
+	.tp-content {
+		border: 1px solid $color-01;
+		
+		form.login {
+			border-radius: 0;
+			border:none;
+			padding: 0;
+			margin: 0;
+			.woocommerce-FormRow{
+				padding: 0;
+				margin-bottom: 28px;
+				label{
+					&.hidden-label{
+						display: none;
+					}
+					
+				}
+			}
+
+			.woocommerce-Button{
+				width: auto;
+				padding: 0 40px;
+				line-height: 45px;
+				margin-right: 37px;
+				border:1px solid;
+				@extend .primary_bd_color;
+				@extend .primary_bg_color;
+				border-radius: 0px;
+				color: $color-white;
+				&:hover{
+					background: $color-white;
+					@extend .primary_color;
+				}
+				font-weight: 600;
+			}
+			label.inline{
+				width: 100%;
+				display: block;
+				margin-bottom: 0px;
+				margin-top: 15px;
+				input{
+					width: auto;
+					width: 15px;
+					height: 15px;
+					border-radius: 0px;
+					background: $color-white;
+					margin-right: 10px;
+				}
+			}
+			.woocommerce-LostPassword{
+				display: inline-block;
+				a{
+					@extend .secondary_text_color;
+					&:hover{
+						@extend .secondary_color;
+					}
+					@media screen and ( max-width: 480px ) {
+						width: 100%;
+			 			display: block;
+						margin-left: 0;
+					}
+				} 
+				
+			}
+			
+		}
+	}
+}
+
+
+
+
+//page my-account
+.tp-box-nav-acc {
+
+	.tp-content {
+		background: $color-01;;
+		padding: 35px 70px;
+
+		@media screen and ( max-width: 991px ) {
+			padding: 35px 20px;
+		}
+	}
+
+	ul {
+
+		li {
+
+			a {
+				
+				@extend .primary_text_color;
+			    font-weight: normal;
+			    letter-spacing: 0;
+				font-size: $tp-size-16;
+				line-height: $tp-line-height-60;
+				display: block;
+
+				@media screen and ( max-width: 991px ) {
+			    	line-height: $tp-line-height-50;
+			  	}
+			  	@media screen and ( max-width: 600px ) {
+			    	line-height: $tp-line-height-45;
+			  	}
+			}
+
+			&.is-active a, a:hover {
+				font-weight: bold;
+			}
+		}
+	}
+}
+
+.tp-page-my-account {
+
+	&.tp-content-page .tp-title-page {
+		margin-bottom: 35px;
+	}
+
+	h2 {
+		margin-top: 10px;
+	}
+
+	.tp-form-info-user, .tp-form-checked.form-group {
+		@include tp-box-full;
+		margin-bottom: 5px;
+	}
+
+	form {
+
+		label {
+			
+			@extend .secondary_text_color;
+			    font-weight: normal;
+			    letter-spacing: 0;
+			font-size: $tp-size-16;
+			margin-bottom: 23px;
+		}
+
+		input, select {
+			height: $tp-line-height-45;
+			line-height: $tp-line-height-45;
+		}
+
+		.tp-action {
+
+			a {
+				padding: 0 30px;
+			}
+
+			input[type="submit"] {
+				padding: 0 40px;
+				border: 1px solid;
+				@extend .primary_bd_color; 
+			}
+		}
+	}
+}

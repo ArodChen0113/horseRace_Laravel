@@ -32,14 +32,13 @@
                                                         <td align="center" width="300px" bgcolor="#FFE1AB">名稱</td>
                                                         <td align="center" width="300px" bgcolor="#ABFFAB">email</td>
                                                     </tr>
-                                                    @for($k=0 ; $k<count($memberData) ; $k++)
-                                                        <?php $value = $memberData[$k]; ?>
+                                                    @foreach($memberData as $value)
                                                         <tr>
                                                             <td><input type="text" name="name" value="{!! $value->name !!}"></td>
                                                             <td><input type="text" name="email" value="{!! $value->email !!}"></td>
                                                             <input type="hidden" name="id" value="{!! $value->id !!}">
                                                         </tr>
-                                                        @endfor
+                                                        @endforeach
                                                 </table>
                                                 <br>
                                                 <input type="hidden" name="_token" value="{!! csrf_token() !!}">

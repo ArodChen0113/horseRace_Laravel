@@ -12,6 +12,7 @@ Route::get('memberInsertV','memberC@memberInsertShow');
 Route::get('memberManageV','memberC@memberManageShow');
 Route::get('memberUpdateV','memberC@memberUpdateShow');
 
+Route::get('horseIntroduceV','horseC@horseIntroduceShow');
 Route::get('horseInsertV','horseC@horseInsertShow');
 Route::get('horseManageV','horseC@horseManageShow');
 Route::get('horseUpdateV','horseC@horseUpdateShow');

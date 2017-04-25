@@ -25,8 +25,7 @@
                             <!--全部-->
                             <div role="tabpanel" class="tab-pane active" id="all">
                                 <div class="row">
-                                    @for($i=0 ; $i<count($horseData); $i++)
-                                        <?php $value = $horseData[$i]; ?>
+                                    @foreach($horseData as $value)
                                         <div class="col-md-3 col-xs-6">
                                             <div class="product type-product has-post-thumbnail">
                                                 <div class="product-image">
@@ -44,7 +43,7 @@
                                                 <a href="poBettingV?action=insert&hId={!! $value->h_id !!}" class="button add_to_cart_button">選擇賽馬</a>
                                             </div>
                                         </div>
-                                    @endfor
+                                    @endforeach
                                 </div>
                                 <div class="explore-more"><a class="tp-button" href="raceOverviewV">下 注 總 覽</a></div>
                             </div>

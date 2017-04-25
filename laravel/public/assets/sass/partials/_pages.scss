@@ -1,0 +1,355 @@
+@import "../common/mixins/mixin-common";
+@import "../common/mixins/mixin-menu";
+@import "../common/variables";
+
+
+/*---------------------------------------------------
+[  Title and description page ]
+-------------------------------------------------- */
+.tp-content-page {
+
+	.tp-title-page {
+		margin-bottom: 45px;
+
+		h1, h2 {
+			
+			@extend .primary_text_color;
+			font-weight: bold;
+			letter-spacing: 0;
+			margin-bottom: 20px;
+		}
+
+		p {
+			@extend .primary_text_color;
+			font-weight: normal;
+			letter-spacing: 0;
+			font-size: $tp-size-16;
+		}
+	}
+}
+.tp-page-title-16 {
+
+	.tp-title-page {
+
+		h1, h2 {
+			font-size: 16px;
+		}
+	}
+}
+.tp-page-title-45 {
+
+	.tp-title-page {
+
+		h1, h2 {
+			font-size: $tp-size-45;
+
+			 @media screen and ( max-width: 991px ) {
+			    font-size: 32px;
+			  }
+
+			  @media screen and ( max-width: 600px ) {
+			    font-size: 26px;
+			  }
+		}
+	}
+}
+/*---------------------------------------------------
+[  Pages ]
+-------------------------------------------------- */
+.wrap-main-01{
+	#icon_box_guarantee{
+		border-top: none;
+	}
+	
+	.brand{
+		padding: 30px 0;
+		border-top: 1px solid #cdd1d4;
+		border-bottom: 1px solid #cdd1d4;
+		margin-bottom: 75px;
+	}
+	.lastest-news-01{
+		margin-bottom: 60px;
+	}
+	
+}
+.wrap-main-02{
+	.navbar {
+		@extend .primary_bg_color;
+	}
+	.title-homepage-center{
+		padding-bottom: 20px;
+		margin-bottom: 25px;
+	}
+	.title-homepage-left{
+		margin-bottom: 25px;
+	}
+	.brand{
+		margin: 65px 0;
+	}
+}
+.wrap-main-03{
+	#icon_box_guarantee{
+		padding: 0;
+		.icon-box{
+			overflow: hidden;
+			padding-top: 55px;
+			padding-bottom: 45px;
+			background: #f7f7f7;
+			position: relative;
+		    top: -80px;
+		    z-index: 3;
+		    padding: 20px 5px;
+		 
+		    @media screen and(max-width:1500px){
+		    	top: 0;
+		    	margin: 50px 0;
+		    }
+		}
+	}
+	.tab-product-03{
+		margin-bottom: 35px;
+	}
+	.brand{
+		padding: 35px 0;
+		border-top: 1px solid $color-01;	
+		margin-top: 60px;
+	}
+}
+
+.shortcode-product-slider-page{
+	padding-top: 50px;
+	padding-bottom: 30px;
+}
+.shortcode-product-tab-page{
+	padding-top: 50px;
+	padding-bottom: 30px;
+	.tab-product-03{
+		margin-top: 90px;
+	}
+}
+.shortcode-lastest-news-page{
+	padding: 50px 0;
+	.lastest-news-02{
+		padding-top: 50px;
+	}
+}
+.shortcode-brand-page{
+	.brand{
+		padding: 80px 0;
+	}
+}
+.shortcode-testimonial-page{
+	padding: 80px 0;
+}
+.multi-forms-page{
+	padding: 50px 0;
+	.tp-info-add-checkout{
+		margin-bottom: 50px;
+	}
+	.tp-form-site{
+		@media screen and (max-width:600px){
+			margin-bottom: 50px;
+		}
+	}
+	.checkbox-radio-button{
+
+		margin-top: 50px;
+		.checkbox-demo{
+			margin-top: 30px;
+			.tp-checkbox-custom.checkbox-02 + .tp-checkbox-custom-label:before{
+				border: 1px solid ;
+				@extend .secondary_bd_color;
+				@extend .secondary_color;
+			}
+			.tp-checkbox-custom.checkbox-03 + .tp-checkbox-custom-label:before{
+				width: 40px;
+				height: 40px;
+				line-height: 35px;
+				font-size: 18px;
+			}
+			.tp-checkbox-custom.checkbox-04 + .tp-checkbox-custom-label:before{
+				width: 40px;
+				height: 40px;
+				line-height: 35px;
+				font-size: 18px;
+				border: 1px solid ;
+				@extend .secondary_bd_color;
+				@extend .secondary_color;
+			}
+		}
+		.radiobutton-demo{
+			margin-top: 30px;
+			.customer-radio{
+				input[type="radio"]{
+					position: absolute;
+					opacity: 0;
+	   				
+				}
+				input[type="radio"] + label{
+					position: relative;
+					line-height: 30px;
+				}
+				input[type="radio"] + label:before{
+					    content: "";
+				    display: block;
+				    position: absolute;
+				    top: 5px;
+				    left: 0;
+				    height: 20px;
+				    width: 20px;
+				    line-height: 20px;
+				    background: white;
+				    border: 1px solid gray;
+				    box-shadow: inset 0px 0px 0px 2px white;
+				    -webkit-box-shadow: inset 0px 0px 0px 2px white;
+				    border-radius: 100%;
+				}
+				input[type="radio"]:checked + label:before{
+					@extend .primary_bg_color;
+					border: 1px solid;
+					@extend .primary_bd_color;
+				}
+				label{
+					padding-left: 30px;
+					margin-right: 20px;
+				}
+				
+			}
+		}
+		
+	}
+}
+.pagination-page{
+	padding: 50px 0;
+	ul{
+		text-align: center;
+		padding: 50px 0;
+		li{
+			display: inline-block;
+		}
+	}
+	.tp-pagination{
+		margin-bottom: 0px;
+		ul{		
+			float: none;
+		}
+	}
+	.tp-pagination-02{
+		a{
+			display: inline-block;
+			width: 40px;
+			height: 40px;
+			line-height: 40px;
+			border-radius: 100%;
+			border: 1px solid $color-01;
+			
+			@extend .primary_color;
+			margin: 0 3px;
+			font-size: 14px;
+			&:hover,&.active-pagination{
+				@extend .primary_bg_color;
+				border:1px solid;
+				@extend .primary_bd_color;
+				color: $color-white;
+				
+			}
+		}
+	}
+	.tp-pagination-03{
+		a{
+			padding: 10px 20px;
+			border:1px solid $color-01;
+			
+			border-radius: 10px;
+			font-size: 14px;
+			@extend .primary_color;
+			&:hover{
+				@extend .primary_bg_color;
+				border:1px solid;
+				@extend .primary_bd_color;
+				color: $color-white;
+			}
+		}
+	}
+	.tp-pagination-04{
+		a{
+			display: inline-block;
+			padding: 0 10px;
+			@extend .primary_color;
+			i{
+				padding: 0 5px;
+			}
+			&:hover{
+				@extend .secondary_color;
+			}
+		}
+	}
+}
+.grid-system-demo-page{
+	padding: 50px 0;
+	h5{
+		font-weight: bold;
+		margin-bottom: 20px;
+	}
+	.row{
+		margin-bottom: 40px;
+	}
+}
+.breadcrumb-page{
+	padding: 50px 0;
+	p{
+		margin-top: 30px;
+	}
+
+	.tp-breadcrumb-02{
+		margin-top: 50px;
+		ul{
+			li{
+				display: inline-block;
+				line-height: 35px;
+    			margin: 0px 8px 0px 15px;
+				a{
+					position: relative;
+				    background: rgb(238, 238, 238);
+				    padding: 9px 20px;
+				    @extend .primary_color;
+				   
+				    &:after{
+				    	    content: "";
+					    position: absolute;
+					    top: 50%;
+					    margin-top: -18px;
+					    right: -17px;
+					    border-top: 18px solid transparent;
+					    border-bottom: 18px solid transparent;
+					    border-left: 17px solid #eeeeee;
+				    }
+				    &:before{
+				    	content: "";
+					    position: absolute;
+					    top: 50%;
+					    margin-top: -18px;
+					    left: -15px;
+					    border-width: 18px 0px 17px 15px;
+					    border-style: solid;
+					    border-color: #eeeeee #eeeeee #eeeeee transparent;
+				    }
+				}
+				&.active,&:hover{
+					a{
+						@extend .primary_bg_color;
+						color: $color-white;
+						&:after{
+							border-left-color: $primary_color;
+						}
+						&:before{
+							border-color: $primary_color $primary_color $primary_color transparent;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+}
+

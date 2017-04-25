@@ -23,11 +23,12 @@ class horseRaceC extends Controller
         $alert = '';
         //賽馬下注後提示顯示
         if($action == 'bsBetting'){
-            $bettingData = ['num' => $input['num'], 'money' => $input['money'], 'horseName' => $input['horseName'], 'action' => $input['action'], 'control' => $input['control']];
-            $alert = bigOrSmallGameM::bsBettingMoneyInsert($bettingData);
+            $bettingData = ['money' => $input['money'], 'action' => $input['action'], 'control' => $input['control'], 'rank' => $input['rank']];
+            $alert = bigOrSmallGameM::bsBettingInsert($bettingData);
         }
         if($action == 'poBetting'){
-            $bettingData = ['num' => $input['num'], 'money' => $input['money'], 'horseName' => $input['horseName'], 'action' => $input['action'], 'control' => $input['control'], 'rank' => $input['rank']];
+            $bettingData = ['num' => $input['num'], 'money' => $input['money'], 'horseName' => $input['horseName'],
+                'action' => $input['action'], 'control' => $input['control'], 'rank' => $input['rank']];
             $alert = positionGameM::poBettingMoneyInsert($bettingData);
         }
         //賽馬開獎
@@ -39,10 +40,8 @@ class horseRaceC extends Controller
     //賽果總覽(前台)頁面顯示
     public function raceOverviewShow(){
         $user = Auth::user();
-        $userId = $user->id;
-        $bettingData = horseRaceM::horseRaceResultPersonalData($userId);
-        $memberData = memberM::memberSelOne($userId);
-
+        $bettingData = horseRaceM::horseRaceResultPersonalData($user->id); //個人賽馬資料
+        $memberData = memberM::memberSelOne($user->id); //會員資料
         return view('raceOverviewV', ['bettingData' => $bettingData, 'memberData' => $memberData]);
     }
     //開獎盈餘(後台)頁面顯示
@@ -50,7 +49,7 @@ class horseRaceC extends Controller
         $alert = Input::get('action', '');
         //開獎
         if($alert == 'lottery'){
-            $this->lotteryControl($alert);
+            $this->lotteryControl($alert); //賽馬賽果開獎
         }
         $horseRaceResultData = horseRaceM::horseRaceResultData();
         return view('raceSurplusV', ['horseRaceResultData' => $horseRaceResultData, 'alert' => $alert]);
@@ -58,8 +57,8 @@ class horseRaceC extends Controller
     //賠率管理(後台)頁面顯示
     public function raceOddsShow(){
         $input = Input::all();
-        $oddsData = horseRaceM::raceOddsData(); //賠率資料
         $action = Input::get('action', '');
+        $oddsData = horseRaceM::raceOddsData(); //賠率資料
         $gameName = '';
         //修改遊戲賠率
         if($action == 'update'){

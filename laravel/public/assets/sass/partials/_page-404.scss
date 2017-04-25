@@ -1,0 +1,35 @@
+@import "../common/mixins/mixin-common";
+@import "../common/mixins/mixin-menu";
+@import "../common/variables";
+/*---------------------------------------------------
+[  Pages 404 ]
+-------------------------------------------------- */
+.tp-content-page-404 {
+
+	h1 {
+		@include tp-size-color-text( #f9a818, bold );
+		font-size: 90px;
+		font-weight: bold;
+		@media screen and ( max-width: 1199px ) {
+			font-size: 60px;
+		}
+	}
+
+	p {
+		@extend .primary_color;
+		font-weight: bold;
+		font-size: $tp-size-24;
+		line-height: $tp-line-height-25;
+		margin-bottom: 37px
+	}
+
+	img {
+		max-width: 100%;
+		margin-bottom: 33px;
+	}
+
+	.tp-btn {
+		padding: 0 20px;
+		display: inline-block;
+	}
+}

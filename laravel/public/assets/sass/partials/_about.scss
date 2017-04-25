@@ -1,0 +1,149 @@
+@import "../common/mixins/mixin-common";
+@import "../common/mixins/mixin-menu";
+@import "../common/variables";
+/*---------------------------------------------------
+[  About page  ]
+-------------------------------------------------- */
+.about-page{
+
+	.title-page{
+
+		font-weight: 600;
+		font-size: 45px;
+		@extend .primary_text_color;
+		text-transform: uppercase;
+		margin-bottom: 50px;
+		margin-top: 35px;
+	}
+	
+	.about-info{
+		position: relative;
+		overflow: hidden;
+		height: 565px;
+		font-size: 16px;
+		@extend .primary_text_color;
+		background-color: #eef0f0;
+		@media(max-width:991px){
+			height: auto;
+		}
+		.img-right{
+			background:url(../images/about.jpg) no-repeat;background-size:cover;
+			background-position: center center;
+			padding: 0px;
+		    position: absolute;
+		    top: 0px;
+		    height: 100%;
+		    overflow: hidden;
+		    z-index: 1;
+		    right: 0;
+		    @media(max-width:991px){
+		    	min-height: 300px;
+		    	position: relative;
+		    }
+		}
+		.ab-infomation{
+			padding-top: 100px;
+			p{
+				margin-bottom: 30px;
+			}
+			ul{
+				margin-top: 60px;
+				li{
+					margin-bottom: 20px;
+					i{
+						margin-right: 15px;
+					}
+				}
+			}
+			@media(max-width:991px){
+				padding-bottom: 50px;
+			}
+		}
+	}
+	
+	.service{
+
+		img{
+			margin-top: -42px;
+			width: 100%;
+		}
+
+		.content-service{
+			padding-top: 180px;
+			h3{
+				margin-top: 0px;
+				font-weight:bold;
+				font-size: 45px;
+				@extend .primary_text_color;
+				text-transform: uppercase;
+			}
+
+			.description{
+				font-size: 16px;
+				position: relative;
+				
+				&:after{
+					margin-top: 20px;
+					height: 4px;
+					width: 32px;
+					@extend .primary_bg_color;
+					content: "";
+					display: block;
+				}
+			}
+
+			table{
+				margin-right: 70px;
+				margin-top: 50px;
+
+				td.title{
+					font-size: 18px;
+					font-weight: bold;
+					@extend .primary_text_color;
+					padding-right: 40px;
+				}
+				td{
+					@extend .secondary_text_color;
+					font-size: 16px;
+					padding-bottom: 90px;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width:1199px){
+	.about-page .service .content-service{
+		padding-top: 90px;
+	}
+	.about-page .title-page{
+		margin-bottom: 40px;
+		margin-top: 30px;
+	}
+}
+@media screen and (max-width:991px){
+	.about-page .service img{
+		margin-top: 40px;
+	}
+	.about-page .service .content-service{
+		padding-top: 30px;
+	}
+}
+@media screen and (max-width:767px){
+	.about-page .service .content-service h3,.about-page .title-page{
+		font-size: 30px;
+	}
+	.about-page .service .content-service table td{
+		padding-bottom: 40px;
+	}
+}
+@media screen and (max-width:480px){
+	.about-page .info .infomation{
+		    padding-top: 50px;
+	}
+}
+@media screen and (max-width:360px){
+	.about-page .info .infomation ul{
+		margin-top: 0px;
+	}
+}

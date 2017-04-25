@@ -1,0 +1,41 @@
+@mixin tp-menu-level-1( $display: block, $size: 18px, $color: $color-black-2, $transform-text: uppercase, $padding-bottom: 0px, $weight: bold ) {
+  display: $display;
+  font-size: $size;
+  color: $color;
+  text-transform: $transform-text;
+  padding-bottom: $padding-bottom;
+  font-weight: $weight;
+}
+@mixin tp-submenu-level-1( $position: absolute, $left: -50%, $z-index: 99, $border: 1px solid #e1e1e1, $background: $color-white ) {
+  position: $position;
+  left: $left;
+  background: $background;
+  z-index: $z-index;
+  border: $border;
+}
+@mixin tp-li-submenu-level-1( $width: 100%, $float: left, $position: relative, $align: left ) {
+  width: $width;
+  float: $float;
+  position: $position;
+  text-align: $align;
+}
+@mixin tp-a-submenu-level-1( $border: 1px solid #f1f1f1, $size: 14px, $height: 40px, $display: block, $text-transform: uppercase, $weight: normal, $color: $color-black, $padding-left: 10px ) {
+  font-size: $size;
+  line-height: $height;
+  display: $display;
+  color: $color;
+  text-transform: $text-transform;
+  font-weight: $weight;
+  padding-left: $padding-left;
+  border-bottom: $border;
+}
+//menu primary hover
+@mixin tp-menu-primary-hover( $color: $primary_color, $border: 2px solid $primary_color ) {
+  color: $color;
+  border-bottom: $border;
+}
+//hover text bold;
+@mixin tp-menu-hover-bold( $weight: 600, $position: relative ) {
+  position: $position;
+  font-weight: $weight;
+}

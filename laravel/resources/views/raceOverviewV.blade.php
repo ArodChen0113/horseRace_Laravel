@@ -27,23 +27,26 @@
                                                 <thead>
                                                 <font color="red" size="5">帳戶金額：{!! $memberData[0]->money !!}</font>
                                                 <tr>
-                                                    <th class="product-name">場次/名稱</th>
+                                                    <th class="product-name">場次/名稱(名次)</th>
                                                     <th class="product-name">玩法</th>
                                                     <th class="product-name">金額</th>
                                                     <th class="product-name">賠率</th>
-                                                    <th class="product-name">名次</th>
+                                                    <th class="product-name">賽果(名次/馬號)</th>
                                                     <th class="product-name">勝負</th>
                                                     <th class="product-name">獲利</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 @if($bettingData != NULL)
-                                                    @for ($k=0; $k<count($bettingData); $k++)
-                                                        <?php $value = $bettingData[$k]; ?>
+                                                    @foreach($bettingData as $value)
                                                         <tr class="cart_item">
                                                             <td class="product-name">
                                                                第{!! $value['horseRaceNum'] !!}場 /
+                                                                @if($value['control'] == 5)
                                                                 {!! $value['horse_name'] !!}
+                                                                    @else
+                                                                   第{!! $value['h_rank'] !!}名
+                                                                @endif
                                                             </td>
                                                             <td class="product-name">
                                                                 @if($value['control'] == 1)
@@ -69,14 +72,24 @@
                                                                 $ {!! $value['money'] !!}
                                                             </td>
                                                             <td class="product-name">
+                                                                @if($value['odds']!=NULL)
                                                                 {!! $value['odds'] !!}
+                                                                @else
+                                                                    {!! '-----' !!}
+                                                                @endif
                                                             </td>
                                                             <td class="product-name">
-                                                                @if($value['r_rank'] == 0)
-                                                                    {!! '-----' !!}
-                                                                @else
-                                                                    {!! $value['r_rank'] !!}
-                                                                @endif
+                                                                @if($value['r_hId']!=0 and $value['control']==5)
+                                                                第{!! $value['r_rank'] !!}名
+                                                                ({!! $value['h_id'] !!})
+                                                                    @endif
+                                                                    @if($value['r_hId']!=0 and $value['control']!=5)
+                                                                        第{!! $value['h_rank'] !!}名
+                                                                        ({!! $value['r_hId'] !!})
+                                                                        @endif
+                                                                    @if($value['r_hId']==0)
+                                                                        {!! '-----' !!}
+                                                                    @endif
                                                             </td>
                                                             <td class="product-name">
                                                                 @if($value['win']==1 and $value['count']==2 and $value['money']!=0)
@@ -119,7 +132,7 @@
                                                                 @endif
                                                             </td>
                                                         </tr>
-                                                        @endfor
+                                                        @endforeach
                                                 @else
                                                     {!! "尚未投注！" !!}
                                                 @endif

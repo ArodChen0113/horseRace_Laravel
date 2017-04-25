@@ -32,19 +32,19 @@ class bigOrSmallGameC extends Controller
     //大小單雙遊戲下注頁面顯示(首頁)
     public function bsBettingShow()
     {
-        $input = Input::all();
         $user = Auth::user();
-        $userId=$user->id;
+        $input = Input::all();
         $action = Input::get('action', '');
         $alert = '';
         //下注資料新增
         if($action == 'insert'){
             $rowHorseData = horseRaceM::horseDataOne($input['hId']);  //賽馬資料
-            $horseData = ['h_id' => $input['hId'], 'horseName' => $rowHorseData[0]->horse_name, 'horsePic' => $rowHorseData[0]->horse_picture, 'action' => $input['action']];
+            $horseData = ['h_id' => $input['hId'], 'horseName' => $rowHorseData[0]->horse_name,
+                'horsePic' => $rowHorseData[0]->horse_picture, 'action' => $input['action']];
             $alert = bigOrSmallGameM::bsBettingInsert($horseData);
         }
         $bettingData = horseRaceM::bettingData();       //下注資料
-        $memberData = memberM::memberSelOne($userId);   //會員資料
+        $memberData = memberM::memberSelOne($user->id);   //會員資料
         $gameName = '賽馬大小遊戲';
         $odds = horseRaceM::raceOddsOneData($gameName); //遊戲賠率
 

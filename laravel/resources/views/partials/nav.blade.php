@@ -30,10 +30,13 @@
                         <a href="/">賽馬遊戲</a>
                         <ul class="sub-menu">
                             <li class="menu-item-has-children">
+                                <a href="horseIntroduceV">賽馬介紹</a>
+                            </li>
+                            <li class="menu-item-has-children">
                                 <a href="poIntroduceV">定位賽馬</a>
                             </li>
                             <li class="menu-item-has-children">
-                                <a href="bsIntroduceV">單雙大小賽馬</a>
+                                <a href="bsBettingV">單雙大小賽馬</a>
                             </li>
                         </ul>
                     </li>

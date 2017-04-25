@@ -1,0 +1,35 @@
+  .primary_color{
+    color: $primary_color;
+  }
+  .primary_bg_color{
+    background-color: $primary_color;
+  }
+  .primary_bd_color{
+    border-color: $primary_color;
+  }
+  .primary_bdb_color{ 
+    border-bottom-color: $primary_color;
+  }
+
+
+  .secondary_color{
+    color:$secondary_color;
+  }
+  .secondary_bg_color{
+    background-color: $secondary_color;
+  }
+  .secondary_bd_color{
+    border-color: $secondary_color;
+  }
+   .secondary_bdl_color{
+    border-left-color: $secondary_color;
+  }
+
+
+  .primary_text_color{
+    color:$primary_text_color;
+  }
+
+  .secondary_text_color{
+    color:  $secondary_text_color;
+  }

@@ -5,12 +5,19 @@ use App\Http\Controllers\Controller;
 use Input;
 use Illuminate\Http\UploadedFile;
 use App\Models\horseM;
+use App\Models\horseRaceM;
 
 class horseC extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth'); //驗證使用者是否登入
+    }
+    //賽馬介紹頁面顯示
+    public function horseIntroduceShow()
+    {
+        $horseData = horseRaceM::horseData();  //賽馬資料
+        return view('horseIntroduceV', ['horseData' => $horseData]);
     }
     //賽馬管理頁面顯示
     public function horseManageShow()
@@ -20,12 +27,14 @@ class horseC extends Controller
         $horseName = '';
         //賽馬資料新增
         if($action == 'insert'){
-            $horseData = ['horseName' => $input['horseName'], 'horseAge' => $input['horseAge'], 'horseIntroduce' => $input['horseIntroduce'], 'action' => $input['action']];
+            $horseData = ['horseName' => $input['horseName'], 'horseAge' => $input['horseAge'],
+                'horseIntroduce' => $input['horseIntroduce'], 'action' => $input['action']];
             $horseName = horseM::horseInt($horseData);
         }
         //賽馬資料修改
         if($action == 'update'){
-            $horseData = ['horseName' => $input['horseName'], 'horseAge' => $input['horseAge'], 'horseIntroduce' => $input['horseIntroduce'], 'action' => $input['action'], 'hId' => $input['hId']];
+            $horseData = ['horseName' => $input['horseName'], 'horseAge' => $input['horseAge'],
+                'horseIntroduce' => $input['horseIntroduce'], 'action' => $input['action'], 'hId' => $input['hId']];
             $horseName = horseM::horseUp($horseData);
         }
         //賽馬資料刪除
@@ -45,7 +54,7 @@ class horseC extends Controller
     public function horseUpdateShow()
     {
         $input = Input::all();
-        $horseData = horseM::horseSelOne($input['hId']);
+        $horseData = horseM::horseSelOne($input['hId']); //賽馬資料
         return view('horseUpdateV', ['horseData' => $horseData]);
     }
 }

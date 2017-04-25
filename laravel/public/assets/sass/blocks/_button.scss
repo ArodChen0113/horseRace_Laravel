@@ -1,0 +1,62 @@
+@import "../common/mixins/mixin-common";
+@import "../common/mixins/mixin-menu";
+@import "../common/variables";
+/*---------------------------------------------------
+[  Element button  ]
+-------------------------------------------------- */
+.tp-btn {
+	font-size: $tp-size-16;
+	font-weight: bold;
+	@include  transition;
+}
+.tp-btn-transparent {
+	border: 1px solid $primary_color;
+	color: $primary_text_color;
+	background: transparent;
+
+	&:hover {
+		background: $primary_color;
+		color: $color-white;
+	}
+}
+.tp-btn-bg-accent-3 {
+	border: 1px solid $primary_color;
+	background: $primary_color;
+	color: $color-white;
+	&:hover{
+		background: $color-white;
+		color: $primary_color!important;
+	}
+}
+.tp-btn-bg-accent {
+	border: 1px solid $primary_color;
+	background: $primary_color;
+	color: $color-white;
+}
+.tp-btn-bg-gray {
+	border: 1px solid $color-01;
+	background: $color-01;
+	color: $primary_text_color;
+	&:hover{
+		background: $primary_color;
+		color: $color-white;
+	}
+}
+.tp-btn-tran-bor-0 {
+	border: 0;
+	background: transparent;
+	color: $secondary_text_color;
+	font-weight: normal;
+	font-size: $tp-size-14;
+}
+.tp-btn-action {
+	@media screen and ( max-width: 600px ) {
+		text-align: center;
+	}
+}
+.tp-action {
+
+	a {
+		display: inline-block;
+	}
+}

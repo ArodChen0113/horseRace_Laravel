@@ -1,0 +1,213 @@
+@mixin transition( $select: all, $delay: 0.3s, $type: ease ) {
+  -webkit-transition: $select $delay $type;
+  -moz-transition: $select $delay $type;
+  -ms-transition: $select $delay $type;
+  -o-transition: $select $delay $type;
+  transition: $select $delay $type;
+}
+//Transition tranform scale
+@mixin tp-scale( $scale: 0 ) {
+  transform: scale( $scale );
+  -webkit-transform: scale( $scale );
+  -moz-transform: scale( $scale );
+  -o-transform: scale( $scale );
+}
+@mixin tp-scaleX( $scale: 0 ) {
+  transform: scaleX( $scale );
+  -webkit-transform: scaleX( $scale );
+  -moz-transform: scaleX( $scale );
+  -o-transform: scaleX( $scale );
+}
+@mixin tp-scaleY( $scale: 0 ) {
+  transform: scaleY( $scale );
+  -webkit-transform: scaleY( $scale ); 
+  -moz-transform: scaleY( $scale );
+  -o-transform: scaley( $scale );
+}
+//Box-shadow
+@mixin tp-box-shadow( $color: $color-black, $Horizontal: 0px, $Vertical: 3px, $Blur-Radius: 5px ) {
+  -moz-box-shadow: $Horizontal $Vertical $Blur-Radius $color;
+  -o-box-shadow: $Horizontal $Vertical $Blur-Radius $color;
+  -ms-box-shadow: $Horizontal $Vertical $Blur-Radius $color;
+  -webkit-box-shadow: $Horizontal $Vertical $Blur-Radius $color;
+  box-shadow: $Horizontal $Vertical $Blur-Radius $color;
+}
+//Icon menu has menu child
+@mixin tp-icon-after-before( $content : "\f038", $size: 22px, $color: $color-black ) {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  content: $content;
+  font-size: $size;
+  color: $color;
+}
+//border radius
+@mixin tp-border-radius( $radius: 5px ) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -o-border-radius: $radius;
+  border-radius: $radius;
+}
+//SIZE
+@mixin tp-size( $width: 100%, $height: 100% ) {
+  width: $width;
+  height: $height;
+}
+@mixin tp-size-max( $width: 100%, $height: 100% ) {
+  max-width: $width;
+  max-height: $height;
+}
+//border for text use
+@mixin tp-border-title( $width: 38px, $margin: 10px 0 0 0, $display: block ) {
+  content: "";
+  width: $width;
+  margin: $margin;
+  display: $display;
+}
+//font-size and color title product
+@mixin tp-size-color-text( $color: $color-black, $weight: bold, $spacing: 0px ) {
+  color: $color;
+  font-weight: $weight;
+  letter-spacing: $spacing;
+}
+//btn
+@mixin tp-btn( $background: $primary_color, $border: 1px solid $primary_color, $weight: bold, $color: $color-white, $height: $tp-line-height-45, $padding: 0 20px ) {
+  background: $background;
+  border: $border;
+  font-weight: $weight;
+  color: $color;
+  line-height: $height;
+  padding: $padding;
+}
+//background btn
+@mixin tp-btn-hover( $background: transparent, $color: $primary_color, $border: 1px solid $primary_color ) {
+  background: $background;
+  color: $color;
+  border: $border;
+}
+//label form
+@mixin tp-label-form( $size: 14px, $color: $color-black, $margin: 0 0 15px 0, $text-transform: uppercase, $weight: 700 ) {
+  font-size: $size;
+  color: $color;
+  text-transform: $text-transform;
+  font-weight: $weight;
+  margin: $margin;
+}
+//Position right top
+@mixin tp-position-top-right( $top: 0, $right: 0 ) {
+  position: absolute;
+  top: $top;
+  right: $right;
+}
+//Position right bottom
+@mixin tp-position-bottom-right( $bottom: 0, $right: 0 ) {
+  position: absolute;
+  bottom: $bottom;
+  right: $right;
+}
+//Position left top
+@mixin tp-position-top-left( $top: 0, $left: 0 ) {
+  position: absolute;
+  top: $top;
+  left: $left;
+}
+//Position left bottom
+@mixin tp-position-bottom-left( $bottom: 0, $left: 0 ) {
+  position: absolute;
+  bottom: $bottom;
+  left: $left;
+}
+//box effect hover
+@mixin tp-hover-visibility( $opacity: 0, $visibility: hidden, $top: 15px ) {
+  opacity: $opacity;
+  visibility: $visibility;
+  margin-top: $top;
+}
+@mixin tp-box-full( $display: table, $width: 100% ) {
+  display: $display;
+  width: $width;
+}
+@mixin tp-animation-keyframe( $nameKeyFrame: animateZeppelins, $time: 5s, $effect: ease-out, $loop: infinite ) {
+  animation: $nameKeyFrame $time $effect $loop;
+  -moz-animation: $nameKeyFrame $time $effect $loop;
+  -webkit-animation: $nameKeyFrame $time $effect $loop;
+  -o-animation: $nameKeyFrame $time $effect $loop;
+}
+//Center height and width
+@mixin tp-center-box-height-width( $position: absolute, $top: 50%, $left: 50%, $translateY: -50%,  $translateX: -50% ) {
+  position: $position;
+  top: $top;
+  left: $left;
+  transform: translate( $translateX, $translateY );
+  -webkit-transform: translate( $translateX, $translateY );
+  -moz-transform: translate( $translateX, $translateY );
+  -o-transform: translate( $translateX, $translateY );
+}
+//only height
+@mixin tp-center-box-height-only( $position: absolute, $top: 50%, $translateY: -50% ) {
+  position: $position;
+  top: $top;
+  transform: translateY( $translateY );
+  -webkit-transform: translateY( $translateY );
+  -moz-transform: translateY( $translateY );
+  -o-transform: translateY( $translateY );
+}
+@mixin tp-text-srwap ( $white-space: nowrap, $text-overflow: ellipsis, $overlay: hidden ) {
+  white-space: $white-space;
+  text-overflow: $text-overflow;
+  overflow: $overlay;
+}
+
+@mixin translateY($y){
+  -ms-transform: translateY($y); 
+  -webkit-transform: translateY($y); 
+  transform: translateY($y);
+}
+@mixin translateX($x){
+  -ms-transform: translateY($x); 
+  -webkit-transform: translateY($x); 
+  transform: translateY($x);
+}
+
+@mixin prefix($property, $value, $prefixes: webkit moz ms o) {
+  @each $prefix in $prefixes {
+    #{'-' + $prefix + '-' + $property}: $value;
+  }
+
+  // Output standard non-prefixed declaration
+  #{$property}: $value;
+}
+
+
+
+//thumb input range
+@mixin tp-thumb-input-range( $background: #4b5862, $border: 1px solid #4b5862, $size: 20px, $radius: 50% ) {
+  background: $background;
+  border: $border;
+  @include tp-size( $size, $size );
+  border-radius: $radius;
+}
+//center item
+@mixin flex-center-item{
+  display:-webkit-box;
+  display:-moz-box;
+  display:-ms-flexbox;
+  display:-moz-flex;
+  display:-webkit-flex;
+  display:flex;
+  -webkit-flex-flow:row wrap;
+  flex-flow:row wrap;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items:center;
+  align-content:center;
+  @include prefix(transition, "min-height 0.3s");
+}

@@ -1,0 +1,122 @@
+@import "../common/mixins/mixin-common";
+@import "../common/mixins/mixin-menu";
+@import "../common/variables";
+/*---------------------------------------------------
+[  Testimonial]
+-------------------------------------------------- */
+.testimonial{
+	@media screen and (max-width:991px){
+		margin-bottom: 40px;
+	}
+	&__title{
+		margin-bottom: 0px;
+	    margin-top: 0px;
+	    font-size: 24px;
+	    color: #575757;
+	    text-transform: uppercase;
+	    padding-bottom: 20px;
+	    border-bottom: 4px solid $primary_color;
+	}
+
+	&__container{
+		padding-top: 60px;
+		background: #f7f7f7;
+		overflow: hidden;		
+
+	}
+	&__item{
+		overflow: hidden;
+		padding: 0 70px;
+		margin-bottom: 90px;
+		img{
+			float: left;
+			margin-right: 30px;
+			border-radius: 100%;
+		}	
+	}
+	&__content{
+		display: table;
+		p{
+			font-size: 16px;
+			color: $primary_text_color;
+			margin-bottom: 15px;
+		}
+		.meta{
+			.name{
+				color: $secondary_color;
+				font-weight: 600;
+			}
+			.date{
+				color: $primary_color;
+			}
+		}
+	}
+
+	&__pagination{
+		float: right;
+		margin-right: 30px;
+		margin-bottom: 30px;
+		span{
+			display: inline-block;
+			width: 30px;
+			height: 4px;
+			background: $primary_color;
+			border-radius: 0;
+			margin-right: 10px;
+		}
+	}
+
+	&--two-col{
+		padding-bottom: 50px;
+		.testimonial__item{
+			margin-bottom: 50px;
+			img{
+				border-radius: 100%;
+			}
+		}
+		.testimonial__content{
+			
+			p{
+				font-size: 16px;
+    			color: #575757;
+			}
+			.meta{
+				.name{
+					color: $secondary_color;
+					font-weight: 600;
+				}
+				.date{
+					color: $primary_color;
+				}
+			}
+		}
+		
+		.testimonial__pagination{
+			text-align: center;
+			padding-top: 30px;
+			float: none;
+			.swiper-pagination-bullet{
+				width: 10px;
+				height: 10px;
+				display: inline-block;
+				margin: 0 3px;
+				&.swiper-pagination-bullet-active{
+					background: $primary_color;
+				}
+			}
+		}
+	}
+}
+
+
+@media screen and( max-width:600px){
+	.testimonial .testimonial-container .testimonial-item{
+		padding: 0 25px;
+	}
+}
+@media screen and( max-width:370px){
+	.testimonial .testimonial-container .testimonial-item img{
+		float: none;
+		margin-bottom: 25px;
+	}
+}

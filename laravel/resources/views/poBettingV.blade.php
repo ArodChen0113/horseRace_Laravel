@@ -53,8 +53,7 @@
                                                 </thead>
                                                 <tbody>
                                                 @if($bettingData != NULL)
-                                                    @for ($k=0; $k<count($bettingData) ; $k++)
-                                                        <?php $value = $bettingData[$k]; ?>
+                                                    @foreach($bettingData as $value)
                                                         <tr class="cart_item">
                                                             <td class="product-name">
                                                                 <img
@@ -90,7 +89,7 @@
                                                             <td class="product-remove" data-title="Remove"><a
                                                                     href="poIntroduceV?action=delete&hId={!! $value->h_id !!}&num={!! $value->num !!}" class="remove">×</a></td>
                                                         </tr>
-                                                        @endfor
+                                                        @endforeach
                                                 @endif
                                                 </tbody>
                                             </table>

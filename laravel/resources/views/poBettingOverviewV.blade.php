@@ -36,11 +36,7 @@
                                                 </thead>
                                                 <tbody>
                                                 @if($poHorseRaceResultData != NULL)
-
-                                                    @for ($k=0; $k<count($poHorseRaceResultData); $k++)
-                                                        <?php
-                                                        $value = $poHorseRaceResultData[$k];
-                                                        ?>
+                                                    @foreach($poHorseRaceResultData as $value)
                                                         <tr class="cart_item">
                                                             <td class="product-name">
                                                                 第{!! $value['num'] !!}場
@@ -58,7 +54,7 @@
                                                                 $ {!! $value['loseMoney'] !!}
                                                             </td>
                                                         </tr>
-                                                        @endfor
+                                                        @endforeach
                                                 @else
                                                     {!! "尚未投注！" !!}
                                                 @endif

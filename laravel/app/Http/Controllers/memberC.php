@@ -17,11 +17,10 @@ class memberC extends Controller
     //帳號管理頁面顯示(前台)
     public function accountManageShow()
     {
-        $input = Input::all();
         $user = Auth::user();
-        $userId = $user->id;      //會員id
-        $memberData = memberM::memberSelOne($userId); //搜尋會員資料
+        $input = Input::all();
         $alert = Input::get('action', '');
+        $memberData = memberM::memberSelOne($user->id); //搜尋會員資料
         if($alert == 'update'){
             $memberData = ['horseName' => $input->memberName, 'id' => $input->id, 'action' => $input->action];
             $alert = memberM::memberUp($memberData);  //會員資料修改
@@ -35,20 +34,17 @@ class memberC extends Controller
     //會員金額儲值頁面顯示(前台)
     public function accountStoredValueShow()
     {
+        $user = Auth::user();
         $input = Input::all();
         $action = Input::get('action', '');
-        $user = Auth::user();
-        $userId = $user->id;      //會員id
         $memberName = '';
         //會員資料修改
         if($action == 'pay') {
-            $storedData = ['money' => $input['money'], 'action' => $action, 'id' => $userId];
-            $memberName = memberM::accountStoredValueUp($storedData);
+            $storedData = ['money' => $input['money'], 'action' => $action, 'id' => $user->id];
+            $memberName = memberM::accountStoredValueUp($storedData); //會員儲值更新
         }
-        $memberData = memberM::memberSelOne($userId);
-        $money = $memberData[0]->money;
-
-        return view('accountStoredValueV', ['money' => $money, 'action' => $action, 'memberName' => $memberName]);
+        $memberData = memberM::memberSelOne($user->id);
+        return view('accountStoredValueV', ['money' => $memberData[0]->money, 'action' => $action, 'memberName' => $memberName]);
     }
     //會員管理頁面顯示(後台)
     public function memberManageShow()
@@ -84,8 +80,7 @@ class memberC extends Controller
     public function memberUpdateShow()
     {
         $memberM = new memberM();
-        $memberData = $memberM->memberSel();
-
+        $memberData = $memberM->memberSel(); //會員資料
         return view('memberUpdateV', ['memberData' => $memberData]);
     }
 }

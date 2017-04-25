@@ -34,8 +34,7 @@
                                                         <td align="center" width="300px" bgcolor="#ABFFAB">年齡</td>
                                                         <td align="center" width="300px" bgcolor="#FFABFF">介紹</td>
                                                     </tr>
-                                                    @for($k=0 ; $k<count($horseData) ; $k++)
-                                                <?php $value = $horseData[$k]; ?>
+                                                    @foreach($horseData as $value)
                                                         <tr>
                                                             <td align="center"><img src="/userUpload/{!! $value->horse_picture !!}" width="150"
                                                                                     height="150"></td>
@@ -44,7 +43,7 @@
                                                             <td><input type="text" name="horseIntroduce" value="{!! $value->horse_introduce !!}"></td>
                                                             <input type="hidden" name="hId" value="{!! $value->h_id !!}">
                                                         </tr>
-                                                        @endfor
+                                                        @endforeach
                                                 </table>
                                                 <br>
                                                 <input type="hidden" name="_token" value="{!! csrf_token() !!}">

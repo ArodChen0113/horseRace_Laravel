@@ -37,8 +37,7 @@
                                                         <td align="center" width="300px" bgcolor="#DBABFF">修改</td>
                                                         <td align="center" width="300px" bgcolor="#FFABAB">刪除</td>
                                                     </tr>
-                                                    @for($k=0 ; $k<count($horseData) ; $k++)
-                                                    <?php $value = $horseData[$k]; ?>
+                                                    @foreach($horseData as $value)
                                                         <tr>
                                                             <td align="center"><img src="/userUpload/{!! $value->horse_picture !!}" width="150" height="150"></td>
                                                             <td align="center">{!! $value->horse_name !!}</td>
@@ -49,7 +48,7 @@
                                                             <td align="center"><a href="horseManageV?action=delete&horseName={!! $value->horse_name !!}&hId={!! $value->h_id !!}">
                                                                     <img src="icon/x.jpeg" width="30" height="30"></a></td>
                                                         </tr>
-                                                     @endfor
+                                                     @endforeach
                                                 </table>
                                                 <br>
                                             </form>

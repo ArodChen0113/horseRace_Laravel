@@ -1,0 +1,54 @@
+@import "../common/mixins/mixin-common";
+@import "../common/mixins/mixin-menu";
+@import "../common/variables";
+/*---------------------------------------------------
+[  Pagination  blog]
+-------------------------------------------------- */
+.pagination{
+	margin:0px;
+	margin-bottom: 80px;
+	display: block;
+	text-align: center;
+	.screen-reader-text{
+		display: none;
+	}
+	.nav-links{
+		
+		.page-numbers{
+			width: 20px;
+			height: 20px;
+			line-height: 20px;
+			display: inline-block;
+			text-align: center;
+			@extend .primary_color;
+			&:hover,&.current{
+				@extend .primary_bg_color;
+				color:$color-white;
+				&.prev:before,&.next:before{
+					color: $color-white;
+				}				
+			}
+			&.prev,&.next{
+				font-size: 0;
+				font-size: 18px;
+				@extend .primary_color;
+				float: none;
+				position: relative;
+				top: 2px;
+				svg{
+					display: none;
+				}
+			}
+			&.prev:before{
+				content: "\f104"; 
+				font-family: "FontAwesome";
+				
+			}
+			&.next:before{
+				content: "\f105";
+				font-family: "FontAwesome";
+			}
+		}
+	}
+	
+}

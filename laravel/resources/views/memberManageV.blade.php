@@ -36,8 +36,7 @@
                                                         <td align="center" width="300px" bgcolor="#DBABFF">修改</td>
                                                         <td align="center" width="300px" bgcolor="#FFABAB">刪除</td>
                                                     </tr>
-                                                    @for($k=0 ; $k<count($memberData) ; $k++)
-                                                    <?php $value = $memberData[$k]; ?>
+                                                    @foreach($memberData as $value)
                                                         <tr>
                                                             <td align="center">{!! $value->name !!}</td>
                                                             <td align="center">{!! $value->email !!}</td>
@@ -47,7 +46,7 @@
                                                             <td align="center"><a href="memberManageV?action=delete&id={!! $value->id !!}">
                                                                     <img src="icon/x.jpeg" width="30" height="30"></a></td>
                                                         </tr>
-                                                        @endfor
+                                                        @endforeach
                                                 </table>
                                                 <br>
                                             </form>

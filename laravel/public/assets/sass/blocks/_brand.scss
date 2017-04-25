@@ -1,0 +1,68 @@
+@import "../common/mixins/mixin-common";
+@import "../common/mixins/mixin-menu";
+@import "../common/variables";
+/*---------------------------------------------------
+[  Brand  ]
+-------------------------------------------------- */
+.brand{
+	.swiper-slide{
+		text-align: center;
+		img{
+			opacity: 0.6;
+		}
+		&:hover{
+			img{
+				opacity: 1;
+			}
+		}
+	}
+	&--pagination{
+		.swiper-slide{
+			img{
+				opacity: 1;
+			}
+		}
+		.brand-pagination{
+			text-align: center;
+			padding-top: 30px;
+			.swiper-pagination-bullet{
+				display: inline-block;
+				width: 10px;
+				height: 10px;
+				background: $secondary_text_color;
+
+			}
+		}
+	}
+	&--button{
+		position: relative;
+		padding: 50px 0;
+		.tp-button-next,.tp-button-prev{
+				
+			i{
+				position: absolute;
+				top: 40%;
+				font-size: 16px;
+				cursor: pointer;
+				width: 40px;
+				height: 40px;
+				text-align: center;
+				line-height: 40px;
+				border: 1px solid $color-02;
+				display: inline-block;
+				&:hover{
+					color: $color-white;
+					background: $primary_color;
+					border: 1px solid $primary_color;
+				}
+			}
+		}
+		.tp-button-next i{
+			right: -65px;
+		}
+		.tp-button-prev i{
+			left: -40px;
+		}
+	}
+}
+

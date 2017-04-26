@@ -102,7 +102,7 @@ class horseRaceM
         $endTime = horseRaceM::nowDateTime(); //目前時間
 
             DB::table('horseRace_result')->insert(array( //新增賽果資料
-                array('firth' => $rankHId[0], 'second' => $rankHId[1], 'third' => $rankHId[2], 'fourth' => $rankHId[3],
+                array('first' => $rankHId[0], 'second' => $rankHId[1], 'third' => $rankHId[2], 'fourth' => $rankHId[3],
                     'fifth' => $rankHId[4], 'sixth' => $rankHId[5], 'seventh' => $rankHId[6], 'eighth' => $rankHId[7],
                     'ninth' => $rankHId[8], 'tenth' => $rankHId[9], 'end_time' => $endTime )
             ));
@@ -111,19 +111,21 @@ class horseRaceM
     public static function RankDistinguish()
     {
         $rowRankHId = DB::table('horseRace_result') //最新場次賽馬名次
-        ->select('firth','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth')
+        ->select('first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth')
             ->orderBy('num', 'desc')
             ->get();
-        $rankHId[0] = $rowRankHId[0]->firth;
-        $rankHId[1] = $rowRankHId[0]->second;
-        $rankHId[2] = $rowRankHId[0]->third;
-        $rankHId[3] = $rowRankHId[0]->fourth;
-        $rankHId[4] = $rowRankHId[0]->fifth;
-        $rankHId[5] = $rowRankHId[0]->sixth;
-        $rankHId[6] = $rowRankHId[0]->seventh;
-        $rankHId[7] = $rowRankHId[0]->eighth;
-        $rankHId[8] = $rowRankHId[0]->ninth;
-        $rankHId[9] = $rowRankHId[0]->tenth;
+        $rankHId = array(
+            $rowRankHId[0]->first,
+            $rowRankHId[0]->second,
+            $rowRankHId[0]->third,
+            $rowRankHId[0]->fourth,
+            $rowRankHId[0]->fifth,
+            $rowRankHId[0]->sixth,
+            $rowRankHId[0]->seventh,
+            $rowRankHId[0]->eighth,
+            $rowRankHId[0]->ninth,
+            $rowRankHId[0]->tenth
+        );
         return $rankHId;
     }
     //賽馬遊戲派彩資料修改

@@ -48,7 +48,6 @@
                                         <form id="horse" action="horseManageV" method="get" class="checkout woocommerce-checkout" enctype="multipart/form-data" onsubmit="return horseForm()">
                                             <div class="col2-set">
                                                 <div class="col-1 col-md-6 col-sm-6 col-xs-12">
-
                                                     <div class="woocommerce-billing-fields">
                                                         <h3>賽馬新增</h3>
                                                         <div class="form-row">

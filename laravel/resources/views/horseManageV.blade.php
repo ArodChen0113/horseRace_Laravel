@@ -24,7 +24,7 @@
                                 <div class="container">
                                     <div class="actions">
                                         <div class="">
-                                            <form action="orderPay_update.php" method="post" enctype="multipart/form-data">
+                                            <form action="" method="post" enctype="multipart/form-data">
                                                 <table border="1">
                                                     <tr>
                                                         <td colspan="6" align="center" bgcolor="#FFABAB">賽馬資料</td>

@@ -40,7 +40,7 @@
                             <div class="tp-table-cart">
                                 <div class="container">
                                     <div class="tp-content-table-cart">
-                                        <form id="betting" action="/" method="get" onsubmit="return bettingForm()">
+                                        <form id="betting" action="action_horseRace" method="post" onsubmit="return bettingForm()">
                                             <table class="shop_table cart" >
                                                 <thead>
                                                 <tr>
@@ -86,6 +86,7 @@
                                                             <input type="hidden" name="horseName" value="{!! $value->horse_name !!}">
                                                             <input type="hidden" name="control" value="5">
                                                             <input type="hidden" name="action" value="poBetting">
+                                                            <input type="hidden" name="token" value="{!! $token !!}">
                                                             <td class="product-remove" data-title="Remove"><a
                                                                     href="poIntroduceV?action=delete&hId={!! $value->h_id !!}&num={!! $value->num !!}" class="remove">×</a></td>
                                                         </tr>

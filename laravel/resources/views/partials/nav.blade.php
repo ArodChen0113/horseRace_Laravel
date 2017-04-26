@@ -75,7 +75,7 @@
                                 <a href="raceOddsV">賠率設定</a>
                             </li>
                             <li class="menu-item-has-children">
-                                <a href="/?action=lottery">賽馬開獎</a>
+                                <a href="action_open?action=lottery">賽馬開獎</a>
                             </li>
                         </ul>
                     </li>

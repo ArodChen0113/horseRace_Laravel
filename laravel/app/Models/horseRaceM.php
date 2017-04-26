@@ -57,7 +57,7 @@ class horseRaceM
         $rowNum = DB::table('horseRace_result')
             ->select(DB::raw('MAX(num) as maxNum'))
             ->get();
-        $rowNum[0]->maxNum += 1;
+        $rowNum[0]->maxNum ++;
         return $rowNum[0]->maxNum;
     }
     //定位下注資料總覽
@@ -88,7 +88,7 @@ class horseRaceM
                     ->where('g_id', $number)
                     ->get();
                 $rankHId[$count] = $rowHId[0]->h_id;
-                $count += 1;
+                $count++;
                 DB::table('bs_sdBetting')
                     ->where('h_id', $rowHId[0]->h_id)
                     ->where('count','!=', 3)

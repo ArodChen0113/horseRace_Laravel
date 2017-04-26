@@ -45,7 +45,7 @@
                             <div class="tp-table-cart">
                                 <div class="container">
                                     <div class="tp-content-table-cart">
-                                        <form id="betting" action="/" method="get" onsubmit="return bettingForm()">
+                                        <form id="betting" action="action_horseRace" method="post" onsubmit="return bettingForm()">
                                             <table class="shop_table cart" >
                                                 <thead>
                                                 <tr>
@@ -85,6 +85,7 @@
                                                                        value="4">大
                                                             </td>
                                                             <input type="hidden" name="_token" value="{!! csrf_token() !!}">
+                                                            <input type="hidden" name="token" value="{!! $token !!}">
                                                             <input type="hidden" name="action" value="bsBetting">
                                                         </tr>
                                                 </tbody>

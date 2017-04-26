@@ -1,6 +1,6 @@
 <?php
 //View routes
-Route::get('/','horseRaceC@horseRaceShow');
+Route::resource('/','horseRaceC@horseRaceShow');
 
 Route::get('raceOverviewV','horseRaceC@raceOverviewShow');
 Route::get('raceSurplusV','horseRaceC@raceSurplusShow');
@@ -25,8 +25,15 @@ Route::get('bsIntroduceV','bigOrSmallGameC@bsIntroduceShow');
 Route::get('bsBettingV','bigOrSmallGameC@bsBettingShow');
 Route::get('bsBettingOverviewV','bigOrSmallGameC@bsBettingOverviewShow');
 
+//Controller routes
+Route::post('action_member', 'memberC@memberActionControl');
+Route::post('action_horse', 'horseC@horseActionControl');
+Route::post('action_horseRace', 'horseRaceC@horseRaceActionControl');
+Route::get('action_open', 'horseRaceC@openActionControl');
+
+//Authority
 Route::auth();
+Route::get('noAuthV', 'Controller@AuthUrl');
 
-Route::get('/home', 'HomeController@index');
-
+//Test
 Route::get('testHTML','testC@testF');

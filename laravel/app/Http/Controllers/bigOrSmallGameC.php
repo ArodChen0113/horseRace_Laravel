@@ -35,6 +35,7 @@ class bigOrSmallGameC extends Controller
         $user = Auth::user();
         $input = Input::all();
         $action = Input::get('action', '');
+        $token = memberC::actionVerificationCode(); //加入token表單驗證碼
         $alert = '';
         //下注資料新增
         if($action == 'insert'){
@@ -48,10 +49,11 @@ class bigOrSmallGameC extends Controller
         $gameName = '賽馬大小遊戲';
         $odds = horseRaceM::raceOddsOneData($gameName); //遊戲賠率
 
-        return view('bsBettingV', ['bettingData' => $bettingData, 'alert' => $alert, 'action' => $action, 'memberData' => $memberData, 'odds' => $odds]);
+        return view('bsBettingV', ['bettingData' => $bettingData, 'alert' => $alert, 'action' => $action, 'memberData' => $memberData, 'odds' => $odds, 'token' => $token]);
     }
     //大小單雙下注總覽(後台)頁面顯示
     public function bsBettingOverviewShow(){
+        $this->Authority(); //權限驗證
         $bsHorseRaceResultData = bigOrSmallGameM::bsBettingData();  //下注資料
         $sumProfit = bigOrSmallGameM::sumProfit();                  //獲利加總
         return view('bsBettingOverviewV', ['bsHorseRaceResultData' => $bsHorseRaceResultData, 'sumProfit' => $sumProfit]);

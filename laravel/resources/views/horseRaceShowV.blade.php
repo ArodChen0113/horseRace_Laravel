@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="assets/css/common/slider-banner.css">
     <link rel="stylesheet" href="assets/css/common/style.css">
 </head>
-<body class="woocommerce woocommerce-page" onload="define()">
+<body class="woocommerce woocommerce-page">
 <div class="wrap-main wrap-main-01">
     @include('partials.nav')
     <div class="site-content-contain">
@@ -120,47 +120,5 @@
 <script src="assets/js/vendors/jquery.prettyPhoto.js"></script>
 <script src="assets/js/global.js"></script>
 <script src="assets/js/menu.js"></script>
-@if($action == 'bsBetting' && $alert['control'] == 1)
-    <script>
-        function define() {
-            alert("第{!! $alert['h_rank'] !!}名 下注單 已投注！");
-        }
-    </script>
-    @endif
-@if($action == 'bsBetting' && $alert['control'] == 2)
-    <script>
-        function define() {
-            alert("第{!! $alert['h_rank'] !!}名 下注雙 已投注！");
-        }
-    </script>
-@endif
-@if($action == 'bsBetting' && $alert['control'] == 3)
-    <script>
-        function define() {
-            alert("第{!! $alert['h_rank'] !!}名 下注小 已投注！");
-        }
-    </script>
-@endif
-@if($action == 'bsBetting' && $alert['control'] == 4)
-    <script>
-        function define() {
-            alert("第{!! $alert['h_rank'] !!}名 下注大 已投注！");
-        }
-    </script>
-@endif
-@if($action =='poBetting')
-    <script>
-        function define() {
-            alert("{!! $alert !!} 已投注！");
-        }
-    </script>
-    @endif
- @if($action == 'lottery')
-        <script>
-            function define() {
-                alert("賽馬已開獎！");
-            }
-        </script>
-     @endif
 </body>
 </html>

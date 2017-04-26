@@ -109,7 +109,7 @@ class positionGameM extends horseRace
             ->where('count', 0)
             ->get();
         foreach ($rowBettingData as $value){//列出玩家下注資料
-            $value->h_rank -= 1;
+            $value->h_rank--;
             if($rankHId[$value->h_rank] == $value->h_id) {   //比對下注名次馬號是否相符
                 DB::table('bs_sdBetting')
                     ->where('user_id', $value->user_id)

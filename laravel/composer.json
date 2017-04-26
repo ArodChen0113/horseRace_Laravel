@@ -7,7 +7,8 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
-        "laravelcollective/html": "^5.2"
+        "laravelcollective/html": "^5.2",
+        "mews/purifier": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -26,7 +27,6 @@
     },
     "autoload-dev": {
         "classmap": [
-            "tests/TestCase.php"
         ]
     },
     "scripts": {
@@ -47,5 +47,6 @@
     },
     "config": {
         "preferred-install": "dist"
-    }
+    },
+"minimum-stability": "stable"
 }

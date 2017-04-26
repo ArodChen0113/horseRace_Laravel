@@ -23,7 +23,7 @@
                                 <div class="container">
                                     <div class="actions">
                                         <div class="text-left tp-btn-con-shopping">
-                                            <form action="memberManageV" method="get" enctype="multipart/form-data">
+                                            <form action="action_member" method="post" enctype="multipart/form-data">
                                                 <table border="1">
                                                     <tr>
                                                         <td colspan="2" align="center" bgcolor="#ABFFFF">會員資料</td>
@@ -42,6 +42,7 @@
                                                 </table>
                                                 <br>
                                                 <input type="hidden" name="_token" value="{!! csrf_token() !!}">
+                                                <input type="hidden" name="token" value="{!! $token !!}">
                                                 <input type="hidden" name="action" value="update">
                                                 <input type="submit" value="確定修改">
                                             </form>

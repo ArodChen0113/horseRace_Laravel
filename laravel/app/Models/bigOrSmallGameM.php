@@ -86,7 +86,7 @@ class bigOrSmallGameM extends horseRace
             ->get();
         $rankHId = horseRaceM::RankDistinguish(); //賽馬名次
         foreach ($bettingData as $value) {
-            $value->h_rank -= 1; //下注名次
+            $value->h_rank--; //下注名次
             //賽馬比單數計算輸贏
             if ($value->control == 1 && $rankHId[$value->h_rank] % 2 == 1) {
                 DB::table('bs_sdBetting')

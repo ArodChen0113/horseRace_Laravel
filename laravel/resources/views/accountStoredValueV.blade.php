@@ -22,7 +22,7 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="tp-checkout-form tp-form-site">
-                                        <form action="accountStoredValueV" method="get" class="checkout woocommerce-checkout" enctype="multipart/form-data">
+                                        <form action="action_member" method="post" class="checkout woocommerce-checkout" enctype="multipart/form-data">
                                             <div class="col2-set">
                                                 <div class="col-1 col-md-6 col-sm-6 col-xs-12">
 
@@ -39,6 +39,7 @@
                                                             <input type="radio" name="payWay" value="3"> 線上點數<br>
                                                         </div>
                                                         <input type="hidden" name="action" value="pay">
+                                                        <input type="hidden" name="token" value="{!! $token !!}">
                                                         <input type="hidden" name="_token" value="{!! csrf_token() !!}">
                                                         <div class="form-row place-order">
                                                             <input type="submit"  class="button" value="確認儲值 ">
@@ -61,7 +62,7 @@
 <?php if($action == 'pay'){?>
 <script>
     function define() {
-        alert("金額 <?php echo $memberName;?> 已儲值！");
+        alert("金額 {!! $storedMoney !!} 已儲值！");
     }
 </script>
 <?php

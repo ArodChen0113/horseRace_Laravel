@@ -299,7 +299,7 @@ class horseRaceM
     //賠率修改
     public static function raceOddsUpdate($oddsData)
     {
-        if ($oddsData['action'] == NULL || $oddsData['action'] != 'update') //判斷值是否由欄位輸入
+        if ($oddsData['action'] == NULL || $oddsData['action'] != 'odds') //判斷值是否由欄位輸入
         {
             return false;
         }

@@ -45,7 +45,7 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="tp-checkout-form tp-form-site">
-                                        <form id="horse" action="horseManageV" method="get" class="checkout woocommerce-checkout" enctype="multipart/form-data" onsubmit="return horseForm()">
+                                        <form id="horse" action="action_horse" method="post" class="checkout woocommerce-checkout" enctype="multipart/form-data" onsubmit="return horseForm()">
                                             <div class="col2-set">
                                                 <div class="col-1 col-md-6 col-sm-6 col-xs-12">
                                                     <div class="woocommerce-billing-fields">
@@ -64,9 +64,19 @@
                                                         </div>
                                                         <input type="hidden" name="action" value="insert">
                                                         <input type="hidden" name="_token" value="{!! csrf_token() !!}">
+                                                        <input type="hidden" name="token" value="{!! $token !!}">
                                                         <div class="form-row place-order">
                                                             <input type="submit"  class="button" value="確認新增 ">
                                                         </div>
+                                                        @if (count($errors) > 0)
+                                                            <div class="alert alert-danger">
+                                                                <ul>
+                                                                    @foreach ($errors->all() as $error)
+                                                                        <li>{{ $error }}</li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 </div><!-- end col 1 -->
                                             </div>

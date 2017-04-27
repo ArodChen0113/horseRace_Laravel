@@ -98,6 +98,15 @@
                                             <font color="blue">目前賠率：{!! $odds[0]->odds !!}。 </font>
                                             <font color="red"> 帳戶金額：$NT. {!! $memberData[0]->money !!}。 </font>
                                             <input type="submit" value="確定下注">
+                                            @if (count($errors) > 0)
+                                                <div class="alert alert-danger">
+                                                    <ul>
+                                                        @foreach ($errors->all() as $error)
+                                                            <li>{{ $error }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            @endif
                                         </form>
                                     </div>
                                 </div>

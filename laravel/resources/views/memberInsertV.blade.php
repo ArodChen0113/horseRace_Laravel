@@ -8,6 +8,7 @@
             var name = document.forms["member"]["name"].value;
             var email = document.forms["member"]["email"].value;
             var password = document.forms["member"]["password"].value;
+            var i;
             if (name == null || name == ''){
                 alert("請填寫會員名稱");
                 return false;
@@ -47,7 +48,7 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="tp-checkout-form tp-form-site">
-                                        <form id="member" action="memberManageV" method="get" class="checkout woocommerce-checkout" enctype="multipart/form-data" onsubmit="return memberForm()">
+                                        <form id="member" action="action_member" method="post" class="checkout woocommerce-checkout" enctype="multipart/form-data" onsubmit="return memberForm()">
                                             <div class="col2-set">
                                                 <div class="col-1 col-md-6 col-sm-6 col-xs-12">
 
@@ -67,9 +68,19 @@
                                                         </div>
                                                         <input type="hidden" name="action" value="insert">
                                                         <input type="hidden" name="_token" value="{!! csrf_token() !!}">
+                                                        <input type="hidden" name="token" value="{!! $token !!}">
                                                         <div class="form-row place-order">
                                                             <input type="submit"  class="button" value="確認新增 ">
                                                         </div>
+                                                        @if (count($errors) > 0)
+                                                            <div class="alert alert-danger">
+                                                                <ul>
+                                                                    @foreach ($errors->all() as $error)
+                                                                        <li>{{ $error }}</li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 </div><!-- end col 1 -->
                                             </div>

@@ -8,6 +8,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use App\Models\memberM;
 use App\Http\Controllers\Auth\AuthController;
+use Illuminate\Http\Request;
 
 class memberC extends Controller
 {
@@ -51,13 +52,17 @@ class memberC extends Controller
         $action = Input::get('action', '');
         $memberName = Input::get('memberName', '');
         $memberData = memberM::memberSel();
-        return view('memberManageV', ['memberData' => $memberData, 'action' => $action, 'memberName' => $memberName]);
+        memberC::actionVerificationCode(); //加入token表單驗證碼
+        $token = Session::get('token');
+        return view('memberManageV', ['memberData' => $memberData, 'action' => $action, 'memberName' => $memberName, 'token' => $token]);
     }
     //會員新增頁面顯示
     public function memberInsertShow()
     {
         $this->Authority(); //權限驗證
-        return view('memberInsertV');
+        memberC::actionVerificationCode(); //加入token表單驗證碼
+        $token = Session::get('token');
+        return view('memberInsertV', ['token' => $token]);
     }
     //會員修改頁面顯示
     public function memberUpdateShow()
@@ -69,36 +74,58 @@ class memberC extends Controller
         return view('memberUpdateV', ['memberData' => $memberData, 'token' => $token]);
     }
     //會員執行動作控制
-    public function memberActionControl()
+    public function memberActionControl(Request $request)
     {
         $input = Input::all();
-        $token = Session::get('token');
-        if($input['token'] == NULL || $input['token'] != $token){ //表單通過驗證
-            return false;
-        }
-        $pass = $this->actionControl(); //1分內不能執行動作
-        if($pass == NULL || $pass != 'pass'){
-            return redirect()->action('Controller@limitActionUrl'); //轉向顯示錯誤頁面
+        $token = Session::get('token'); //取得token
+        $pass = $this->actionControl(); //1分內不能執行相同動作
+        if($input['token'] == NULL || $input['token'] != $token || $pass == NULL || $pass != 'pass'){ //通過驗證
+            return redirect()->action('Controller@limitActionUrl'); //轉向錯誤頁面
             exit;
         }
         $user = Auth::user();
         $action = Input::get('action', '');
         //會員儲值
         if($action == 'pay') {
+            $this->validate($request, [
+                'money' => 'required|min:100|integer',
+            ]);
             $storedData = ['money' => $input['money'], 'action' => $action, 'id' => $user->id];
             $money = memberM::accountStoredValueUp($storedData); //會員儲值更新
             return redirect()->action('memberC@accountStoredValueShow', ['money' => $money, 'action' => $action]);
         }
         //會員資料新增
         if($action == 'insert'){
+            $this->validate($request, [
+                'name' => 'required|max:255|alpha_num',
+                'email' => 'required|email|max:255|unique:member',
+                'password' => 'required|min:6|confirmed|alpha_num',
+            ]);
             $memberData = ['name' => $input['name'], 'email' => $input['email'], 'password' => $input['password']];
             $memberName = AuthController::create($memberData);
         }
         //會員資料修改
         if($action == 'update'){
+            $this->validate($request, [
+                'name' => 'required|max:255|alpha_num',
+                'email' => 'required|email|max:255|unique:member',
+            ]);
             $memberData = ['name' => $input['name'], 'email' => $input['email'], 'action' => $action, 'id' => $input['id']];
             $memberName = memberM::memberUp($memberData);
         }
+        return redirect()->action('memberC@memberManageShow', ['memberName' => $memberName, 'action' => $action]);
+    }
+    //會員刪除執行動作控制
+    public function memberActionControlDel()
+    {
+        $input = Input::all();
+        $token = Session::get('token'); //取得token
+        $pass = $this->actionControl(); //1分內不能執行相同動作
+        if($input['token'] == NULL || $input['token'] != $token || $pass == NULL || $pass != 'pass'){ //通過驗證
+            return redirect()->action('Controller@limitActionUrl'); //轉向錯誤頁面
+            exit;
+        }
+        $action = Input::get('action', '');
         //會員資料刪除
         if($action == 'delete'){
             $memberData = ['id' => $input['id'], 'action' => $action];

@@ -23,7 +23,7 @@
                                 <div class="container">
                                     <div class="actions">
                                         <div class="text-left tp-btn-con-shopping">
-                                            <form action="raceOddsV" method="get" enctype="multipart/form-data">
+                                            <form action="action_horseRace" method="post" enctype="multipart/form-data">
                                                 <table border="1">
                                                     <tr>
                                                         <td colspan="4" align="center" bgcolor="#ABFFFF">賽馬遊戲資料</td>
@@ -43,8 +43,18 @@
                                                 </table>
                                                 <br>
                                                 <input type="hidden" name="_token" value="{!! csrf_token() !!}">
-                                                <input type="hidden" name="action" value="update2">
+                                                <input type="hidden" name="token" value="{!! $token !!}">
+                                                <input type="hidden" name="action" value="odds">
                                                 <input type="submit" value="確定修改">
+                                                @if (count($errors) > 0)
+                                                    <div class="alert alert-danger">
+                                                        <ul>
+                                                            @foreach ($errors->all() as $error)
+                                                                <li>{{ $error }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                @endif
                                             </form>
                                         </div>
                                     </div>
@@ -57,6 +67,13 @@
         </div>
     </div>
     @include('partials.bodyJs')
+    @if($action == 'odds')
+        <script>
+            function define() {
+                alert("賽馬賠率 已修改！");
+            }
+        </script>
+@endif
 </body>
 </html>
 

@@ -43,7 +43,7 @@
                                                             <td align="center">{!! $value->money !!}</td>
                                                             <td align="center"><a href="memberUpdateV?id={!! $value->id !!}&memberName={!! $value->name !!}">
                                                                     <img src="icon/pencil.jpeg" width="30" height="30"></a></td>
-                                                            <td align="center"><a href="memberManageV?action=delete&id={!! $value->id !!}">
+                                                            <td align="center"><a href="action_memberDel?token={!! $token !!}&action=delete&id={!! $value->id !!}">
                                                                     <img src="icon/x.jpeg" width="30" height="30"></a></td>
                                                         </tr>
                                                         @endforeach

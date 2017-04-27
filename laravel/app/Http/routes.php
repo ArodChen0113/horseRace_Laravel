@@ -27,7 +27,9 @@ Route::get('bsBettingOverviewV','bigOrSmallGameC@bsBettingOverviewShow');
 
 //Controller routes
 Route::post('action_member', 'memberC@memberActionControl');
+Route::get('action_memberDel', 'memberC@memberActionControlDel');
 Route::post('action_horse', 'horseC@horseActionControl');
+Route::get('action_horseDel', 'horseC@horseActionControlDel');
 Route::post('action_horseRace', 'horseRaceC@horseRaceActionControl');
 Route::get('action_open', 'horseRaceC@openActionControl');
 

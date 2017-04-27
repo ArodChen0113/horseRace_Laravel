@@ -19,7 +19,7 @@ class memberM
     public static function memberSelOne($id)
     {
         $memberData = DB::table('member')
-            ->select('email','name','money')
+            ->select('email','name','money','authority','error')
             ->where('id', $id)
             ->get();
         return $memberData;
@@ -77,5 +77,12 @@ class memberM
                 ->where('id', $memberData['id'])
                 ->update(['money' => $rowMemberData[0]->money]);
             return $memberData['money'];
+    }
+    //會員帳號鎖定
+    public static function actionLock($id)
+    {
+        DB::table('member')
+            ->where('id', $id)
+            ->update(['error' => 1]);
     }
 }

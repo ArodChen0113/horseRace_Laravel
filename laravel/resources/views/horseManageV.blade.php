@@ -45,7 +45,7 @@
                                                             <td align="center">{!! $value->horse_introduce !!}</td>
                                                             <td align="center"><a href="horseUpdateV?hId={!! $value->h_id !!}&horseName={!! $value->horse_name !!}">
                                                                     <img src="icon/pencil.jpeg" width="30" height="30"></a></td>
-                                                            <td align="center"><a href="horseManageV?action=delete&horseName={!! $value->horse_name !!}&hId={!! $value->h_id !!}">
+                                                            <td align="center"><a href="action_horseDel?token={!! $token !!}&action=delete&horseName={!! $value->horse_name !!}&hId={!! $value->h_id !!}">
                                                                     <img src="icon/x.jpeg" width="30" height="30"></a></td>
                                                         </tr>
                                                      @endforeach

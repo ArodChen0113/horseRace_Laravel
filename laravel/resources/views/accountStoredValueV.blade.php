@@ -44,6 +44,15 @@
                                                         <div class="form-row place-order">
                                                             <input type="submit"  class="button" value="確認儲值 ">
                                                         </div>
+                                                        @if (count($errors) > 0)
+                                                            <div class="alert alert-danger">
+                                                                <ul>
+                                                                    @foreach ($errors->all() as $error)
+                                                                        <li>{{ $error }}</li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 </div><!-- end col 1 -->
                                             </div>

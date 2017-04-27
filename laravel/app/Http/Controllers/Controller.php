@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\memberM;
 
 class Controller extends BaseController
 {
@@ -20,10 +21,7 @@ class Controller extends BaseController
     {
         $this->reErrorTime(); //重置錯誤時間
         $user = Auth::user();
-        $rowCheck = DB::table('member')
-            ->select('error')
-            ->where('id', $user->id)
-            ->get();
+        $rowCheck = memberM::memberSelOne($user->id); //查詢會員資料
         if ($rowCheck[0]->error == 1) {
             header("Location:limitAccountV");
             exit;
@@ -38,10 +36,7 @@ class Controller extends BaseController
     public function Authority()
     {
         $user = Auth::user();
-        $rowCheck = DB::table('member')
-            ->select('authority')
-            ->where('id', $user->id)
-            ->get();
+        $rowCheck = memberM::memberSelOne($user->id); //查詢會員資料
         if ($rowCheck[0]->authority == 0) {
             header("Location:noAuthV");
             exit;
@@ -55,6 +50,12 @@ class Controller extends BaseController
     //執行動作限制(一次/分)
     public function actionControl()
     {
+        $user = Auth::user();
+        $rowCheck = memberM::memberSelOne($user->id); //查詢會員資料
+        if($rowCheck[0]->authority == 1){ //如是管理者,無動作限制
+            return 'pass';
+            exit;
+        }
         $dateTime = horseRaceM::nowDateTime(); //目前時間
         if(session('actionTime') == NULL) {
             session()->put('actionTime', $dateTime);
@@ -62,8 +63,8 @@ class Controller extends BaseController
             exit;
         }
         $evaTime = strtotime(session('actionTime'));
-        if(strtotime($dateTime) < strtotime('+1 min', $evaTime)){
-            return '';
+        if(strtotime($dateTime) < strtotime('+1 min', $evaTime)){ //一分內執行動作一次
+            return 'false';
             exit;
         }
         session()->forget('actionTime');
@@ -90,9 +91,7 @@ class Controller extends BaseController
     {
         $user = Auth::user();
         if(session($user->id) >= 5){
-            DB::table('member')
-                ->where('id', $user->id)
-                ->update(['error' => 1]);
+            memberM::actionLock($user->id);
         }
     }
     //執行錯誤時間重置(一天內無再執行錯誤)

@@ -10,6 +10,7 @@ use App\Models\horseRaceM;
 use App\Models\memberM;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 
 class horseRaceC extends Controller
 {
@@ -41,15 +42,11 @@ class horseRaceC extends Controller
     }
     //賠率管理(後台)頁面顯示
     public function raceOddsShow(){
-        $input = Input::all();
         $action = Input::get('action', '');
         $oddsData = horseRaceM::raceOddsData(); //賠率資料
-        $gameName = '';
-        //修改遊戲賠率
-        if($action == 'update'){
-            $gameName = horseRaceM::raceOddsUpdate($input);
-        }
-        return view('raceOddsV',['oddsData' => $oddsData, 'action' => $action, 'gameName' => $gameName]);
+        memberC::actionVerificationCode(); //加入token表單驗證碼
+        $token = Session::get('token');
+        return view('raceOddsV',['oddsData' => $oddsData, 'action' => $action, 'token' => $token]);
     }
     //賽馬賽果開獎
     public function lotteryControl($alert){
@@ -59,23 +56,41 @@ class horseRaceC extends Controller
         horseRaceM::raceLoseUpdate($alert);        //輸家狀態改為當次已計算,無派彩
     }
     //賽馬遊戲執行動作控制
-    public function horseRaceActionControl()
+    public function horseRaceActionControl(Request $request)
     {
         $input = Input::all();
-        $token = Session::get('token');
-        if($input['token'] == NULL || $input['token'] != $token){ //表單通過驗證
-            return false;
+        $token = Session::get('token'); //取得token
+        $pass = $this->actionControl(); //1分內不能執行相同動作
+        if($input['token'] == NULL || $input['token'] != $token || $pass == NULL || $pass != 'pass'){ //通過驗證
+            return redirect()->action('Controller@limitActionUrl'); //轉向錯誤頁面
+            exit;
         }
+        $alert = Input::get('alert', '');
         $action = Input::get('action', '');
         //賽馬下注後提示顯示
         if($action == 'bsBetting'){
+            $this->validate($request, [
+                'money' => 'required|min:100|integer',
+            ]);
             $bettingData = ['money' => $input['money'], 'action' => $input['action'], 'control' => $input['control'], 'rank' => $input['rank']];
             $alert = bigOrSmallGameM::bsBettingInsert($bettingData);
         }
         if($action == 'poBetting'){
+            $this->validate($request, [
+                'money' => 'required|min:100|integer',
+            ]);
             $bettingData = ['num' => $input['num'], 'money' => $input['money'], 'horseName' => $input['horseName'],
                 'action' => $input['action'], 'control' => $input['control'], 'rank' => $input['rank']];
             $alert = positionGameM::poBettingMoneyInsert($bettingData);
+        }
+        //設定遊戲賠率
+        if($action == 'odds'){
+            $this->validate($request, [
+                'gameName' => 'required',
+                'odds' => 'required',
+            ]);
+            horseRaceM::raceOddsUpdate($input);
+            return redirect()->action('horseRaceC@raceOddsShow', ['action' => $action]);
         }
         //賽馬開獎
         if($action == 'lottery'){

@@ -13,7 +13,6 @@ class bigOrSmallGameC extends Controller
 {
     public function __construct()
     {
-        $this->accountCheck();     //帳號驗證
         $this->middleware('auth'); //驗證使用者是否登入
     }
     //大小單雙遊戲介紹頁面顯示(首頁)

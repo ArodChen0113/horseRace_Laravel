@@ -8,6 +8,7 @@ use Illuminate\Http\UploadedFile;
 use App\Models\horseM;
 use App\Models\horseRaceM;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 
 class horseC extends Controller
 {
@@ -31,13 +32,17 @@ class horseC extends Controller
         $action = Input::get('action', '');
         $horseName = Input::get('horseName', '');
         $horseData = horseM::horseSel();
-        return view('horseManageV', ['horseData' => $horseData, 'horseName' => $horseName, 'action' => $action]);
+        memberC::actionVerificationCode(); //加入token表單驗證碼
+        $token = Session::get('token');
+        return view('horseManageV', ['horseData' => $horseData, 'horseName' => $horseName, 'action' => $action, 'token' => $token]);
     }
     //賽馬新增頁面顯示
     public function horseInsertShow()
     {
         $this->Authority(); //權限驗證
-        return view('horseInsertV');
+        memberC::actionVerificationCode(); //加入token表單驗證碼
+        $token = Session::get('token');
+        return view('horseInsertV', ['token' => $token]);
     }
     //賽馬修改頁面顯示
     public function horseUpdateShow()
@@ -49,17 +54,19 @@ class horseC extends Controller
         return view('horseUpdateV', ['horseData' => $horseData, 'token' => $token]);
     }
     //賽馬執行動作控制
-    public function horseActionControl()
+    public function horseActionControl(Request $request)
     {
-        $input = Input::all();
-        $token = Session::get('token');
+        $this->validate($request, [
+            'horseName' => 'required|max:10|alpha_num',
+            'horseAge' => 'required|max:20|integer',
+            'horseIntroduce' => 'required|max:255',
+        ]);
 
-        if($input['token'] == NULL || $input['token'] != $token){ //表單通過驗證
-            return false;
-        }
-        $pass = $this->actionControl(); //1分內不能執行動作
-        if($pass == NULL || $pass != 'pass'){
-            return redirect()->action('Controller@limitActionUrl'); //轉向顯示錯誤頁面
+        $input = Input::all();
+        $token = Session::get('token'); //取得token
+        $pass = $this->actionControl(); //1分內不能執行相同動作
+        if($input['token'] == NULL || $input['token'] != $token || $pass == NULL || $pass != 'pass'){ //通過驗證
+            return redirect()->action('Controller@limitActionUrl'); //轉向錯誤頁面
             exit;
         }
         $action = Input::get('action', '');
@@ -75,6 +82,19 @@ class horseC extends Controller
                 'horseIntroduce' => $input['horseIntroduce'], 'action' => $input['action'], 'hId' => $input['hId']];
             $horseName = horseM::horseUp($horseData);
         }
+        return redirect()->action('horseC@horseManageShow', ['horseName' => $horseName, 'action' => $action]);
+    }
+    //賽馬執行動作控制
+    public function horseActionControlDel()
+    {
+        $input = Input::all();
+        $token = Session::get('token'); //取得token
+        $pass = $this->actionControl(); //1分內不能執行相同動作
+        if($input['token'] == NULL || $input['token'] != $token || $pass == NULL || $pass != 'pass'){ //通過驗證
+            return redirect()->action('Controller@limitActionUrl'); //轉向錯誤頁面
+            exit;
+        }
+        $action = Input::get('action', '');
         //賽馬資料刪除
         if($action == 'delete'){
             $horseData = ['hId' => $input['hId'], 'action' => $action];

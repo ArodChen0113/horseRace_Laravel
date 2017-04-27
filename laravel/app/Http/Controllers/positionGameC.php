@@ -49,13 +49,14 @@ class positionGameC extends Controller
         $memberData = memberM::memberSelOne($user->id); //會員資料
         $gameName = '賽馬定位遊戲';
         $odds = horseRaceM::raceOddsOneData($gameName); //遊戲賠率
-        return view('poBettingV', ['bettingData' => $bettingData, 'alert' => $alert,'action' => $action, 'memberData' => $memberData, 'odds' => $odds, 'token' => $token]);
+        return view('poBettingV', ['bettingData' => $bettingData, 'alert' => $alert,
+            'action' => $action, 'memberData' => $memberData, 'odds' => $odds, 'token' => $token]);
     }
     //定位賽馬下注總覽(後台)頁面顯示
     public function poBettingOverviewShow(){
         $this->Authority(); //權限驗證
         $poHorseRaceResultData = positionGameM::poBettingData(); //定位遊戲下注資料
         $sumProfit = positionGameM::sumProfit(); //定位遊戲總獲利
-        return view('poBettingOverviewV' ,['poHorseRaceResultData' => $poHorseRaceResultData, 'sumProfit' => $sumProfit]);
+        return view('poBettingOverviewV',['poHorseRaceResultData' => $poHorseRaceResultData, 'sumProfit' => $sumProfit]);
     }
 }

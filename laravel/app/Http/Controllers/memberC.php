@@ -43,7 +43,8 @@ class memberC extends Controller
         $storedMoney = Input::get('money', '');
         $token = memberC::actionVerificationCode(); //加入token表單驗證碼
         $memberData = memberM::memberSelOne($user->id);
-        return view('accountStoredValueV', ['money' => $memberData[0]->money, 'action' => $action, 'storedMoney' => $storedMoney, 'token' => $token]);
+        return view('accountStoredValueV', ['money' => $memberData[0]->money,
+            'action' => $action, 'storedMoney' => $storedMoney, 'token' => $token]);
     }
     //會員管理頁面顯示(後台)
     public function memberManageShow()
@@ -54,7 +55,8 @@ class memberC extends Controller
         $memberData = memberM::memberSel();
         memberC::actionVerificationCode(); //加入token表單驗證碼
         $token = Session::get('token');
-        return view('memberManageV', ['memberData' => $memberData, 'action' => $action, 'memberName' => $memberName, 'token' => $token]);
+        return view('memberManageV', ['memberData' => $memberData, 'action' => $action,
+            'memberName' => $memberName, 'token' => $token]);
     }
     //會員新增頁面顯示
     public function memberInsertShow()
@@ -110,7 +112,8 @@ class memberC extends Controller
                 'name' => 'required|max:255|alpha_num',
                 'email' => 'required|email|max:255|unique:member',
             ]);
-            $memberData = ['name' => $input['name'], 'email' => $input['email'], 'action' => $action, 'id' => $input['id']];
+            $memberData = ['name' => $input['name'], 'email' => $input['email'], 'action' => $action,
+                'id' => $input['id']];
             $memberName = memberM::memberUp($memberData);
         }
         return redirect()->action('memberC@memberManageShow', ['memberName' => $memberName, 'action' => $action]);

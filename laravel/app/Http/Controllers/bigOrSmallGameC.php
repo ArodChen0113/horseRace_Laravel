@@ -49,7 +49,8 @@ class bigOrSmallGameC extends Controller
         $gameName = '賽馬大小遊戲';
         $odds = horseRaceM::raceOddsOneData($gameName); //遊戲賠率
 
-        return view('bsBettingV', ['bettingData' => $bettingData, 'alert' => $alert, 'action' => $action, 'memberData' => $memberData, 'odds' => $odds, 'token' => $token]);
+        return view('bsBettingV', ['bettingData' => $bettingData, 'alert' => $alert, 'action' => $action,
+            'memberData' => $memberData, 'odds' => $odds, 'token' => $token]);
     }
     //大小單雙下注總覽(後台)頁面顯示
     public function bsBettingOverviewShow(){

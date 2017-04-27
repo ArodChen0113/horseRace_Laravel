@@ -72,7 +72,8 @@ class horseRaceC extends Controller
             $this->validate($request, [
                 'money' => 'required|min:100|integer',
             ]);
-            $bettingData = ['money' => $input['money'], 'action' => $input['action'], 'control' => $input['control'], 'rank' => $input['rank']];
+            $bettingData = ['money' => $input['money'], 'action' => $input['action'],
+                'control' => $input['control'], 'rank' => $input['rank']];
             $alert = bigOrSmallGameM::bsBettingInsert($bettingData);
         }
         if($action == 'poBetting'){

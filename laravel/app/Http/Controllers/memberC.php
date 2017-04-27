@@ -13,6 +13,7 @@ class memberC extends Controller
 {
     public function __construct()
     {
+        $this->accountCheck();     //帳號驗證
         $this->middleware('auth'); //驗證使用者是否登入
     }
     //帳號管理頁面顯示(前台)
@@ -74,6 +75,11 @@ class memberC extends Controller
         $token = Session::get('token');
         if($input['token'] == NULL || $input['token'] != $token){ //表單通過驗證
             return false;
+        }
+        $pass = $this->actionControl(); //1分內不能執行動作
+        if($pass == NULL || $pass != 'pass'){
+            return redirect()->action('Controller@limitActionUrl'); //轉向顯示錯誤頁面
+            exit;
         }
         $user = Auth::user();
         $action = Input::get('action', '');

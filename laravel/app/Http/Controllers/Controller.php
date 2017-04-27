@@ -10,44 +10,98 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
 
+    //帳號驗證&錯誤時間
+    public function accountCheck()
+    {
+        $this->reErrorTime(); //重置錯誤時間
+        $user = Auth::user();
+        $rowCheck = DB::table('member')
+            ->select('error')
+            ->where('id', $user->id)
+            ->get();
+        if ($rowCheck[0]->error == 1) {
+            header("Location:limitAccountV");
+            exit;
+        }
+    }
+    //帳號鎖定頁面顯示
+    public function limitAccountUrl()
+    {
+        return view('limitAccountV');
+    }
+    //權限控制
     public function Authority()
     {
         $user = Auth::user();
         $rowCheck = DB::table('member')
             ->select('authority')
-            ->where('name', $user->name)
+            ->where('id', $user->id)
             ->get();
-        $checkLevel = $rowCheck[0]->authority;
-        if ($checkLevel == 0) {
+        if ($rowCheck[0]->authority == 0) {
             header("Location:noAuthV");
             exit;
         }
     }
-    public function AuthUrl()
+    //無權限頁面顯示
+    public function authUrl()
     {
         return view('noAuthV');
     }
+    //執行動作限制(一次/分)
     public function actionControl()
     {
         $dateTime = horseRaceM::nowDateTime(); //目前時間
-        $controlTime = Session::get('controlTime');
-        if($controlTime == NULL) {
-            Session::put('controlTime', $dateTime);
+        if(session('actionTime') == NULL) {
+            session()->put('actionTime', $dateTime);
             return 'pass';
+            exit;
         }
-        $evaTime = strtotime($controlTime);
-        if(strtotime($dateTime) > strtotime('+1 min',$evaTime)){
+        $evaTime = strtotime(session('actionTime'));
+        if(strtotime($dateTime) < strtotime('+1 min', $evaTime)){
             return '';
+            exit;
         }
-        var_dump(strtotime($dateTime));
-        var_dump(strtotime('+1 min',$evaTime));
-        exit;
-//        Session::forget('controlTime');
+        session()->forget('actionTime');
+        return 'pass';
+    }
+    //執行錯誤顯示
+    public function limitActionUrl()
+    {
+        $user = Auth::user();
+        if(session($user->id) == NULL){
+            session()->put($user->id, 0);
+        }
+        $countError = session($user->id);
+        $countError++; //每執行錯誤一次加一
+        session()->put($user->id, $countError);
+        $dateTime = horseRaceM::nowDateTime(); //目前時間
+        session()->put('errorTime', $dateTime); //最新執行錯誤時間
+        $this->accountLock(); //檢驗帳號錯誤次數
+
+        return view('limitActionV');
+    }
+    //帳號鎖定(執行錯誤過多)
+    public function accountLock()
+    {
+        $user = Auth::user();
+        if(session($user->id) >= 5){
+            DB::table('member')
+                ->where('id', $user->id)
+                ->update(['error' => 1]);
+        }
+    }
+    //執行錯誤時間重置(一天內無再執行錯誤)
+    public function reErrorTime()
+    {
+        $dateTime = horseRaceM::nowDateTime(); //目前時間
+        $errorTime = strtotime(session('errorTime'));
+        if(strtotime($dateTime) > strtotime('+1 day', $errorTime)){ //一天內無執行錯誤
+            session()->forget('errorTime'); //重置執行錯誤次數
+        }
     }
 }

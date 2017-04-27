@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -22,9 +23,23 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
+    //任務排程
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->call(function () {
+            $rank = array();
+            $horseCount = 3;
+            $count = 0;
+            while ($count < $horseCount) {        //計算賽馬名次
+                $number = rand(1, $horseCount);
+                if (!in_array($number, $rank)) {  //去陣列重複值
+                    $rank[$count] = $number;
+                    $count++;
+                    DB::table('photo')
+                        ->where('num', $count)
+                        ->update(['photo' => $number.'.jpg']);
+                }
+            }
+        })->everyTenMinutes();
     }
 }

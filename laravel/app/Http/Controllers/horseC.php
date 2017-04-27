@@ -13,6 +13,7 @@ class horseC extends Controller
 {
     public function __construct()
     {
+        $this->accountCheck();     //帳號驗證
         $this->middleware('auth'); //驗證使用者是否登入
     }
     //賽馬介紹頁面顯示
@@ -55,6 +56,11 @@ class horseC extends Controller
 
         if($input['token'] == NULL || $input['token'] != $token){ //表單通過驗證
             return false;
+        }
+        $pass = $this->actionControl(); //1分內不能執行動作
+        if($pass == NULL || $pass != 'pass'){
+            return redirect()->action('Controller@limitActionUrl'); //轉向顯示錯誤頁面
+            exit;
         }
         $action = Input::get('action', '');
         //賽馬資料新增

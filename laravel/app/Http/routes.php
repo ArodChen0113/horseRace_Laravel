@@ -33,7 +33,9 @@ Route::get('action_open', 'horseRaceC@openActionControl');
 
 //Authority
 Route::auth();
-Route::get('noAuthV', 'Controller@AuthUrl');
+Route::get('noAuthV', 'Controller@authUrl');
+Route::get('limitActionV', 'Controller@limitActionUrl');
+Route::get('limitAccountV', 'Controller@limitAccountUrl');
 
 //Test
 Route::get('testHTML','testC@testF');

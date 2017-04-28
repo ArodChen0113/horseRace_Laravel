@@ -14,8 +14,8 @@ class memberC extends Controller
 {
     public function __construct()
     {
-        $this->accountCheck();     //帳號驗證
         $this->middleware('auth'); //驗證使用者是否登入
+        $this->accountCheck();     //帳號驗證
     }
     //帳號管理頁面顯示(前台)
     public function accountManageShow()

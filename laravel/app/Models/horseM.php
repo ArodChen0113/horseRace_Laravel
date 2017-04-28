@@ -34,7 +34,6 @@ class horseM
                     array('horse_name' => $horseData['horseName'], 'horse_age' => $horseData['horseAge'], 'horse_introduce' => $horseData['horseIntroduce'])
                 ));
             return $horseData['horseName'];
-
     }
     //賽馬資料修改
     public static function horseUp($horseData)

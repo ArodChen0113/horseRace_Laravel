@@ -14,13 +14,14 @@ class bigOrSmallGameC extends Controller
     public function __construct()
     {
         $this->middleware('auth'); //驗證使用者是否登入
+        $this->accountCheck();     //帳號驗證
     }
     //大小單雙遊戲介紹頁面顯示(首頁)
     public function bsIntroduceShow()
     {
         $input = Input::all();
-        $horseData = bigOrSmallGameM::horseData(); //賽馬資料
         $action = Input::get('action', '');
+        $horseData = bigOrSmallGameM::horseData(); //賽馬資料
         $horseName = '';
         //下注資料刪除
         if($action == 'delete'){

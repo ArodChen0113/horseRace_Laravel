@@ -1,6 +1,6 @@
 <?php
 //View routes
-Route::resource('/','horseRaceC@horseRaceShow');
+Route::get('/','horseRaceC@horseRaceShow');
 
 Route::get('raceOverviewV','horseRaceC@raceOverviewShow');
 Route::get('raceSurplusV','horseRaceC@raceSurplusShow');

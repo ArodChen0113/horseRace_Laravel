@@ -9,7 +9,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use App\Models\memberM;
 
 class Controller extends BaseController
@@ -23,7 +22,7 @@ class Controller extends BaseController
         $user = Auth::user();
         $rowCheck = memberM::memberSelOne($user->id); //查詢會員資料
         if ($rowCheck[0]->error == 1) {
-            header("Location:limitAccountV");
+            header("Location:limitAccountV"); //導向帳號鎖定頁面
             exit;
         }
     }
@@ -38,7 +37,7 @@ class Controller extends BaseController
         $user = Auth::user();
         $rowCheck = memberM::memberSelOne($user->id); //查詢會員資料
         if ($rowCheck[0]->authority == 0) {
-            header("Location:noAuthV");
+            header("Location:noAuthV"); //導向無使用權限頁面
             exit;
         }
     }
@@ -63,7 +62,7 @@ class Controller extends BaseController
             exit;
         }
         $evaTime = strtotime(session('actionTime'));
-        if(strtotime($dateTime) < strtotime('+1 min', $evaTime)){ //一分內執行動作一次
+        if(strtotime($dateTime) < strtotime('+5 seconds', $evaTime)){ //五秒內執行動作一次
             return 'false';
             exit;
         }
@@ -82,11 +81,10 @@ class Controller extends BaseController
         session()->put($user->id, $countError);
         $dateTime = horseRaceM::nowDateTime(); //目前時間
         session()->put('errorTime', $dateTime); //最新執行錯誤時間
-        $this->accountLock(); //檢驗帳號錯誤次數
-
+//        $this->accountLock(); //檢驗帳號錯誤次數(帳號鎖定)
         return view('limitActionV');
     }
-    //帳號鎖定(執行錯誤過多)
+    //帳號鎖定(執行錯誤超過五次)
     public function accountLock()
     {
         $user = Auth::user();

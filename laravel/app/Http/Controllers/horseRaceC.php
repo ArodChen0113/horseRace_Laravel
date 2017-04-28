@@ -23,12 +23,18 @@ class horseRaceC extends Controller
         $this->accountCheck();     //帳號驗證
         return view('horseRaceShowV');
     }
-    //賽果總覽(前台)頁面顯示
-    public function raceOverviewShow(){
+    //下注總覽(前台)頁面顯示
+    public function bettingOverviewShow(){
         $user = Auth::user();
         $bettingData = horseRaceM::horseRaceResultPersonalData($user->id); //個人賽馬資料
         $memberData = memberM::memberSelOne($user->id); //會員資料
-        return view('raceOverviewV', ['bettingData' => $bettingData, 'memberData' => $memberData]);
+        return view('bettingOverviewV', ['bettingData' => $bettingData, 'memberData' => $memberData]);
+    }
+    //賽果總覽(前台)頁面顯示
+    public function raceOverviewShow(){
+        $horseGameData = horseRaceM::horseGameData(); //參賽賽馬資料
+        $horseRaceData = horseRaceM::horseRaceData(); //賽馬結果資料
+        return view('raceOverviewV', ['horseGameData' => $horseGameData, 'horseRaceData' => $horseRaceData]);
     }
     //開獎盈餘(後台)頁面顯示
     public function raceSurplusShow(){
@@ -46,7 +52,7 @@ class horseRaceC extends Controller
         $oddsData = horseRaceM::raceOddsData(); //賠率資料
         memberC::actionVerificationCode(); //加入token表單驗證碼
         $token = Session::get('token');
-        return view('raceOddsV',['oddsData' => $oddsData, 'action' => $action, 'token' => $token]);
+        return view('raceOddsV', ['oddsData' => $oddsData, 'action' => $action, 'token' => $token]);
     }
     //賽馬賽果開獎
     public function lotteryControl($alert){

@@ -47,7 +47,7 @@ class memberM
         }
             DB::table('member')
                 ->where('id', $memberData['id'])
-                ->update(['name' => $memberData['name'],'email' => $memberData['email']]);
+                ->update(['name' => $memberData['name'], 'email' => $memberData['email']]);
             return $memberData['name'];
     }
     //會員資料刪除

@@ -19,7 +19,7 @@ class horseM
     {
         $rowHorseData=DB::table('horse_data')
             ->select('h_id','horse_name','horse_age','horse_introduce','horse_picture')
-            ->where('h_id',$hId)
+            ->where('h_id', $hId)
             ->get();
         return $rowHorseData;
     }

@@ -46,7 +46,7 @@ class bigOrSmallGameC extends Controller
             $alert = bigOrSmallGameM::bsBettingInsert($horseData);
         }
         $bettingData = horseRaceM::bettingData();       //下注資料
-        $memberData = memberM::memberSelOne($user->id);   //會員資料
+        $memberData = memberM::memberSelOne($user->id); //會員資料
         $gameName = '賽馬大小遊戲';
         $odds = horseRaceM::raceOddsOneData($gameName); //遊戲賠率
 

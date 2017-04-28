@@ -2,6 +2,7 @@
 //View routes
 Route::get('/','horseRaceC@horseRaceShow');
 
+Route::get('bettingOverviewV','horseRaceC@bettingOverviewShow');
 Route::get('raceOverviewV','horseRaceC@raceOverviewShow');
 Route::get('raceSurplusV','horseRaceC@raceSurplusShow');
 Route::get('raceOddsV','horseRaceC@raceOddsShow');

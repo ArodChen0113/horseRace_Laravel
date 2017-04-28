@@ -96,7 +96,6 @@ class positionGameM extends horseRace
             DB::table('bs_sdBetting')
                 ->where('num', $bettingData['num'])
                 ->update(['money' => $bettingData['money'], 'control' => $bettingData['control'], 'h_rank' => $bettingData['rank'], 'count' => 0]);  //修改玩家剩餘金額
-
             return $bettingData['horseName'];
     }
     //賽馬定位遊戲投注結果(計算輸贏)

@@ -29,7 +29,7 @@ class memberC extends Controller
             $memberData = ['horseName' => $input->memberName, 'id' => $input->id, 'action' => $input->action];
             $alert = memberM::memberUp($memberData);  //會員資料修改
         }
-        if($alert== 'pay'){
+        if($alert == 'pay'){
             $memberData = ['money' => $input->mmoney, 'id' => $input->id, 'action' => $input->action];
             $alert = memberM::accountStoredValueUp($memberData);  //帳號儲值
         }

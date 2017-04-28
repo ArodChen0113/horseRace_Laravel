@@ -34,9 +34,9 @@ class bigOrSmallGameM extends horseRace
             $loseMoney = 0;
             foreach ($bettingLose as $value3){
                 $value3->money *= $value3->odds;
-                $loseMoney += $value3->money;   //該場次虧損金額
+                $loseMoney += $value3->money;  //該場次虧損金額
             }
-            $winMoney = $sumBettingMoney - $loseMoney;     //剛場次獲利金額
+            $winMoney = $sumBettingMoney - $loseMoney;  //剛場次獲利金額
             $bsHorseRaceResultData[] = ['num' => $value->num, 'raceCount' => count($bettingData),
                 'sumBettingMoney' => $sumBettingMoney, 'winMoney' => $winMoney, 'loseMoney' => $loseMoney];
         }

@@ -44,7 +44,10 @@
                         <a href="raceOverviewV">投注總覽</a>
                         <ul class="sub-menu">
                             <li class="menu-item-has-children">
-                                <a href="raceOverviewV">投注總覽</a>
+                                <a href="bettingOverviewV">投注總覽</a>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="raceOverviewV">賽果總覽</a>
                             </li>
                             <li class="menu-item-has-children">
                                 <a href="accountStoredValueV">金額儲值</a>
